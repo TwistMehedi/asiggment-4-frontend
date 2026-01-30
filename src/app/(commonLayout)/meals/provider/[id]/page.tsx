@@ -1,4 +1,4 @@
-import { getProviderById } from "@/service/Home/meal.service";
+import { getProviderById } from "@/service/meal/meal.service";
 import { MapPin, Phone, Star, ShoppingBag, Clock, Info } from "lucide-react";
 
 const Provider = async ({ params }: { params: { id: string } }) => {

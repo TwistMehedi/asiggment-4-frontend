@@ -1,6 +1,6 @@
-import { getAllMeals } from "@/service/Home/home.service";
 import Link from "next/link";
 import Image from "next/image";
+import { getAllMeals } from "@/service/meal/meal.service";
 
 const Meals = async () => {
   const { meals } = await getAllMeals();

@@ -4,6 +4,7 @@ import React, { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { toast, Toaster } from "sonner";
 import { Loader2, CheckCircle2, XCircle } from "lucide-react"; // আইকন যোগ করা হয়েছে
+import { envConfig } from "@/config/envConfig";
 
 const VerifyEmailContent = () => {
   const searchParams = useSearchParams();
@@ -25,10 +26,11 @@ const VerifyEmailContent = () => {
     const verifyEmail = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/auth/verify-email?token=${token}`,
+          `${envConfig.backend_host_server_url}/auth/verify-email?token=${token}`,
           {
             method: "GET",
             headers: { "Content-Type": "application/json" },
+            credentials: "include",
           },
         );
 

@@ -19,6 +19,7 @@ import { useState } from "react";
 import { toast, Toaster } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { envConfig } from "@/config/envConfig";
 
 export const LoginForm = ({
   className,
@@ -33,12 +34,13 @@ export const LoginForm = ({
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const res = await fetch(`http://localhost:5000/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
+        credentials: "include",
       });
 
       const data = await res.json();
