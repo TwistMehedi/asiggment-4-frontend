@@ -19,7 +19,6 @@ const Catagory = async () => {
               key={cat.id}
               className="group cursor-pointer bg-white border border-gray-100 rounded-3xl p-8 text-center shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
             >
-              {/* Placeholder for Icon - category wise icon dile aro professional lagbe */}
               <div className="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-orange-500 transition-colors duration-300">
                 <span className="text-2xl group-hover:scale-110 transition-transform">
                   🍱
