@@ -68,10 +68,34 @@ export const getAllMeals = async (searchTerm = "", category = "") => {
     }
 
     const data = await res.json();
-    // console.log(data);
     return data;
   } catch (error) {
     console.error("Error fetching all meals", error);
     return [];
+  }
+};
+
+export const getMealById = async (id: string) => {
+  try {
+    const res = await fetch(
+      `${envConfig.backend_host_server_url}/meals/${id}`,
+      {
+        method: "GET",
+        cache: "no-store",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch meal detail for ID: ${id}`);
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching fish detail", error);
+    return null;
   }
 };

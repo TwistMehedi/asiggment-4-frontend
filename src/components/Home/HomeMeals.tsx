@@ -1,35 +1,68 @@
 import { getHomeMeals } from "@/service/Home/home.service";
+import Image from "next/image"; // ইমেজ ব্যবহারের জন্য
 import React from "react";
 
 const HomeMeals = async () => {
   const { data } = await getHomeMeals();
 
   return (
-    <section className="px-6 py-16 bg-gray-50">
-      <h3 className="text-3xl font-semibold text-center mb-10">
-        Popular Meals
-      </h3>
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
-        {data?.map(
-          (meal: {
-            id: string;
-            name: string;
-            price: number;
-            image: string;
-            category: string;
-          }) => (
-            <div
-              key={meal?.id}
-              className="border rounded-2xl overflow-hidden bg-white shadow-sm"
-            >
-              <div className="h-32 bg-gray-200" />
-              <div className="p-4">
-                <h4 className="font-semibold">{meal?.name}</h4>
-                <p className="text-sm text-gray-500">{meal?.price}</p>
+    <section className="px-4 sm:px-6 py-12 md:py-20 bg-gray-50">
+      <div className="max-w-6xl mx-auto">
+        <h3 className="text-2xl md:text-4xl font-bold text-center mb-8 md:mb-12 text-gray-800">
+          Popular Meals
+        </h3>
+
+        {/* Responsive Grid: 1 on mobile, 2 on small tablet, 3 on tablet, 4 on desktop */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          {data?.map(
+            (meal: {
+              id: string;
+              name: string;
+              price: number;
+              image: string;
+              categoryName: string;
+            }) => (
+              <div
+                key={meal?.id}
+                className="group border border-gray-100 rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-all duration-300"
+              >
+                {/* Image Placeholder or Actual Image */}
+                <div className="relative h-48 w-full bg-gray-200 overflow-hidden">
+                  {meal?.image ? (
+                    <Image
+                      src={meal.image}
+                      alt={meal.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center h-full text-gray-400">
+                      No Image
+                    </div>
+                  )}
+                  {/* Category Badge */}
+                  <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-orange-600">
+                    {meal?.categoryName}
+                  </div>
+                </div>
+
+                <div className="p-4 md:p-5">
+                  <h4 className="font-bold text-gray-800 text-lg mb-1 group-hover:text-orange-600 transition-colors">
+                    {meal?.name}
+                  </h4>
+                  <div className="flex justify-between items-center mt-3">
+                    <p className="text-xl font-extrabold text-orange-600">
+                      ${meal?.price}
+                    </p>
+                    <button className="text-xs font-semibold bg-gray-100 px-3 py-2 rounded-lg hover:bg-orange-600 hover:text-white transition-colors">
+                      Add to Cart
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-          ),
-        )}
+            ),
+          )}
+        </div>
       </div>
     </section>
   );

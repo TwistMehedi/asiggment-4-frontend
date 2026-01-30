@@ -18,8 +18,10 @@ import { Input } from "@/components/ui/input";
 import React, { useState } from "react";
 import { toast, Toaster } from "sonner";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
+// Arrow Function এ রূপান্তর এবং রেসপনসিভনেস নিশ্চিত করা
+export const SignupForm = ({ ...props }: React.ComponentProps<typeof Card>) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -45,9 +47,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
 
       if (res.ok) {
         toast.success(data?.message || "Registration successful!");
-
         setFormData({ name: "", email: "", password: "", role: "" });
-
         router.push("/check-inbox");
       } else {
         toast.error(data?.message || "Registration failed");
@@ -69,16 +69,22 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
     <>
       <Toaster position="top-right" richColors />
 
-      <Card {...props}>
-        <CardHeader>
-          <CardTitle>Create an account</CardTitle>
+      {/* কার্ডটি মোবাইলে ফুল উইডথ এবং বড় স্ক্রিনে মিডল এ রাখার জন্য */}
+      <Card
+        className="w-full max-w-lg mx-auto border-none sm:border shadow-none sm:shadow-sm"
+        {...props}
+      >
+        <CardHeader className="text-center sm:text-left">
+          <CardTitle className="text-2xl font-bold">
+            Create an account
+          </CardTitle>
           <CardDescription>
             Enter your information below to create your account
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleRegister}>
-            <FieldGroup className="space-y-4">
+            <FieldGroup className="space-y-5">
               <Field>
                 <FieldLabel htmlFor="name">Full Name</FieldLabel>
                 <Input
@@ -88,6 +94,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                   required
                   value={formData.name}
                   onChange={handleChange}
+                  className="mt-1"
                 />
               </Field>
 
@@ -100,8 +107,9 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                   required
                   value={formData.email}
                   onChange={handleChange}
+                  className="mt-1"
                 />
-                <FieldDescription>
+                <FieldDescription className="text-[12px] mt-1 leading-tight">
                   We'll use this to contact you. We will not share your email
                   with anyone else.
                 </FieldDescription>
@@ -115,8 +123,9 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                   required
                   value={formData.password}
                   onChange={handleChange}
+                  className="mt-1"
                 />
-                <FieldDescription>
+                <FieldDescription className="text-[12px] mt-1">
                   Must be at least 8 characters long.
                 </FieldDescription>
               </Field>
@@ -128,26 +137,37 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                   required
                   value={formData.role}
                   onChange={handleChange}
-                  className="w-full rounded-md border border-input px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full mt-1 rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
                 >
                   <option value="">Select a role</option>
                   <option value="CUSTOMER">Customer</option>
                   <option value="PROVIDER">Provider</option>
                 </select>
-                <FieldDescription>
+                <FieldDescription className="text-[12px] mt-1">
                   Choose your role to continue registration.
                 </FieldDescription>
               </Field>
 
-              <div className="flex flex-col sm:flex-row gap-2 mt-4">
-                <Button type="submit">Create Account</Button>
-                <Button variant="outline" type="button">
+              <div className="flex flex-col gap-3 mt-6">
+                <Button
+                  type="submit"
+                  className="w-full bg-orange-600 hover:bg-orange-700"
+                >
+                  Create Account
+                </Button>
+                <Button variant="outline" type="button" className="w-full">
                   Sign up with Google
                 </Button>
               </div>
 
-              <div className="px-6 text-center text-sm text-muted-foreground">
-                Already have an account? <a href="#">Sign in</a>
+              <div className="text-center text-sm text-muted-foreground mt-4">
+                Already have an account?{" "}
+                <Link
+                  href="/login"
+                  className="text-orange-600 font-medium hover:underline"
+                >
+                  Sign in
+                </Link>
               </div>
             </FieldGroup>
           </form>
@@ -155,4 +175,4 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
       </Card>
     </>
   );
-}
+};

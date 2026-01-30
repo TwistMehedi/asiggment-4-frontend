@@ -20,10 +20,10 @@ import { toast, Toaster } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-export function LoginForm({
+export const LoginForm = ({
   className,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<"div">) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -44,8 +44,7 @@ export function LoginForm({
       const data = await res.json();
       console.log(data);
       if (res.ok) {
-        toast.success(data?.message || "Registration successful");
-
+        toast.success(data?.message || "Login successful");
         router.push("/");
       } else {
         toast.error(data?.message || "Login failed");
@@ -57,18 +56,26 @@ export function LoginForm({
   };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div
+      className={cn(
+        "flex flex-col gap-6 w-full max-w-md mx-auto px-4 sm:px-0",
+        className,
+      )}
+      {...props}
+    >
       <Toaster position="top-right" richColors />
-      <Card>
-        <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
+      <Card className="border-none sm:border shadow-none sm:shadow-sm">
+        <CardHeader className="space-y-1 text-center sm:text-left">
+          <CardTitle className="text-2xl font-bold">
+            Login to your account
+          </CardTitle>
           <CardDescription>
             Enter your email below to login to your account
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin}>
-            <FieldGroup>
+            <FieldGroup className="space-y-4">
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
@@ -76,40 +83,52 @@ export function LoginForm({
                   type="email"
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="m@example.com"
+                  className="w-full"
                   required
                 />
               </Field>
               <Field>
-                <div className="flex items-center">
+                <div className="flex items-center justify-between">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <a
+                  <Link
                     href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                    className="text-sm text-orange-600 hover:underline underline-offset-4"
                   >
                     Forgot your password?
-                  </a>
+                  </Link>
                 </div>
                 <Input
                   id="password"
                   onChange={(e) => setPassword(e.target.value)}
                   type="password"
+                  className="w-full"
                   required
                 />
               </Field>
-              <Field>
-                <Button type="submit">Login</Button>
-                <Button variant="outline" type="button">
+              <div className="flex flex-col gap-3 pt-2">
+                <Button
+                  type="submit"
+                  className="w-full bg-orange-600 hover:bg-orange-700"
+                >
+                  Login
+                </Button>
+                <Button variant="outline" type="button" className="w-full">
                   Login with Google
                 </Button>
-                <FieldDescription className="text-center">
-                  Don&apos;t have an account?{" "}
-                  <Link href={"/signup"}>Sign up</Link>
-                </FieldDescription>
-              </Field>
+              </div>
+              <FieldDescription className="text-center pt-2">
+                Don&apos;t have an account?{" "}
+                <Link
+                  href={"/signup"}
+                  className="text-orange-600 font-medium hover:underline"
+                >
+                  Sign up
+                </Link>
+              </FieldDescription>
             </FieldGroup>
           </form>
         </CardContent>
       </Card>
     </div>
   );
-}
+};
