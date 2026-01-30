@@ -15,6 +15,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Roles } from "@/constants/role";
+import Link from "next/link";
 
 const DashboardLayout = async ({
   customer,
@@ -48,7 +49,9 @@ const DashboardLayout = async ({
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                <Link href={"/"}>
+                  <BreadcrumbPage>Home</BreadcrumbPage>
+                </Link>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>

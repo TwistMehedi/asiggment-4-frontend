@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 export const getUser = async () => {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
-  // console.log(token);
+
   if (!token) {
     return null;
   }
@@ -31,7 +31,9 @@ export const getUser = async () => {
     }
 
     const data = await response.json();
-
+    if (!data) {
+      return null;
+    }
     return data;
   } catch (error) {
     console.error("Auth Error:", error);

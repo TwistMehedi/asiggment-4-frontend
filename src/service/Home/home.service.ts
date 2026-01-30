@@ -7,7 +7,7 @@ export const getCategories = async () => {
       headers: {
         "Content-Type": "application/json",
       },
-
+      credentials: "include",
       next: {
         revalidate: 3600,
       },
@@ -18,6 +18,7 @@ export const getCategories = async () => {
     }
 
     const data = await res.json();
+    // console.log(data);
     return data;
   } catch (error) {
     console.error("Error fetching categories", error);

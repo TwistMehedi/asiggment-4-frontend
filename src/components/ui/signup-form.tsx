@@ -20,7 +20,6 @@ import { toast, Toaster } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-// Arrow Function এ রূপান্তর এবং রেসপনসিভনেস নিশ্চিত করা
 export const SignupForm = ({ ...props }: React.ComponentProps<typeof Card>) => {
   const [formData, setFormData] = useState({
     name: "",
@@ -69,7 +68,6 @@ export const SignupForm = ({ ...props }: React.ComponentProps<typeof Card>) => {
     <>
       <Toaster position="top-right" richColors />
 
-      {/* কার্ডটি মোবাইলে ফুল উইডথ এবং বড় স্ক্রিনে মিডল এ রাখার জন্য */}
       <Card
         className="w-full max-w-lg mx-auto border-none sm:border shadow-none sm:shadow-sm"
         {...props}
