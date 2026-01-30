@@ -24,8 +24,6 @@ export const getUser = async () => {
       },
     );
 
-    // console.log(response);
-
     if (!response.ok) {
       const errorData = await response.json();
       console.log("Backend Error Message", errorData);
@@ -33,7 +31,7 @@ export const getUser = async () => {
     }
 
     const data = await response.json();
-    // console.log("data", data);
+
     return data;
   } catch (error) {
     console.error("Auth Error:", error);
