@@ -22,6 +22,7 @@ export default function Navbar() {
         {/* Desktop Menu */}
         <nav className="hidden md:flex items-center gap-6">
           <Link href={"/"}>Home</Link>
+          <Link href={"/meals"}>Meals</Link>
           <Link href={"/"}>About</Link>
           <Link href={"/"}>Contact</Link>
           <Link href={"/login"}>

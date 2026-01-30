@@ -1,4 +1,5 @@
 import { envConfig } from "@/config/envConfig";
+import { log } from "console";
 export const getCategories = async () => {
   try {
     const res = await fetch(`${envConfig.backend_host_server_url}/categories`, {
@@ -19,7 +20,7 @@ export const getCategories = async () => {
     const data = await res.json();
     return data;
   } catch (error) {
-    console.error("Error fetching categories:", error);
+    console.error("Error fetching categories", error);
     return [];
   }
 };
@@ -40,7 +41,37 @@ export const getHomeMeals = async () => {
     const data = await res.json();
     return data;
   } catch (error) {
-    console.error("Home meals error:", error);
+    console.error("Home meals error", error);
+    return [];
+  }
+};
+
+export const getAllMeals = async (searchTerm = "", category = "") => {
+  try {
+    const queryParams = new URLSearchParams();
+    if (searchTerm) queryParams.append("search", searchTerm);
+    if (category) queryParams.append("category", category);
+
+    const res = await fetch(
+      `${envConfig.backend_host_server_url}/meals?${queryParams.toString()}`,
+      {
+        method: "GET",
+        cache: "no-store",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch meals`);
+    }
+
+    const data = await res.json();
+    // console.log(data);
+    return data;
+  } catch (error) {
+    console.error("Error fetching all meals", error);
     return [];
   }
 };

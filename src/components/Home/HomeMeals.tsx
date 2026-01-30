@@ -3,7 +3,7 @@ import React from "react";
 
 const HomeMeals = async () => {
   const { data } = await getHomeMeals();
-  console.log(data);
+
   return (
     <section className="px-6 py-16 bg-gray-50">
       <h3 className="text-3xl font-semibold text-center mb-10">
@@ -19,7 +19,7 @@ const HomeMeals = async () => {
             category: string;
           }) => (
             <div
-              key={meal.id}
+              key={meal?.id}
               className="border rounded-2xl overflow-hidden bg-white shadow-sm"
             >
               <div className="h-32 bg-gray-200" />
