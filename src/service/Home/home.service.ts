@@ -1,28 +1,33 @@
 import { envConfig } from "@/config/envConfig";
-import { log } from "console";
+
+import { cookies } from "next/headers";
+
 export const getCategories = async () => {
   try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+
     const res = await fetch(`${envConfig.backend_host_server_url}/categories`, {
       method: "GET",
       headers: {
+        Cookie: `token=${token}`,
+        Authorization: token ? `Bearer ${token}` : "",
         "Content-Type": "application/json",
       },
-      credentials: "include",
-      next: {
-        revalidate: 3600,
-      },
+      cache: "no-store",
     });
 
     if (!res.ok) {
-      throw new Error("Failed to fetch categories");
+      const errorData = await res.json();
+      console.error("Backend Error:", errorData.message);
+      return { success: false, data: [] };
     }
 
     const data = await res.json();
-    // console.log(data);
     return data;
   } catch (error) {
-    console.error("Error fetching categories", error);
-    return [];
+    console.error("Error fetching categories:", error);
+    return { success: false, data: [] };
   }
 };
 

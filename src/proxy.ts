@@ -1,29 +1,34 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { getUser } from "./service/User/user.service";
+import { jwtVerify } from "jose";
 
 export async function proxy(req: NextRequest) {
+  const { pathname } = req.nextUrl;
+  const token = req.cookies.get("token")?.value;
+
+  if (!token) {
+    if (
+      pathname.startsWith("/admin") ||
+      pathname.startsWith("/customer") ||
+      pathname.startsWith("/provider")
+    ) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+    return NextResponse.next();
+  }
+
   try {
-    const { pathname } = req.nextUrl;
+    const secret = new TextEncoder().encode(
+      process.env.JWT_SECRET || "your_secret_key",
+    );
+    const { payload } = await jwtVerify(token, secret);
 
-    let isAuthenticated = false;
+    const userRole = payload.role;
 
-    let isAdmin = false;
-    let isCustomer = false;
-    let isProvider = false;
-
-    const { user } = await getUser();
-
-    if (!user) {
-      return null;
-    }
-
-    if (user) {
-      isAuthenticated = true;
-      isAdmin = user?.role === "ADMIN";
-      isCustomer = user?.role === "CUSTOMER";
-      isProvider = user?.role === "PROVIDER";
-    }
+    // console.log(userRole, "mehedi");
+    const isAdmin = userRole === "ADMIN";
+    const isCustomer = userRole === "CUSTOMER";
+    const isProvider = userRole === "PROVIDER";
 
     if (pathname.startsWith("/admin") && !isAdmin) {
       return NextResponse.redirect(new URL("/", req.url));
@@ -39,8 +44,8 @@ export async function proxy(req: NextRequest) {
 
     return NextResponse.next();
   } catch (error) {
-    console.log("Middleware Error", error);
-    return NextResponse.next();
+    console.log("Middleware Token Error", error);
+    return NextResponse.redirect(new URL("/login", req.url));
   }
 }
 

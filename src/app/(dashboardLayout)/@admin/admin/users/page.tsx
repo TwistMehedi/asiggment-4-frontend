@@ -22,7 +22,7 @@ const Users = async () => {
   const res = await fetch(`${envConfig.backend_host_server_url}/admin/users`, {
     method: "GET",
     headers: {
-      cookies: `token=${token}`,
+      Cookie: `token=${token}`,
       Authorization: token ? `Bearer ${token}` : "",
       "Content-Type": "application/json",
     },

@@ -1,4 +1,3 @@
-import { getCategories } from "@/service/Home/home.service";
 import {
   Table,
   TableBody,
@@ -10,9 +9,11 @@ import {
 } from "@/components/ui/table";
 import { Edit2, Trash2, FolderTree } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import categories from "@/actions/categories";
+import { DeleteCategoryBtn } from "@/components/DeleteCategoryBtn";
 
 const AdminCategory = async () => {
-  const { data } = await getCategories();
+  const { data } = await categories();
   return (
     <div className="min-h-screen bg-gray-50/50 p-4 md:p-10">
       <div className="max-w-5xl mx-auto">
@@ -26,9 +27,6 @@ const AdminCategory = async () => {
               You have total {data?.length || 0} categories available.
             </p>
           </div>
-          <Button className="bg-orange-600 hover:bg-orange-700 text-white rounded-xl px-6">
-            + Add New Category
-          </Button>
         </div>
 
         <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
@@ -76,13 +74,7 @@ const AdminCategory = async () => {
                         >
                           <Edit2 size={18} />
                         </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="hover:text-red-600 hover:bg-red-50"
-                        >
-                          <Trash2 size={18} />
-                        </Button>
+                        <DeleteCategoryBtn id={category.id} />
                       </div>
                     </TableCell>
                   </TableRow>
