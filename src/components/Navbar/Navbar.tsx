@@ -24,7 +24,9 @@ export default function Navbar() {
           <Link href={"/"}>Home</Link>
           <Link href={"/"}>About</Link>
           <Link href={"/"}>Contact</Link>
-          <Button size="sm">Login</Button>
+          <Link href={"/login"}>
+            <Button size="sm">Login</Button>
+          </Link>
           <Link href={"/signup"}>
             <Button size="sm">Sing Up</Button>
           </Link>
