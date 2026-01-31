@@ -26,7 +26,7 @@ const VerifyEmailContent = () => {
     const verifyEmail = async () => {
       try {
         const res = await fetch(
-          `${envConfig.backend_host_server_url}/auth/verify-email?token=${token}`,
+          `http://localhost:5000/api/auth/verify-email?token=${token}`,
           {
             method: "GET",
             headers: { "Content-Type": "application/json" },

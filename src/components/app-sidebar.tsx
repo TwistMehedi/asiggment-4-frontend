@@ -18,15 +18,10 @@ import { getNavData } from "@/helper/routes.role";
 
 export async function AppSidebar({ user, ...props }: { user: any }) {
   const data = await getNavData(user.role);
-
+  // console.log(data);
   return (
     <Sidebar {...props}>
-      <SidebarHeader>
-        <VersionSwitcher
-          versions={data.versions}
-          defaultVersion={data.versions[0]}
-        />
-      </SidebarHeader>
+      <SidebarHeader></SidebarHeader>
       <SidebarContent>
         {data.navMain.map((item: any, index: number) => (
           <SidebarGroup key={index}>

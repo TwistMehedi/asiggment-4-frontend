@@ -1,4 +1,5 @@
 import { envConfig } from "@/config/envConfig";
+import { cookies } from "next/headers";
 
 export const getProviderById = async (id: string) => {
   try {
@@ -52,12 +53,21 @@ export const getMealById = async (id: string) => {
   }
 };
 
-export const getAllMeals = async (searchTerm = "", category = "") => {
-  try {
-    const queryParams = new URLSearchParams();
-    if (searchTerm) queryParams.append("search", searchTerm);
-    if (category) queryParams.append("category", category);
+export const getAllMeals = async (
+  searchTerm = "",
+  category = "",
+  page = 1,
+  limit = 10,
+) => {
+  const queryParams = new URLSearchParams();
 
+  if (searchTerm) queryParams.append("searchTerm", searchTerm);
+  if (category) queryParams.append("category", category);
+
+  queryParams.append("page", page.toString());
+  queryParams.append("limit", limit.toString());
+
+  try {
     const res = await fetch(
       `${envConfig.backend_host_server_url}/meals?${queryParams.toString()}`,
       {
@@ -77,6 +87,6 @@ export const getAllMeals = async (searchTerm = "", category = "") => {
     return data;
   } catch (error) {
     console.error("Error fetching all meals", error);
-    return [];
+    return { meals: [], meta: { totalPages: 1, totalCount: 0 } };
   }
 };

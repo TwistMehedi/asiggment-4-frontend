@@ -57,7 +57,7 @@ const DashboardLayout = async ({
           </Breadcrumb>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
-          {user.role === Roles.provider
+          {user.role === Roles.provider || user.role === Roles.admin
             ? provider
             : user.role === Roles.customer
               ? customer

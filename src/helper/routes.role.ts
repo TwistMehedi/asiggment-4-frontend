@@ -13,3 +13,5 @@ export const navByRole: Record<Role, any> = {
 export const getNavData = (role: Role) => {
   return navByRole[role];
 };
+
+// console.log(getNavData);

@@ -1,8 +1,13 @@
 import { getCategories } from "@/service/Home/home.service";
 
 const Catagory = async () => {
-  const { data } = await getCategories();
+  // const { data } = await getCategories();
+  const response = await getCategories();
+  if (!response || !response.data || response.data.length === 0) {
+    return null;
+  }
 
+  const { data } = response;
   return (
     <section className="px-4 sm:px-6 py-12 md:py-20 bg-gray-50/50">
       <div className="max-w-6xl mx-auto">

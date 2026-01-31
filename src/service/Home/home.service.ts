@@ -7,6 +7,7 @@ export const getCategories = async () => {
     const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;
 
+    if (!token) return null;
     const res = await fetch(`${envConfig.backend_host_server_url}/categories`, {
       method: "GET",
       headers: {
@@ -24,6 +25,7 @@ export const getCategories = async () => {
     }
 
     const data = await res.json();
+    if (!data) return null;
     return data;
   } catch (error) {
     console.error("Error fetching categories:", error);

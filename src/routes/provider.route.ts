@@ -5,7 +5,7 @@ export const providerRoutes = {
       items: [
         {
           title: "Dashboard",
-          url: "/provider/dashboard",
+          url: "/provider",
         },
         {
           title: "Menu",
@@ -16,8 +16,8 @@ export const providerRoutes = {
           url: "/provider/orders",
         },
         {
-          title: "Provider",
-          url: "/provider",
+          title: "Resturant",
+          url: "/provider/resturant",
         },
       ],
     },
