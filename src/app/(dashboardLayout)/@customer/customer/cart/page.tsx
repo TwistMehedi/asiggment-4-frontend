@@ -28,6 +28,7 @@ const CartPage = () => {
       const userData = await currentUser();
       const userId = userData?.user?.id;
 
+      console.log(userId);
       if (userId) {
         const data = localStorage.getItem("cart");
         if (data) {

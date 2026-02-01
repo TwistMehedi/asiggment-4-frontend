@@ -19,10 +19,6 @@ export const customerRoutes = {
           title: "Profile",
           url: "/customer/profile",
         },
-        {
-          title: "Profile",
-          url: "/customer",
-        },
       ],
     },
   ],
