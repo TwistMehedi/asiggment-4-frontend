@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Clock, MapPin, Store, CheckCircle, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import getMeal from "@/actions/meal";
+import AddToCartButton from "@/components/Meal/AddToCartButton";
 
 const MealDetailPage = async ({ params }: { params: any }) => {
   const { id } = await params;
@@ -101,9 +102,7 @@ const MealDetailPage = async ({ params }: { params: any }) => {
           </div>
 
           <div className="flex gap-4 mt-auto">
-            <button className="flex-[4] bg-gray-900 text-white py-4 md:py-5 rounded-2xl font-bold hover:bg-black transition-all shadow-lg active:scale-95 text-sm md:text-base">
-              Add to Cart
-            </button>
+            <AddToCartButton meal={meal} />
             <button className="flex-1 flex items-center justify-center border-2 border-gray-200 rounded-2xl hover:bg-white hover:border-orange-500 transition-all active:scale-95 text-xl">
               ❤️
             </button>
