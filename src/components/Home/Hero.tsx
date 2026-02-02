@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -19,19 +20,23 @@ const Hero = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4 pt-2">
-            <Button
-              size="lg"
-              className="px-8 py-6 text-lg rounded-full shadow-lg hover:shadow-orange-200 transition-all"
-            >
-              Order Now
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="px-8 py-6 text-lg rounded-full"
-            >
-              View Menu
-            </Button>
+            <Link href={"/meals"}>
+              <Button
+                size="lg"
+                className="px-8 py-6 text-lg rounded-full shadow-lg hover:shadow-orange-200 transition-all"
+              >
+                Order Now
+              </Button>
+            </Link>
+            <Link href={"/meals"}>
+              <Button
+                size="lg"
+                variant="outline"
+                className="px-8 py-6 text-lg rounded-full"
+              >
+                View Menu
+              </Button>
+            </Link>
           </div>
 
           <div className="flex justify-center md:justify-start items-center gap-8 pt-6 border-t border-gray-100 md:border-none">

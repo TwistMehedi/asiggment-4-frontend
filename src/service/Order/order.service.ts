@@ -14,15 +14,18 @@ export const createOrder = async (orderData: any) => {
       };
     }
 
-    const res = await fetch("http://localhost:5000/api/order/create", {
-      method: "POST",
-      cache: "no-store",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/order/create`,
+      {
+        method: "POST",
+        cache: "no-store",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
       },
-      body: JSON.stringify(orderData),
-    });
+    );
 
     const data = await res.json();
 
@@ -53,23 +56,25 @@ export const getMyOrders = async () => {
     const cookieStore = await cookies();
     const cookieString = cookieStore.toString();
 
-    const res = await fetch("http://localhost:5000/api/order/get/me", {
-      method: "GET",
-      cache: "no-store",
-      headers: {
-        Cookie: cookieString,
-        "Content-Type": "application/json",
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/order/me`,
+      {
+        method: "GET",
+        cache: "no-store",
+        headers: {
+          Cookie: cookieString,
+          "Content-Type": "application/json",
+        },
+        next: { revalidate: 0 },
+        credentials: "include",
       },
-      next: { revalidate: 0 },
-      credentials: "include",
-    });
+    );
 
     if (!res.ok) {
       throw new Error("Failed to fetch orders");
     }
 
     const data = await res.json();
-    // console.log(data);
     return data || [];
   } catch (error) {
     console.error("Orders fetch error:", error);
@@ -80,15 +85,18 @@ export const getMyOrders = async () => {
 export const getSingleOrder = async (id: string) => {
   try {
     const cookieStore = await cookies();
-    const res = await fetch(`http://localhost:5000/api/order/single/${id}`, {
-      method: "GET",
-      headers: {
-        Cookie: cookieStore.toString(),
-        "Content-Type": "application/json",
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/order/${id}`,
+      {
+        method: "GET",
+        headers: {
+          Cookie: cookieStore.toString(),
+          "Content-Type": "application/json",
+        },
+        cache: "no-store",
+        credentials: "include",
       },
-      cache: "no-store",
-      credentials: "include",
-    });
+    );
 
     const data = await res.json();
     return data;
@@ -103,23 +111,26 @@ export const getMyOrdersByProvider = async () => {
     const cookieStore = await cookies();
     const cookieString = cookieStore.toString();
 
-    const res = await fetch("http://localhost:5000/api/order/get/me/provider", {
-      method: "GET",
-      cache: "no-store",
-      headers: {
-        Cookie: cookieString,
-        "Content-Type": "application/json",
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/order/me/provider`,
+      {
+        method: "GET",
+        cache: "no-store",
+        headers: {
+          Cookie: cookieString,
+          "Content-Type": "application/json",
+        },
+        next: { revalidate: 0 },
+        credentials: "include",
       },
-      next: { revalidate: 0 },
-      credentials: "include",
-    });
+    );
 
     if (!res.ok) {
       throw new Error("Failed to fetch orders");
     }
 
     const data = await res.json();
-    // console.log(data);
+
     return data || [];
   } catch (error) {
     console.error("Orders fetch error:", error);

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Loader, Menu, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -9,8 +9,13 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import currentUser from "@/actions/user";
+import { Roles } from "@/constants/role";
+import LogOut from "./LogOut";
 
-const Navbar = () => {
+const Navbar = async () => {
+  const userData = await currentUser();
+  const user = userData?.user;
   return (
     <header className="w-full border-b bg-background sticky top-0 z-50">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -28,22 +33,54 @@ const Navbar = () => {
           >
             Meals
           </Link>
-          <Link href={"/"} className="hover:text-orange-600 transition-colors">
-            About
-          </Link>
-          <Link href={"/"} className="hover:text-orange-600 transition-colors">
-            Contact
-          </Link>
-          <Link href={"/login"}>
-            <Button variant="ghost" size="sm" className="hover:text-orange-600">
-              Login
-            </Button>
-          </Link>
-          <Link href={"/signup"}>
-            <Button size="sm" className="bg-orange-600 hover:bg-orange-700">
-              Sign Up
-            </Button>
-          </Link>
+
+          {user?.role === Roles.admin && (
+            <Link
+              href={"/admin"}
+              className="hover:text-orange-600 transition-colors"
+            >
+              Dashboard
+            </Link>
+          )}
+
+          {user?.role === Roles.customer && (
+            <Link
+              href={"/customer"}
+              className="hover:text-orange-600 transition-colors"
+            >
+              Dashboard
+            </Link>
+          )}
+
+          {user?.role === Roles.provider && (
+            <Link
+              href={"/provider"}
+              className="hover:text-orange-600 transition-colors"
+            >
+              Dashboard
+            </Link>
+          )}
+
+          {user && <LogOut user={user} />}
+
+          {!user && (
+            <>
+              <Link href={"/login"}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="hover:text-orange-600"
+                >
+                  Login
+                </Button>
+              </Link>
+              <Link href={"/signup"}>
+                <Button size="sm" className="bg-orange-600 hover:bg-orange-700">
+                  Sign Up
+                </Button>
+              </Link>
+            </>
+          )}
         </nav>
 
         <div className="md:hidden">
@@ -60,7 +97,7 @@ const Navbar = () => {
                 </SheetTitle>
               </SheetHeader>
 
-              <div className="mt-8 flex flex-col gap-6 font-medium">
+              <div className="ml-5 mt-8 flex flex-col gap-6 font-medium">
                 <Link
                   href={"/"}
                   className="hover:text-orange-600 transition-colors"
@@ -73,39 +110,57 @@ const Navbar = () => {
                 >
                   Meals
                 </Link>
-                <Link
-                  href={"/"}
-                  className="hover:text-orange-600 transition-colors"
-                >
-                  About
-                </Link>
-                <Link
-                  href={"/contact"}
-                  className="hover:text-orange-600 transition-colors"
-                >
-                  Contact
-                </Link>
+                {user?.role === Roles.admin && (
+                  <Link
+                    href={"/admin"}
+                    className="hover:text-orange-600 transition-colors"
+                  >
+                    Dashboard
+                  </Link>
+                )}
+
+                {user?.role === Roles.customer && (
+                  <Link
+                    href={"/customer"}
+                    className="hover:text-orange-600 transition-colors"
+                  >
+                    Dashboard
+                  </Link>
+                )}
+
+                {user?.role === Roles.provider && (
+                  <Link
+                    href={"/provider"}
+                    className="hover:text-orange-600 transition-colors"
+                  >
+                    Dashboard
+                  </Link>
+                )}
 
                 <hr className="my-2 border-orange-50" />
 
                 <div className="flex flex-col gap-3">
-                  <Link href={"/login"} className="w-full">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="w-full border-orange-200 text-orange-600 hover:bg-orange-50"
-                    >
-                      Login
-                    </Button>
-                  </Link>
-                  <Link href={"/signup"} className="w-full">
-                    <Button
-                      size="sm"
-                      className="w-full bg-orange-600 hover:bg-orange-700 text-white"
-                    >
-                      Register
-                    </Button>
-                  </Link>
+                  {!user && (
+                    <>
+                      <Link href={"/login"}>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="hover:text-orange-600"
+                        >
+                          Login
+                        </Button>
+                      </Link>
+                      <Link href={"/signup"}>
+                        <Button
+                          size="sm"
+                          className="bg-orange-600 hover:bg-orange-700"
+                        >
+                          Sign Up
+                        </Button>
+                      </Link>
+                    </>
+                  )}
                 </div>
               </div>
             </SheetContent>

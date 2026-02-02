@@ -22,11 +22,10 @@ const VerifyEmailContent = () => {
       setMessage("Token not found in the URL");
       return;
     }
-
     const verifyEmail = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/auth/verify-email?token=${token}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/auth/verify-email?token=${token}`,
           {
             method: "GET",
             headers: { "Content-Type": "application/json" },
@@ -42,7 +41,7 @@ const VerifyEmailContent = () => {
           toast.success(data.message || "Email verified successfully");
 
           setTimeout(() => {
-            router.push("/login");
+            router.push("/");
           }, 3000);
         } else {
           setStatus("error");
@@ -106,7 +105,6 @@ const VerifyEmailContent = () => {
 const VerifyEmailPage = () => {
   return (
     <>
-      <Toaster position="top-right" richColors />
       <Suspense
         fallback={
           <div className="min-h-screen flex items-center justify-center">

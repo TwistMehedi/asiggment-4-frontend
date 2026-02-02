@@ -12,12 +12,11 @@ import { toast } from "sonner";
 export default function ProviderDashboard() {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  // console.log(stats);
   useEffect(() => {
     const fetchStats = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/api/provider/stats/all",
+          `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/stats/all`,
           {
             method: "GET",
             credentials: "include",

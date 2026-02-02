@@ -18,7 +18,7 @@ const DeleteMeal = ({
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:5000/api/meals/${mealId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/${mealId}`,
         {
           method: "DELETE",
           credentials: "include",

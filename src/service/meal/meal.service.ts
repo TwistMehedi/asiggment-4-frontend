@@ -1,10 +1,7 @@
-import { envConfig } from "@/config/envConfig";
-import { cookies } from "next/headers";
-
 export const getProviderById = async (id: string) => {
   try {
     const res = await fetch(
-      `${envConfig.backend_host_server_url}/provider/${id}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/provider/${id}`,
       {
         method: "GET",
         cache: "no-store",
@@ -30,7 +27,7 @@ export const getProviderById = async (id: string) => {
 export const getMealById = async (id: string) => {
   try {
     const res = await fetch(
-      `${envConfig.backend_host_server_url}/meals/${id}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/${id}`,
       {
         method: "GET",
         cache: "no-store",
@@ -68,7 +65,7 @@ export const getAllMeals = async (
 
   try {
     const res = await fetch(
-      `${envConfig.backend_host_server_url}/meals?${queryParams.toString()}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals?${queryParams.toString()}`,
       {
         method: "GET",
         cache: "no-store",

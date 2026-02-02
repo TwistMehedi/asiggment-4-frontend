@@ -1,13 +1,12 @@
 import { getCategories } from "@/service/Home/home.service";
+import { Loader } from "lucide-react";
+import Link from "next/link";
 
 const Catagory = async () => {
-  // const { data } = await getCategories();
-  const response = await getCategories();
-  if (!response || !response.data || response.data.length === 0) {
-    return null;
-  }
+  const category = await getCategories();
 
-  const { data } = response;
+  const data = category?.data;
+
   return (
     <section className="px-4 sm:px-6 py-12 md:py-20 bg-gray-50/50">
       <div className="max-w-6xl mx-auto">
@@ -20,8 +19,9 @@ const Catagory = async () => {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
           {data?.map((cat: { id: string; name: string }) => (
-            <div
+            <Link
               key={cat.id}
+              href={`/meals?category=${cat.name}`}
               className="group cursor-pointer bg-white border border-gray-100 rounded-2xl md:rounded-3xl p-5 sm:p-8 text-center shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center justify-center"
             >
               <div className="w-12 h-12 sm:w-16 sm:h-16 bg-orange-50 rounded-full flex items-center justify-center mb-3 sm:mb-4 group-hover:bg-orange-500 transition-colors duration-500">
@@ -39,7 +39,7 @@ const Catagory = async () => {
               </p>
 
               <div className="sm:hidden mt-2 w-5 h-1 bg-orange-200 rounded-full group-hover:w-8 group-hover:bg-orange-500 transition-all"></div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

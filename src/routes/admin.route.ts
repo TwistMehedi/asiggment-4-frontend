@@ -4,7 +4,7 @@ export const adminRoutes = {
     {
       items: [
         {
-          title: "Admin",
+          title: "Dashboard",
           url: "/admin",
         },
         {

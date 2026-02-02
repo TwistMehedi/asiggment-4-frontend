@@ -32,15 +32,17 @@ export const SignupForm = ({ ...props }: React.ComponentProps<typeof Card>) => {
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     try {
-      const res = await fetch("http://localhost:5000/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/auth/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
         },
-        body: JSON.stringify(formData),
-      });
+      );
 
       const data = await res.json();
 
@@ -66,8 +68,6 @@ export const SignupForm = ({ ...props }: React.ComponentProps<typeof Card>) => {
 
   return (
     <>
-      <Toaster position="top-right" richColors />
-
       <Card
         className="w-full max-w-lg mx-auto border-none sm:border shadow-none sm:shadow-sm"
         {...props}
@@ -152,9 +152,6 @@ export const SignupForm = ({ ...props }: React.ComponentProps<typeof Card>) => {
                   className="w-full bg-orange-600 hover:bg-orange-700"
                 >
                   Create Account
-                </Button>
-                <Button variant="outline" type="button" className="w-full">
-                  Sign up with Google
                 </Button>
               </div>
 

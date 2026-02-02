@@ -10,6 +10,7 @@ import {
   TrendingUp,
   Loader2,
 } from "lucide-react";
+import Link from "next/link";
 
 const AdminStats = () => {
   const [stats, setStats] = useState<any>(null);
@@ -18,9 +19,14 @@ const AdminStats = () => {
   useEffect(() => {
     const fetchAdminStats = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/admin/stats`, {
-          credentials: "include",
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/stats/admin/all`,
+          {
+            method: "GET",
+            cache: "no-store",
+            credentials: "include",
+          },
+        );
         const result = await res.json();
         setStats(result.data);
       } catch (error) {
@@ -112,9 +118,11 @@ const AdminStats = () => {
             <TrendingUp size={20} className="text-orange-600" />
             Recent Platform Activity
           </h3>
-          <button className="text-xs font-bold text-orange-600 hover:underline">
-            View All Orders
-          </button>
+          <Link href={"/admin/orders"}>
+            <button className="text-xs font-bold text-orange-600 hover:underline">
+              View All Orders
+            </button>
+          </Link>
         </div>
 
         <div className="overflow-x-auto">
@@ -141,7 +149,7 @@ const AdminStats = () => {
                     {order.user?.name}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-500">
-                    {order.provider?.providerName || "N/A"}
+                    {order.provider?.shopName || "N/A"}
                   </td>
                   <td className="px-6 py-4 font-black text-gray-800">
                     ৳{order.totalAmount}

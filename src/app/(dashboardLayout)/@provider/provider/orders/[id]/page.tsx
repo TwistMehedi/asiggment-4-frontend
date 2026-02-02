@@ -16,7 +16,7 @@ const OrderDetails = ({ params }: { params: Promise<{ id: string }> }) => {
   const fetchOrder = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/order/provider/${id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/order/provider/for/${id}`,
         {
           method: "GET",
           credentials: "include",
@@ -41,7 +41,7 @@ const OrderDetails = ({ params }: { params: Promise<{ id: string }> }) => {
     setIsUpdating(true);
     try {
       const response = await fetch(
-        `http://localhost:5000/api/order/status/${id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/order/status/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

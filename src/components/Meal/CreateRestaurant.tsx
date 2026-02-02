@@ -43,7 +43,7 @@ const CreateRestaurant = ({ onClose }: { onClose?: () => void }) => {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/create-resturant",
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/create-resturant`,
         {
           method: "POST",
           body: formData,

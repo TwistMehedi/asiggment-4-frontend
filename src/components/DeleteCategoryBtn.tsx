@@ -10,8 +10,9 @@ export const DeleteCategoryBtn = ({ id }: { id: string }) => {
 
   const handleDelete = async () => {
     try {
+      // /category/delete/:id
       const res = await fetch(
-        `http://localhost:5000/api/meals/delete/category/${id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/category/delete/${id}`,
         {
           method: "DELETE",
           credentials: "include",

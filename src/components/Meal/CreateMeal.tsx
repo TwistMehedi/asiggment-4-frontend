@@ -64,11 +64,14 @@ const CreateMeal = ({ onClose }: { onClose: () => void }) => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/provider/meals", {
-        method: "POST",
-        body: formData,
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/create`,
+        {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        },
+      );
 
       const result = await response.json();
       if (response.ok) {

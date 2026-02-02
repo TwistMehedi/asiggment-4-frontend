@@ -33,7 +33,6 @@ const Resturant = () => {
         Loading My Restaurant...
       </div>
     );
-  // if (!restaurant) return <div>Loading...</div>;
 
   return (
     <div className="p-6">

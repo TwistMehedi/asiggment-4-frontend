@@ -18,7 +18,6 @@ const MealCard = ({
 }) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
 
-  // লজিক এর পর অবশ্যই return দিতে হবে
   return (
     <div className="bg-white group rounded-[2.5rem] p-5 border border-gray-100 shadow-sm hover:shadow-xl hover:border-orange-200 transition-all duration-300 relative overflow-hidden">
       <div className="h-48 bg-gray-100 rounded-[2rem] mb-4 overflow-hidden relative">

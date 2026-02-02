@@ -22,7 +22,7 @@ const Menu = ({ initialData }: { initialData: any }) => {
     setLoading(true);
     try {
       const response = await fetch(
-        "http://localhost:5000/api/provider/meals/me",
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/provider/me`,
         {
           method: "GET",
           credentials: "include",
@@ -76,7 +76,6 @@ const Menu = ({ initialData }: { initialData: any }) => {
             </DialogHeader>
 
             <DialogContent className="max-w-2xl p-0 border-none bg-transparent shadow-none overflow-hidden">
-              {/* handleMealCreated কল করা হয়েছে যাতে লিস্ট অটো আপডেট হয় */}
               <CreateMeal onClose={handleMealCreated} />
             </DialogContent>
           </Dialog>

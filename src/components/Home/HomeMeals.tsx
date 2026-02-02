@@ -1,10 +1,14 @@
 import { getHomeMeals } from "@/service/Home/home.service";
-import Image from "next/image"; // ইমেজ ব্যবহারের জন্য
-import React from "react";
+import { Loader } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 const HomeMeals = async () => {
-  const { data } = await getHomeMeals();
-
+  const mealInfo = await getHomeMeals();
+  const data = mealInfo?.data;
+  // if (!data) {
+  //   return <Loader />;
+  // }
   return (
     <section className="px-4 sm:px-6 py-12 md:py-20 bg-gray-50">
       <div className="max-w-6xl mx-auto">
@@ -12,7 +16,6 @@ const HomeMeals = async () => {
           Popular Meals
         </h3>
 
-        {/* Responsive Grid: 1 on mobile, 2 on small tablet, 3 on tablet, 4 on desktop */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {data?.map(
             (meal: {
@@ -26,7 +29,6 @@ const HomeMeals = async () => {
                 key={meal?.id}
                 className="group border border-gray-100 rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-all duration-300"
               >
-                {/* Image Placeholder or Actual Image */}
                 <div className="relative h-48 w-full bg-gray-200 overflow-hidden">
                   {meal?.image ? (
                     <Image
@@ -40,7 +42,6 @@ const HomeMeals = async () => {
                       No Image
                     </div>
                   )}
-                  {/* Category Badge */}
                   <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-orange-600">
                     {meal?.categoryName}
                   </div>
@@ -52,11 +53,13 @@ const HomeMeals = async () => {
                   </h4>
                   <div className="flex justify-between items-center mt-3">
                     <p className="text-xl font-extrabold text-orange-600">
-                      ${meal?.price}
+                      ৳{meal?.price}
                     </p>
-                    <button className="text-xs font-semibold bg-gray-100 px-3 py-2 rounded-lg hover:bg-orange-600 hover:text-white transition-colors">
-                      Add to Cart
-                    </button>
+                    <Link href={`/meals/${meal.id}`}>
+                      <button className="text-xs font-semibold bg-gray-100 px-3 py-2 rounded-lg hover:bg-orange-600 hover:text-white transition-colors">
+                        Reed More
+                      </button>
+                    </Link>
                   </div>
                 </div>
               </div>

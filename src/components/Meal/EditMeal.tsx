@@ -36,7 +36,7 @@ const EditMeal = ({ meal, onClose, onUpdateSuccess }: any) => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/meals/${meal.id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/${meal.id}`,
         {
           method: "PUT",
           body: formData,

@@ -1,12 +1,13 @@
-import { envConfig } from "@/config/envConfig";
-
 export const getRestaurant = async () => {
   try {
-    const res = await fetch("http://localhost:5000/api/get-resturant", {
-      method: "GET",
-      credentials: "include",
-      cache: "no-store",
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/get-resturant`,
+      {
+        method: "GET",
+        credentials: "include",
+        cache: "no-store",
+      },
+    );
 
     if (!res.ok) {
       const errorData = await res.json();
@@ -37,7 +38,6 @@ export const getCategoriesInProvider = async () => {
     }
 
     const data = await res.json();
-    // console.log(data);
     if (!data) return null;
     return data;
   } catch (error) {

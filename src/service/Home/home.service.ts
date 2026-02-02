@@ -8,16 +8,19 @@ export const getCategories = async () => {
     const token = cookieStore.get("token")?.value;
 
     if (!token) return null;
-    const res = await fetch(`${envConfig.backend_host_server_url}/categories`, {
-      method: "GET",
-      headers: {
-        Cookie: `token=${token}`,
-        Authorization: token ? `Bearer ${token}` : "",
-        "Content-Type": "application/json",
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/categories`,
+      {
+        method: "GET",
+        headers: {
+          Cookie: `token=${token}`,
+          Authorization: token ? `Bearer ${token}` : "",
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        cache: "no-store",
       },
-      credentials: "include",
-      cache: "no-store",
-    });
+    );
 
     if (!res.ok) {
       const errorData = await res.json();
@@ -26,7 +29,7 @@ export const getCategories = async () => {
     }
 
     const data = await res.json();
-    if (!data) return null;
+    // console.log(data);
     return data;
   } catch (error) {
     console.error("Error fetching categories:", error);
@@ -36,18 +39,22 @@ export const getCategories = async () => {
 
 export const getHomeMeals = async () => {
   try {
-    const res = await fetch(`${envConfig.backend_host_server_url}/home/meals`, {
-      method: "GET",
-      next: {
-        revalidate: 3600,
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/home`,
+      {
+        method: "GET",
+        next: {
+          revalidate: 3600,
+        },
       },
-    });
+    );
 
     if (!res.ok) {
       throw new Error("Meals fetched problem");
     }
 
     const data = await res.json();
+    // console.log(data);
     return data;
   } catch (error) {
     console.error("Home meals error", error);

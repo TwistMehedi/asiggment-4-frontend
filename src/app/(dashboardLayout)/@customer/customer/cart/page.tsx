@@ -20,7 +20,6 @@ const CartPage = () => {
   const [mounted, setMounted] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // console.log(cartItems);
   useEffect(() => {
     const loadCart = async () => {
       setMounted(true);
@@ -28,7 +27,6 @@ const CartPage = () => {
       const userData = await currentUser();
       const userId = userData?.user?.id;
 
-      console.log(userId);
       if (userId) {
         const data = localStorage.getItem("cart");
         if (data) {

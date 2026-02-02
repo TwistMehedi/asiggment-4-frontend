@@ -1,4 +1,3 @@
-import { envConfig } from "@/config/envConfig";
 import { cookies } from "next/headers";
 import { cache } from "react";
 
@@ -10,7 +9,7 @@ export const getUser = cache(async () => {
 
   try {
     const response = await fetch(
-      `${envConfig.backend_host_server_url}/user/me`,
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/user/me`,
       {
         method: "GET",
         headers: {
@@ -22,6 +21,7 @@ export const getUser = cache(async () => {
       },
     );
 
+    // console.log(response);
     if (!response.ok) return null;
     return await response.json();
   } catch (error) {
