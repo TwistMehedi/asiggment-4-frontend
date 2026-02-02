@@ -27,12 +27,13 @@ export const LoginForm = ({
 }: React.ComponentProps<"div">) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    setIsLoading(true);
     try {
       const res = await fetch(`http://localhost:5000/api/auth/login`, {
         method: "POST",
@@ -44,7 +45,6 @@ export const LoginForm = ({
       });
 
       const data = await res.json();
-      console.log(data);
       if (res.ok) {
         toast.success(data?.message || "Login successful");
         router.push("/");
@@ -52,6 +52,7 @@ export const LoginForm = ({
         toast.error(data?.message || "Login failed");
       }
     } catch (error) {
+      setIsLoading(false);
       toast.error("Network error unable to login");
       console.error(error);
     }
@@ -112,7 +113,7 @@ export const LoginForm = ({
                   type="submit"
                   className="w-full bg-orange-600 hover:bg-orange-700"
                 >
-                  Login
+                  {isLoading ? "Please wait" : "Login"}
                 </Button>
                 <Button variant="outline" type="button" className="w-full">
                   Login with Google

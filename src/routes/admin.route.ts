@@ -4,6 +4,10 @@ export const adminRoutes = {
     {
       items: [
         {
+          title: "Admin",
+          url: "/admin",
+        },
+        {
           title: "Create Category",
           url: "/admin/create-category",
         },

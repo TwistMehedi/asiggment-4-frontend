@@ -7,10 +7,7 @@ export const customerRoutes = {
           title: "Cart",
           url: "/customer/cart",
         },
-        {
-          title: "Checkout",
-          url: "/customer/checkout",
-        },
+
         {
           title: "Orders",
           url: "/customer/orders",

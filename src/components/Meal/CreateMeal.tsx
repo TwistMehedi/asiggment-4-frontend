@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import {
   Utensils,
   ImagePlus,
@@ -9,19 +9,38 @@ import {
   Tag,
   AlignLeft,
   Type,
+  ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { toast, Toaster } from "sonner";
+import { getCategoriesInProvider } from "@/service/Resturant/resturant.service";
 
 const CreateMeal = ({ onClose }: { onClose: () => void }) => {
   const [loading, setLoading] = useState(false);
+  const [isCatLoading, setIsCatLoading] = useState(true);
+  const [categories, setCat] = useState<any[]>([]);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+
+  useEffect(() => {
+    getCategoriesInProvider()
+      .then((data) => {
+        setCat(data?.data || data);
+      })
+      .catch((err) => {
+        console.error("Category load error:", err.message);
+        toast.error("Failed to load categories");
+      })
+      .finally(() => setIsCatLoading(false));
+  }, []);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setImageFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
@@ -36,27 +55,40 @@ const CreateMeal = ({ onClose }: { onClose: () => void }) => {
 
     const formData = new FormData(e.currentTarget);
 
-    if (imagePreview) {
-      formData.append("image", imagePreview);
-    }
-    const data = Object.fromEntries(
-      Array.from(formData.entries()).map(([key, value]) => [
-        key,
-        value === null ? "" : value,
-      ]),
-    );
-
-    console.log("Meal Data:", data);
-
-    setTimeout(() => {
+    if (imageFile) {
+      formData.set("image", imageFile);
+    } else {
+      toast.error("Please select an image");
       setLoading(false);
-      onClose();
-    }, 2000);
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000/api/provider/meals", {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        toast.success(result.message || "Meal created successfully!");
+        if (onClose) onClose();
+      } else {
+        toast.error(result.message || "Something went wrong!");
+      }
+    } catch (error: any) {
+      console.error("Error creating meal:", error);
+      toast.error("Network error! Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="relative w-full max-w-2xl mx-auto bg-white sm:rounded-[2.5rem] shadow-2xl flex flex-col max-h-[90vh]">
       <div className="p-6 md:p-8 border-b border-gray-50 flex justify-between items-center sticky top-0 bg-white z-10 sm:rounded-t-[2.5rem]">
+        {/* <Toaster position="top-center" richColors /> */}
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center">
             <Utensils size={24} />
@@ -130,19 +162,32 @@ const CreateMeal = ({ onClose }: { onClose: () => void }) => {
                 htmlFor="categoryName"
                 className="font-bold text-sm ml-1 text-gray-700"
               >
-                Category Name
+                Category
               </Label>
               <div className="relative">
                 <Tag
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
                   size={18}
                 />
-                <Input
+                <select
                   id="categoryName"
                   name="categoryName"
-                  placeholder="e.g. Lunch"
-                  className="pl-12 rounded-xl py-6 border-gray-200 focus:ring-orange-200"
                   required
+                  className="w-full pl-12 pr-10 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-orange-200 focus:border-orange-600 transition-all bg-white appearance-none text-gray-700"
+                >
+                  <option value="" disabled selected>
+                    {isCatLoading ? "Loading..." : "Select Category"}
+                  </option>
+                  {categories &&
+                    categories.map((cat: any, index: number) => (
+                      <option key={index} value={cat.name || cat}>
+                        {cat.name || cat}
+                      </option>
+                    ))}
+                </select>
+                <ChevronDown
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                  size={18}
                 />
               </div>
             </div>
@@ -174,9 +219,8 @@ const CreateMeal = ({ onClose }: { onClose: () => void }) => {
             <Label className="font-bold text-sm ml-1 text-gray-700">
               Meal Image
             </Label>
-
             {imagePreview ? (
-              <div className="relative w-full h-52 rounded-2xl overflow-hidden border-2 border-orange-100 group">
+              <div className="relative w-full h-52 rounded-2xl overflow-hidden border-2 border-orange-100">
                 <img
                   src={imagePreview}
                   alt="Meal Preview"
@@ -184,7 +228,10 @@ const CreateMeal = ({ onClose }: { onClose: () => void }) => {
                 />
                 <button
                   type="button"
-                  onClick={() => setImagePreview(null)}
+                  onClick={() => {
+                    setImagePreview(null);
+                    setImageFile(null);
+                  }}
                   className="absolute top-3 right-3 bg-red-500 text-white p-1.5 rounded-full shadow-lg hover:bg-red-600 transition-colors"
                 >
                   <X size={16} />
@@ -221,7 +268,7 @@ const CreateMeal = ({ onClose }: { onClose: () => void }) => {
           form="meal-form"
           type="submit"
           disabled={loading}
-          className="w-full bg-orange-600 hover:bg-orange-700 text-white py-7 rounded-xl font-bold text-lg shadow-lg shadow-orange-100 transition-all"
+          className="w-full cursor-pointer bg-orange-600 hover:bg-orange-700 text-white py-7 rounded-xl font-bold text-lg shadow-lg shadow-orange-100 transition-all"
         >
           {loading ? (
             <>

@@ -6,14 +6,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { toast, Toaster } from "sonner";
 
 const CreateRestaurant = ({ onClose }: { onClose?: () => void }) => {
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
+  const [imageFile, setImageFile] = useState<File | null>(null);
+
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setImageFile(file);
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
@@ -25,28 +30,47 @@ const CreateRestaurant = ({ onClose }: { onClose?: () => void }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    let formData = new FormData(e.currentTarget);
-    if (imagePreview) {
-      formData.append("image", imagePreview);
+
+    const formData = new FormData(e.currentTarget);
+
+    if (imageFile) {
+      formData.set("image", imageFile);
+    } else {
+      toast.error("Please select an image");
+      setLoading(false);
+      return;
     }
 
-    const data = Object.fromEntries(
-      Array.from(formData.entries()).map(([key, value]) => [
-        key,
-        value === null ? "" : value,
-      ]),
-    );
-    console.log("Restaurant Data:", data);
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/create-resturant",
+        {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        },
+      );
 
-    setTimeout(() => {
+      const result = await response.json();
+      // console.log(result);
+      if (response.ok) {
+        toast.success(result.message || "Restaurant created successfully!");
+        if (onClose) onClose();
+      } else {
+        toast.error(result.message || "Something went wrong!");
+      }
+    } catch (error: any) {
+      console.error("Error creating restaurant:", error);
+      toast.error("Network error! Please try again.");
+    } finally {
       setLoading(false);
-      if (onClose) onClose();
-    }, 2000);
+    }
   };
 
   return (
     <div className="relative w-full max-w-2xl mx-auto bg-white sm:rounded-[2.5rem] shadow-2xl flex flex-col max-h-[90vh]">
       <div className="p-6 md:p-8 border-b border-gray-50 flex justify-between items-center bg-white sticky top-0 z-10 sm:rounded-t-[2.5rem]">
+        <Toaster position="top-center" richColors />
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center">
             <Store size={24} />
@@ -202,7 +226,7 @@ const CreateRestaurant = ({ onClose }: { onClose?: () => void }) => {
               <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Processing...
             </>
           ) : (
-            "Create Restaurant Profile"
+            "Create Restaurant"
           )}
         </Button>
       </div>

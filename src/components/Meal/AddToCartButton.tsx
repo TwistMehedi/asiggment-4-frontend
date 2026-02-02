@@ -41,7 +41,7 @@ const AddToCartButton = ({ meal }: { meal: IMeal }) => {
 
       const cartData = localStorage.getItem("cart");
       let cart: ICartItem[] = cartData ? JSON.parse(cartData) : [];
-      console.log("cart", cart);
+      // console.log("cart", cart);
 
       const existingItemIndex = cart.findIndex(
         (item) => item.mealId === meal.id && item.userId === user.id,

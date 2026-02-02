@@ -132,10 +132,6 @@ const Profile = async () => {
               <Settings className="text-gray-400" />
               <span className="text-xs">Edit Profile</span>
             </button>
-            <button className="p-6 bg-white border border-gray-100 rounded-[2rem] font-bold text-red-500 hover:bg-red-50 transition-all flex flex-col items-center gap-2">
-              <LogOut />
-              <span className="text-xs">Logout</span>
-            </button>
           </div>
         </div>
       </div>

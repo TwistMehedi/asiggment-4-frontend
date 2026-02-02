@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Plus, MapPin, Edit, Store } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,17 +11,29 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import CreateRestaurant from "@/components/Meal/CreateRestaurant";
+import { getRestaurant } from "@/service/Resturant/resturant.service";
 
 const Resturant = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [restaurant, setRestaurant] = useState(null);
 
-  const restaurant = {
-    shopName: "Traditional Kitchen",
-    address: "Dhanmondi, Dhaka",
-    description: "Healthy and homemade food delivered to your doorstep.",
-    image:
-      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1000",
-  };
+  useEffect(() => {
+    getRestaurant()
+      .then((data) => {
+        setRestaurant(data.resturant);
+      })
+      .catch((err) => console.log(err.message))
+      .finally(() => setIsLoading(false));
+  }, []);
+
+  if (isLoading)
+    return (
+      <div className="p-10 text-center text-orange-600 font-bold">
+        Loading My Restaurant...
+      </div>
+    );
+  // if (!restaurant) return <div>Loading...</div>;
 
   return (
     <div className="p-6">
@@ -60,11 +72,11 @@ const Resturant = () => {
               <div className="flex justify-between items-start">
                 <div>
                   <h2 className="text-xl font-bold text-gray-900">
-                    {restaurant.shopName}
+                    Shop Name: {restaurant.shopName}
                   </h2>
                   <p className="text-gray-500 text-sm flex items-center gap-1 mt-1">
                     <MapPin size={14} className="text-orange-500" />
-                    {restaurant.address}
+                    Resturant Address : {restaurant.address}
                   </p>
                 </div>
                 <Button variant="ghost" size="icon" className="rounded-full">
@@ -72,7 +84,7 @@ const Resturant = () => {
                 </Button>
               </div>
               <p className="text-gray-600 text-sm mt-4 line-clamp-2">
-                {restaurant.description}
+                Description: {restaurant.description}
               </p>
             </div>
           </div>

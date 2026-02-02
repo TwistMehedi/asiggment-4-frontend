@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { Plus, Utensils } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Plus, Utensils, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,7 +15,40 @@ import { DialogTitle } from "@radix-ui/react-dialog";
 
 const Menu = ({ initialData }: { initialData: any }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const meals = initialData?.meals || [];
+  const [meals, setMeals] = useState(initialData?.meals || []);
+  const [loading, setLoading] = useState(false);
+
+  const getMealsByProvider = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/provider/meals/me",
+        {
+          method: "GET",
+          credentials: "include",
+        },
+      );
+      const result = await response.json();
+      if (response.ok) {
+        setMeals(result.meals || []);
+      }
+    } catch (error) {
+      console.error("Error fetching meals:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!initialData) {
+      getMealsByProvider();
+    }
+  }, []);
+
+  const handleMealCreated = () => {
+    setIsOpen(false);
+    getMealsByProvider();
+  };
 
   return (
     <div className="p-6 md:p-10 bg-gray-50/50 min-h-screen">
@@ -34,7 +67,7 @@ const Menu = ({ initialData }: { initialData: any }) => {
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
               <Button className="bg-orange-600 hover:bg-orange-700 text-white rounded-2xl px-6 py-6 shadow-lg shadow-orange-200 transition-all">
-                <Plus className="mr-2" size={20} /> Add New Dish
+                <Plus className="mr-2" size={20} /> Add New Menu
               </Button>
             </DialogTrigger>
 
@@ -43,15 +76,25 @@ const Menu = ({ initialData }: { initialData: any }) => {
             </DialogHeader>
 
             <DialogContent className="max-w-2xl p-0 border-none bg-transparent shadow-none overflow-hidden">
-              <CreateMeal onClose={() => setIsOpen(false)} />
+              {/* handleMealCreated কল করা হয়েছে যাতে লিস্ট অটো আপডেট হয় */}
+              <CreateMeal onClose={handleMealCreated} />
             </DialogContent>
           </Dialog>
         </div>
 
-        {meals.length > 0 ? (
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <Loader2 className="animate-spin text-orange-600" size={40} />
+          </div>
+        ) : meals.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {meals.map((meal: any) => (
-              <MealCard key={meal.id} meal={meal} isDemo={false} />
+              <MealCard
+                onDeleteSuccess={getMealsByProvider}
+                key={meal.id}
+                meal={meal}
+                isDemo={false}
+              />
             ))}
           </div>
         ) : (

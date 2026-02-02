@@ -69,7 +69,7 @@ export const getMyOrders = async () => {
     }
 
     const data = await res.json();
-
+    // console.log(data);
     return data || [];
   } catch (error) {
     console.error("Orders fetch error:", error);
@@ -95,5 +95,34 @@ export const getSingleOrder = async (id: string) => {
   } catch (error) {
     console.error("Fetch order detail error:", error);
     return null;
+  }
+};
+
+export const getMyOrdersByProvider = async () => {
+  try {
+    const cookieStore = await cookies();
+    const cookieString = cookieStore.toString();
+
+    const res = await fetch("http://localhost:5000/api/order/get/me/provider", {
+      method: "GET",
+      cache: "no-store",
+      headers: {
+        Cookie: cookieString,
+        "Content-Type": "application/json",
+      },
+      next: { revalidate: 0 },
+      credentials: "include",
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch orders");
+    }
+
+    const data = await res.json();
+    // console.log(data);
+    return data || [];
+  } catch (error) {
+    console.error("Orders fetch error:", error);
+    return [];
   }
 };

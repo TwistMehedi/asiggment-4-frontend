@@ -15,6 +15,7 @@ export const getCategories = async () => {
         Authorization: token ? `Bearer ${token}` : "",
         "Content-Type": "application/json",
       },
+      credentials: "include",
       cache: "no-store",
     });
 

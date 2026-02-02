@@ -1,41 +1,11 @@
+import { getMyOrdersByProvider } from "@/service/Order/order.service";
+import Link from "next/link";
 import React from "react";
 
-const orders = [
-  {
-    id: "ORD-7214",
-    customer: "Mehedi Hasan",
-    meal: "Suri Fish",
-    price: 250,
-    status: "Pending",
-    date: "2026-02-01",
-  },
-  {
-    id: "ORD-7215",
-    customer: "Rahul Ahmed",
-    meal: "Chicken Grill",
-    price: 450,
-    status: "Delivered",
-    date: "2026-01-31",
-  },
-  {
-    id: "ORD-7216",
-    customer: "Anika Islam",
-    meal: "Beef Tehari",
-    price: 320,
-    status: "Processing",
-    date: "2026-01-30",
-  },
-  {
-    id: "ORD-7217",
-    customer: "Sabbir Hossain",
-    meal: "Pizza Large",
-    price: 850,
-    status: "Cancelled",
-    date: "2026-01-28",
-  },
-];
+const Orders = async () => {
+  const response = await getMyOrdersByProvider();
+  const orders = response?.orders || [];
 
-const Orders = () => {
   return (
     <div className="p-6 bg-white rounded-xl shadow-sm border border-gray-100">
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
@@ -58,7 +28,6 @@ const Orders = () => {
             <tr className="bg-gray-50 border-b border-gray-100 text-gray-600 text-sm uppercase">
               <th className="px-6 py-4 font-semibold">Order ID</th>
               <th className="px-6 py-4 font-semibold">Customer</th>
-              <th className="px-6 py-4 font-semibold">Meal</th>
               <th className="px-6 py-4 font-semibold">Price</th>
               <th className="px-6 py-4 font-semibold">Status</th>
               <th className="px-6 py-4 font-semibold">Date</th>
@@ -74,10 +43,9 @@ const Orders = () => {
                 <td className="px-6 py-4 font-medium text-blue-600">
                   #{order.id}
                 </td>
-                <td className="px-6 py-4 text-gray-700">{order.customer}</td>
-                <td className="px-6 py-4 text-gray-700">{order.meal}</td>
+                <td className="px-6 py-4 text-gray-700">{order?.user.name}</td>
                 <td className="px-6 py-4 font-bold text-gray-900">
-                  {order.price} ৳
+                  {order.totalAmount} ৳
                 </td>
                 <td className="px-6 py-4">
                   <span
@@ -95,12 +63,20 @@ const Orders = () => {
                   </span>
                 </td>
                 <td className="px-6 py-4 text-gray-500 text-sm">
-                  {order.date}
+                  {new Date(order.createdAt).toLocaleString("en-US", {
+                    hour: "numeric",
+                    minute: "numeric",
+                    hour12: true,
+                    day: "numeric",
+                    month: "short",
+                  })}
                 </td>
                 <td className="px-6 py-4 text-center">
-                  <button className="text-gray-400 hover:text-orange-600 transition-all px-2 py-1">
-                    View Details
-                  </button>
+                  <Link href={`/provider/orders/${order.id}`}>
+                    <button className="text-gray-400 hover:text-orange-600 transition-all px-2 py-1">
+                      View Details
+                    </button>
+                  </Link>
                 </td>
               </tr>
             ))}

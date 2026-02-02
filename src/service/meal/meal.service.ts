@@ -20,7 +20,6 @@ export const getProviderById = async (id: string) => {
 
     const data = await res.json();
     const provider = data?.provider;
-    // console.log(provider);
     return provider;
   } catch (error) {
     console.error("Error fetching provider info", error);

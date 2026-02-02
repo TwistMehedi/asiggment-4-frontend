@@ -18,7 +18,7 @@ const Orders = async () => {
           <thead>
             <tr className="border-b border-gray-100">
               <th className="py-4 px-4 font-bold text-gray-400 uppercase text-xs">
-                Order ID
+                Status
               </th>
               <th className="py-4 px-4 font-bold text-gray-400 uppercase text-xs">
                 Quantity
@@ -28,6 +28,9 @@ const Orders = async () => {
               </th>
               <th className="py-4 px-4 font-bold text-gray-400 uppercase text-xs">
                 Total
+              </th>
+              <th className="py-4 px-4 font-bold text-gray-400 uppercase text-xs">
+                Payment
               </th>
               <th className="py-4 px-4 font-bold text-gray-400 uppercase text-xs text-right">
                 Action
@@ -42,7 +45,7 @@ const Orders = async () => {
               >
                 <td className="py-4 px-4">
                   <span className="font-mono text-sm text-gray-600">
-                    #{order.orderId.slice(0, 8)}...
+                    {order?.order.status}
                   </span>
                 </td>
                 <td className="py-4 px-4">
@@ -51,9 +54,15 @@ const Orders = async () => {
                   </span>
                 </td>
                 <td className="py-4 px-4 text-gray-600">{order.price} ৳</td>
+
                 <td className="py-4 px-4">
                   <span className="font-black text-orange-600">
                     {order.quantity * order.price} ৳
+                  </span>
+                </td>
+                <td className="py-4 px-4">
+                  <span className="font-black text-orange-600">
+                    {order?.order?.payment}
                   </span>
                 </td>
                 <td className="py-4 px-4 text-right">
