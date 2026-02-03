@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FoodHub - Frontend (Client)
+# Discover & Order Delicious Meals
 
-## Getting Started
+FoodHub is a modern, full-stack meal ordering platform built with Next.js 14. It features a robust role-based dashboard system, utilizing Parallel Routes and Slots to provide seamless experiences for Admins, Providers, and Customers.
 
-First, run the development server:
+# Features
+Role-Based Access Control (RBAC): Dedicated interfaces for Admin, Provider, and Customer roles.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Parallel Routing & Slots: Optimized layout management using @admin, @customer, and @provider slots.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Responsive Dashboard: Fully responsive sidebar and data tables built with Shadcn/UI.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Secure Authentication: JWT-based persistent login and secure registration flow.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Modern UI/UX: Interactive toast notifications with Sonner and beautiful iconography with Lucide React.
 
-## Learn More
+Dynamic Data Handling: Real-time feedback using Server Actions and optimized Fetch API.
 
-To learn more about Next.js, take a look at the following resources:
+# Tech Stack
+Framework: Next.js 14 (App Router)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Styling: Tailwind CSS
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+UI Components: Shadcn/UI
 
-## Deploy on Vercel
+Icons: Lucide React
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Data Fetching: Fetch API & Server Actions
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Notifications: Sonner
+
+# Key Routes 
+#Route	      Page	                     Access
+/          	Home Page	                 Public
+/login	    Authentication	          Public
+/register	  Registration	            Public
+/admin	    Admin Dashboard	         Admin Only
+/provider	  Menu Management	         Provider Only
+/meals	    Browse Menu	All             Users
+
+# Installation & Setup
+Clone the repository:git clone https://github.com/your-username/foodhub-frontend.git
+
+Configure Environment Variables: Create a .env.local file in the root directory: NEXT_PUBLIC_BACKEND_HOST_URL="http://localhost:5000"
+
+💡 Project Structure Note
+The project uses the Next.js App Router structure. Dashboards are managed within the dashboard/layout.tsx using parallel routes to ensure that different user roles see their respective content without unnecessary page reloads.
+
