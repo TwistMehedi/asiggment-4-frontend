@@ -12,12 +12,14 @@ import {
 } from "@/components/ui/dialog";
 import CreateRestaurant from "@/components/Meal/CreateRestaurant";
 import { getRestaurant } from "@/service/Resturant/resturant.service";
+import Image from "next/image";
 
 const Resturant = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [restaurant, setRestaurant] = useState(null);
+  const [restaurant, setRestaurant] = useState<any>(null);
 
+  console.log(restaurant);
   useEffect(() => {
     getRestaurant()
       .then((data) => {
@@ -60,9 +62,10 @@ const Resturant = () => {
         <div className="bg-white border rounded-[2rem] overflow-hidden shadow-sm max-w-2xl">
           <div className="flex flex-col md:flex-row">
             <div className="w-full md:w-48 h-48">
-              <img
-                src={restaurant.image}
+              <Image
+                src={restaurant?.image}
                 alt="shop"
+                fill
                 className="w-full h-full object-cover"
               />
             </div>

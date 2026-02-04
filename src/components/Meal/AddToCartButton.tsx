@@ -1,18 +1,10 @@
 "use client";
 
 import currentUser from "@/actions/user";
-import { IMeal } from "@/types/meal.type";
+import { ICartItem, IMeal } from "@/types/meal.type";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast, Toaster } from "sonner";
-
-interface ICartItem {
-  mealId: string;
-  providerId: string;
-  price: number;
-  name: string;
-  quantity: number;
-  userId: string;
-}
 
 const AddToCartButton = ({ meal }: { meal: IMeal }) => {
   const [user, setUser] = useState<any>(null);
@@ -28,10 +20,7 @@ const AddToCartButton = ({ meal }: { meal: IMeal }) => {
     fetchUser();
   }, []);
 
-  // console.log("user:", user);
-
   const handleAddToCart = () => {
-    // console.log("clicked", meal);
     try {
       setLoading(true);
       if (!user) {
@@ -41,7 +30,6 @@ const AddToCartButton = ({ meal }: { meal: IMeal }) => {
 
       const cartData = localStorage.getItem("cart");
       let cart: ICartItem[] = cartData ? JSON.parse(cartData) : [];
-      // console.log("cart", cart);
 
       const existingItemIndex = cart.findIndex(
         (item) => item.mealId === meal.id && item.userId === user.id,
@@ -70,15 +58,21 @@ const AddToCartButton = ({ meal }: { meal: IMeal }) => {
   };
 
   return (
-    <>
+    <div className="flex-[4] flex items-center justify-center bg-orange-500 cursor-pointer text-white py-4 md:py-5 rounded-2xl font-bold transition-all shadow-lg active:scale-95 text-sm md:text-base">
       <Toaster richColors position="top-center" />
-      <button
-        onClick={handleAddToCart}
-        className="flex-[4] bg-orange-500 cursor-pointer text-white py-4 md:py-5 rounded-2xl font-bold transition-all shadow-lg active:scale-95 text-sm md:text-base"
-      >
-        {loading ? "Adding to cart" : "Add to Cart"}
-      </button>
-    </>
+
+      {user ? (
+        <button onClick={handleAddToCart} className="hover:cursor-pointer">
+          {loading ? "Adding to cart" : "Add to Cart"}
+        </button>
+      ) : (
+        <Link href={"/login"}>
+          <button onClick={handleAddToCart} className="cursor-pointer">
+            {loading ? "Adding to cart" : "Add to Cart"}
+          </button>
+        </Link>
+      )}
+    </div>
   );
 };
 

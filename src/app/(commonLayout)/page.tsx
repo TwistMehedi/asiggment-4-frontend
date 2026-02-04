@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import Catagory from "@/components/Home/Catagory";
 import Hero from "@/components/Home/Hero";
 import HomeMeals from "@/components/Home/HomeMeals";

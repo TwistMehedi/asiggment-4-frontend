@@ -1,4 +1,5 @@
 import currentUser from "@/actions/user";
+import { User } from "@/types/user.types";
 import {
   User as UserIcon,
   Mail,
@@ -6,16 +7,10 @@ import {
   Calendar,
   BadgeCheck,
   Settings,
-  LogOut,
 } from "lucide-react";
 
 const Profile = async () => {
-  const { user } = await currentUser();
-
-  if (!user)
-    return (
-      <div className="text-center p-20">Please Login to view profile.</div>
-    );
+  const user = ((await currentUser()) as User) || null;
 
   const joinDate = new Date(user.createdAt).toLocaleDateString("en-GB", {
     day: "2-digit",
@@ -35,7 +30,7 @@ const Profile = async () => {
                 {user.name?.[0].toUpperCase()}
               </span>
             </div>
-            {user.isVerified && (
+            {user.emailVerified && (
               <div className="absolute -bottom-2 -right-2 bg-white p-1.5 rounded-full shadow-md">
                 <BadgeCheck className="text-blue-500" size={24} />
               </div>
@@ -49,15 +44,6 @@ const Profile = async () => {
             <div className="flex flex-wrap justify-center md:justify-start gap-3">
               <span className="px-4 py-1.5 bg-gray-900 text-white rounded-full text-xs font-bold tracking-widest uppercase">
                 {user.role}
-              </span>
-              <span
-                className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest ${
-                  user.status === "ACTIVE"
-                    ? "bg-green-100 text-green-600"
-                    : "bg-red-100 text-red-600"
-                }`}
-              >
-                ● {user.status}
               </span>
             </div>
           </div>
@@ -92,7 +78,7 @@ const Profile = async () => {
                   Verification
                 </p>
                 <p className="text-sm font-bold text-gray-700">
-                  {user.isVerified
+                  {user.emailVerified
                     ? "Verified Account"
                     : "Pending Verification"}
                 </p>

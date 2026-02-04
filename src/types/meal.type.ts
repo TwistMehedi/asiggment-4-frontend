@@ -20,3 +20,12 @@ export interface IMeal {
     isOpen: boolean;
   };
 }
+
+export interface ICartItem {
+  mealId: string;
+  providerId: string;
+  price: number;
+  name: string;
+  quantity: number;
+  userId: string;
+}

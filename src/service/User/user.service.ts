@@ -1,30 +1,24 @@
-import { cookies } from "next/headers";
-import { cache } from "react";
+import { headers } from "next/headers";
 
-export const getUser = cache(async () => {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value;
-
-  if (!token) return null;
-
+export const getUser = async () => {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/user/me`,
-      {
-        method: "GET",
-        headers: {
-          Cookie: `token=${token}`,
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-      },
-    );
+    const BACKEND_URL = process.env.BACKEND_URL;
 
-    // console.log(response);
+    const headerList = await headers();
+
+    const response = await fetch(`${BACKEND_URL}/api/auth/get-session`, {
+      headers: {
+        cookie: headerList.get("cookie") || "",
+      },
+      cache: "no-store",
+    });
+
     if (!response.ok) return null;
-    return await response.json();
+
+    const session = await response.json();
+    return session?.user || null;
   } catch (error) {
+    console.error("getUser Error:", error);
     return null;
   }
-});
+};

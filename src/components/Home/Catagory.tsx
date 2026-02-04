@@ -1,11 +1,13 @@
+export const dynamic = "force-dynamic";
+
 import { getCategories } from "@/service/Home/home.service";
-import { Loader } from "lucide-react";
 import Link from "next/link";
 
 const Catagory = async () => {
   const category = await getCategories();
 
   const data = category?.data;
+  // console.log(category);
 
   return (
     <section className="px-4 sm:px-6 py-12 md:py-20 bg-gray-50/50">

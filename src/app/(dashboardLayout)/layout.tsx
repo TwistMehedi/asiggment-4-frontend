@@ -15,7 +15,8 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Roles } from "@/constants/role";
-import { Loader2, Home } from "lucide-react";
+import { User } from "@/types/user.types";
+import { Home } from "lucide-react";
 import Link from "next/link";
 
 const DashboardLayout = async ({
@@ -27,19 +28,7 @@ const DashboardLayout = async ({
   customer: React.ReactNode;
   provider: React.ReactNode;
 }) => {
-  const userData = await currentUser();
-  const user = userData?.user;
-
-  if (!user) {
-    return (
-      <div className="h-screen w-full flex flex-col items-center justify-center gap-4 bg-gray-50">
-        <Loader2 className="animate-spin text-orange-600" size={40} />
-        <p className="text-gray-500 font-black uppercase tracking-widest text-xs">
-          Authenticating...
-        </p>
-      </div>
-    );
-  }
+  const user = ((await currentUser()) as User) || null;
 
   return (
     <SidebarProvider>
@@ -86,7 +75,9 @@ const DashboardLayout = async ({
                 ? provider
                 : user.role === Roles.customer
                   ? customer
-                  : admin}
+                  : user.role === Roles.admin
+                    ? admin
+                    : "You are not eligible"}
             </div>
           </div>
         </main>

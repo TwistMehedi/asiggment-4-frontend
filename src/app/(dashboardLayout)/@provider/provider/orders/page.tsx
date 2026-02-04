@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getMyOrdersByProvider } from "@/service/Order/order.service";
 import Link from "next/link";
 import React from "react";
@@ -35,7 +37,7 @@ const Orders = async () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-50">
-            {orders.map((order) => (
+            {orders.map((order: any) => (
               <tr
                 key={order.id}
                 className="hover:bg-gray-50/50 transition-colors"

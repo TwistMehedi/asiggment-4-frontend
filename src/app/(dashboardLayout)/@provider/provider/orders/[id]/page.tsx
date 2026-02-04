@@ -160,6 +160,7 @@ const OrderDetails = ({ params }: { params: Promise<{ id: string }> }) => {
               <div key={index} className="flex justify-between text-sm">
                 <span className="text-gray-600 font-bold">
                   {item.meal?.name} x {item.quantity}
+                  {console.log(item)}
                 </span>
                 <span className="font-black">
                   ৳{item.price * item.quantity}

@@ -1,54 +1,47 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { jwtVerify } from "jose";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  const token = req.cookies.get("token")?.value;
 
-  if (!token) {
-    if (
-      pathname.startsWith("/admin") ||
-      pathname.startsWith("/customer") ||
-      pathname.startsWith("/provider")
-    ) {
-      return NextResponse.redirect(new URL("/", req.url));
-    }
-    return NextResponse.next();
+  const BACKEND_URL = process.env.BACKEND_URL;
+
+  const response = await fetch(`${BACKEND_URL}/api/auth/get-session`, {
+    headers: {
+      cookie: req.headers.get("cookie") || "",
+    },
+  });
+
+  const session = await response.json();
+
+  const user = session?.user;
+
+  const userRole = user.role;
+  const isAdmin = userRole === "ADMIN";
+  const isCustomer = userRole === "CUSTOMER";
+  const isProvider = userRole === "PROVIDER";
+
+  if (isAdmin) return NextResponse.next();
+
+  if (pathname.startsWith("/admin") && !isAdmin) {
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
-  try {
-    const secret = new TextEncoder().encode(
-      process.env.JWT_SECRET || "your_secret_key",
-    );
-    const { payload } = await jwtVerify(token, secret);
-
-    const userRole = payload.role;
-
-    // console.log(userRole, "mehedi");
-    const isAdmin = userRole === "ADMIN";
-    const isCustomer = userRole === "CUSTOMER";
-    const isProvider = userRole === "PROVIDER";
-
-    if (pathname.startsWith("/admin") && !isAdmin) {
-      return NextResponse.redirect(new URL("/", req.url));
-    }
-
-    if (pathname.startsWith("/customer") && !isCustomer && !isAdmin) {
-      return NextResponse.redirect(new URL("/", req.url));
-    }
-
-    if (pathname.startsWith("/provider") && !isProvider && !isAdmin) {
-      return NextResponse.redirect(new URL("/", req.url));
-    }
-
-    return NextResponse.next();
-  } catch (error) {
-    console.log("Middleware Token Error", error);
-    return NextResponse.redirect(new URL("/login", req.url));
+  if (pathname.startsWith("/customer") && !isCustomer) {
+    return NextResponse.redirect(new URL("/", req.url));
   }
+
+  if (pathname.startsWith("/provider") && !isProvider) {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/customer/:path*", "/provider/:path*"],
+  matcher: [
+    "/admin/:path*",
+    "/customer/:path*",
+    "/provider/:path*",
+    "/check-inbox",
+  ],
 };

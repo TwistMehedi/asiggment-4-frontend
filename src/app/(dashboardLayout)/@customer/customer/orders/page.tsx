@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getMyOrders } from "@/service/Order/order.service";
 import Link from "next/link";
 import React from "react";

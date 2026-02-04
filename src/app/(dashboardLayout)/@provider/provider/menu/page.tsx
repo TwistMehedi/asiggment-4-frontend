@@ -110,6 +110,7 @@ const Menu = ({ initialData }: { initialData: any }) => {
                   category: "Lunch",
                 }}
                 isDemo={true}
+                onDeleteSuccess={() => {}}
               />
               <MealCard
                 meal={{
@@ -118,6 +119,7 @@ const Menu = ({ initialData }: { initialData: any }) => {
                   category: "Dinner",
                 }}
                 isDemo={true}
+                onDeleteSuccess={() => {}}
               />
               <MealCard
                 meal={{
@@ -126,6 +128,7 @@ const Menu = ({ initialData }: { initialData: any }) => {
                   category: "Breakfast",
                 }}
                 isDemo={true}
+                onDeleteSuccess={() => {}}
               />
             </div>
           </div>

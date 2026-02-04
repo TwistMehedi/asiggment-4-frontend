@@ -12,10 +12,11 @@ import {
 import currentUser from "@/actions/user";
 import { Roles } from "@/constants/role";
 import LogOut from "./LogOut";
+import { User } from "@/types/user.types";
 
 const Navbar = async () => {
-  const userData = await currentUser();
-  const user = userData?.user;
+  const user = ((await currentUser()) as User) || null;
+
   return (
     <header className="w-full border-b bg-background sticky top-0 z-50">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -61,7 +62,7 @@ const Navbar = async () => {
             </Link>
           )}
 
-          {user && <LogOut user={user} />}
+          {user && <LogOut />}
 
           {!user && (
             <>
@@ -137,6 +138,7 @@ const Navbar = async () => {
                   </Link>
                 )}
 
+                {user && <LogOut />}
                 <hr className="my-2 border-orange-50" />
 
                 <div className="flex flex-col gap-3">

@@ -27,7 +27,10 @@ const AdminStats = () => {
             credentials: "include",
           },
         );
+
+        console.log(res);
         const result = await res.json();
+
         setStats(result.data);
       } catch (error) {
         console.error("Admin stats fetch error:", error);
@@ -37,6 +40,8 @@ const AdminStats = () => {
     };
     fetchAdminStats();
   }, []);
+
+  console.log(stats);
 
   if (loading) {
     return (
