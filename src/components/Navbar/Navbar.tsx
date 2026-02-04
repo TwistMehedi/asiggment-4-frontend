@@ -11,8 +11,9 @@ import {
 } from "@/components/ui/sheet";
 import currentUser from "@/actions/user";
 import { Roles } from "@/constants/role";
-import LogOut from "./LogOut";
+
 import { User } from "@/types/user.types";
+import LogOut from "../User/LogOut";
 
 const Navbar = async () => {
   const user = ((await currentUser()) as User) || null;

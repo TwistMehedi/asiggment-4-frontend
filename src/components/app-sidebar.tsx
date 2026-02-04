@@ -15,7 +15,7 @@ import {
 import Link from "next/link";
 import { getNavData } from "@/helper/routes.role";
 import { UserCircle, UtensilsCrossed, LayoutDashboard } from "lucide-react";
-import LogOut from "./Navbar/LogOut";
+import LogOut from "./User/LogOut";
 
 export async function AppSidebar({ user, ...props }: { user: any }) {
   const data = await getNavData(user.role);

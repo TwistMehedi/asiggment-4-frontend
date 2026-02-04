@@ -3,19 +3,20 @@ import { NextRequest, NextResponse } from "next/server";
 export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  const BACKEND_URL = process.env.BACKEND_URL;
-
-  const response = await fetch(`${BACKEND_URL}/api/auth/get-session`, {
-    headers: {
-      cookie: req.headers.get("cookie") || "",
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/auth/get-session`,
+    {
+      headers: {
+        cookie: req.headers.get("cookie") || "",
+      },
     },
-  });
+  );
 
   const session = await response.json();
 
   const user = session?.user;
 
-  const userRole = user.role;
+  const userRole = user?.role;
   const isAdmin = userRole === "ADMIN";
   const isCustomer = userRole === "CUSTOMER";
   const isProvider = userRole === "PROVIDER";

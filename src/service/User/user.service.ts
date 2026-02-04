@@ -2,16 +2,14 @@ import { headers } from "next/headers";
 
 export const getUser = async () => {
   try {
-    const BACKEND_URL = process.env.BACKEND_URL;
-
-    const headerList = await headers();
-
-    const response = await fetch(`${BACKEND_URL}/api/auth/get-session`, {
-      headers: {
-        cookie: headerList.get("cookie") || "",
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/auth/get-session`,
+      {
+        method: "GET",
+        headers: await headers(),
+        cache: "no-store",
       },
-      cache: "no-store",
-    });
+    );
 
     if (!response.ok) return null;
 

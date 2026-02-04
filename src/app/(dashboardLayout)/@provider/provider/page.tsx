@@ -23,7 +23,6 @@ export default function ProviderDashboard() {
           },
         );
         const result = await response.json();
-        // console.log(result);
         if (response.ok) {
           setStats(result.data);
         } else {

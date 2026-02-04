@@ -1,12 +1,12 @@
+import { headers } from "next/headers";
+
 export const getCategories = async () => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/categories`,
       {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: await headers(),
         cache: "no-store",
       },
     );
@@ -18,7 +18,7 @@ export const getCategories = async () => {
     }
 
     const data = await res.json();
-    // console.log(data);
+
     return data;
   } catch (error) {
     console.error("Error fetching categories:", error);
@@ -32,6 +32,7 @@ export const getHomeMeals = async () => {
       `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/home`,
       {
         method: "GET",
+        headers: await headers(),
         next: {
           revalidate: 3600,
         },
@@ -43,7 +44,6 @@ export const getHomeMeals = async () => {
     }
 
     const data = await res.json();
-    // console.log(data);
     return data;
   } catch (error) {
     console.error("Home meals error", error);

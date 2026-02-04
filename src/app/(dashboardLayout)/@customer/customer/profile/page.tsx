@@ -1,4 +1,5 @@
 import currentUser from "@/actions/user";
+import { EditProfileModal } from "@/components/User/EditProfile";
 import { User } from "@/types/user.types";
 import {
   User as UserIcon,
@@ -7,16 +8,20 @@ import {
   Calendar,
   BadgeCheck,
   Settings,
+  LogOut,
 } from "lucide-react";
 
 const Profile = async () => {
   const user = ((await currentUser()) as User) || null;
 
-  const joinDate = new Date(user.createdAt).toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
+  const joinDate = new Date(user?.createdAt || new Date()).toLocaleDateString(
+    "en-GB",
+    {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+    },
+  );
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8 min-h-screen">
@@ -114,10 +119,7 @@ const Profile = async () => {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <button className="p-6 bg-white border border-gray-100 rounded-[2rem] font-bold text-gray-700 hover:border-orange-200 hover:bg-orange-50/30 transition-all flex flex-col items-center gap-2">
-              <Settings className="text-gray-400" />
-              <span className="text-xs">Edit Profile</span>
-            </button>
+            <EditProfileModal user={user} />
           </div>
         </div>
       </div>

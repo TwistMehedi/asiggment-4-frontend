@@ -1,7 +1,7 @@
 import { createAuthClient } from "better-auth/react";
 
 export const authClient = createAuthClient({
-  baseURL: "http://localhost:5000",
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_HOST_URL,
 });
 
 export type CustomAuthClient = typeof authClient & {
@@ -10,7 +10,7 @@ export type CustomAuthClient = typeof authClient & {
       name: string;
       email: string;
       password: string;
-      data: { role: string };
+      role: string;
     }) => Promise<any>;
   };
 };

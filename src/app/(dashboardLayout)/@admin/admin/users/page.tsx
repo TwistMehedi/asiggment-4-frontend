@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import {
   Table,
   TableBody,
@@ -16,24 +16,19 @@ import {
   UserCircle,
   Search,
   Inbox,
+  Edit,
 } from "lucide-react";
+import { UserEditModal } from "@/components/User/ManageUserModal";
 
 const Users = async () => {
   let users = [];
 
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("token")?.value;
-
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/user/admin/users`,
       {
         method: "GET",
-        headers: {
-          Cookie: `token=${token}`,
-          Authorization: token ? `Bearer ${token}` : "",
-          "Content-Type": "application/json",
-        },
+        headers: await headers(),
         cache: "no-store",
       },
     );
@@ -136,6 +131,14 @@ const Users = async () => {
                         <span className="inline-flex items-center gap-1.5 bg-green-50 text-green-600 px-4 py-1.5 rounded-xl text-[10px] font-black uppercase border border-green-100 shadow-sm shadow-green-100">
                           <ShieldCheck size={14} /> Active
                         </span>
+                      </TableCell>
+
+                      <TableCell className="text-center">
+                        {/* <Link href={`/admin/users/user/${user.id}`}> */}
+                        <span className="inline-flex cursor-pointer items-center gap-1.5 bg-green-50 text-green-600 px-4 py-1.5 rounded-xl text-[10px] font-black uppercase border border-green-100 shadow-sm shadow-green-100">
+                          <UserEditModal user={user} />
+                        </span>
+                        {/* </Link> */}
                       </TableCell>
                     </TableRow>
                   ))

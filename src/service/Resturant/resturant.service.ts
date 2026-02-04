@@ -15,7 +15,6 @@ export const getRestaurant = async () => {
     }
 
     const data = await res.json();
-
     return data;
   } catch (error) {
     console.error("Error fetching restaurant:", error);
@@ -25,11 +24,14 @@ export const getRestaurant = async () => {
 
 export const getCategoriesInProvider = async () => {
   try {
-    const res = await fetch(`http://localhost:5000/api/categories`, {
-      method: "GET",
-
-      cache: "no-store",
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/categories`,
+      {
+        method: "GET",
+        credentials: "include",
+        cache: "no-store",
+      },
+    );
 
     if (!res.ok) {
       const errorData = await res.json();

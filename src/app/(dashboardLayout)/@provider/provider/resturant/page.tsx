@@ -19,7 +19,7 @@ const Resturant = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [restaurant, setRestaurant] = useState<any>(null);
 
-  console.log(restaurant);
+  // console.log("restaurant", restaurant);
   useEffect(() => {
     getRestaurant()
       .then((data) => {
@@ -61,7 +61,7 @@ const Resturant = () => {
       {restaurant ? (
         <div className="bg-white border rounded-[2rem] overflow-hidden shadow-sm max-w-2xl">
           <div className="flex flex-col md:flex-row">
-            <div className="w-full md:w-48 h-48">
+            <div className="w-full md:w-48 h-48 relative overflow-hidden">
               <Image
                 src={restaurant?.image}
                 alt="shop"

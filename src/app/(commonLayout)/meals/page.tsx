@@ -33,14 +33,26 @@ const Meals = async ({
           Choose you interested meals
         </h3>
         <SearchSection />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-          {meals?.map((meal: IMeal) => (
-            <PublicMealCard key={meal.id} meal={meal} />
-          ))}
-        </div>
+
+        {meals && meals.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            {meals?.map((meal: IMeal) => (
+              <PublicMealCard key={meal.id} meal={meal} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-20">
+            <p className="text-2xl font-semibold text-gray-500">
+              No Meals Found
+            </p>
+            <p className="text-gray-400 mt-2">
+              Try adjusting your search or filters.
+            </p>
+          </div>
+        )}
       </div>
 
-      {meta?.totalPages > 1 && (
+      {meta?.totalPages > 1 && meals && meals.length > 0 && (
         <Pagination
           totalPages={meta.totalPages}
           currentPage={currentPage}

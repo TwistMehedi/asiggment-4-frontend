@@ -36,9 +36,8 @@ export const SignupForm = ({ ...props }: React.ComponentProps<typeof Card>) => {
         name: formData.name,
         email: formData.email,
         password: formData.password,
-        data: {
-          role: formData.role,
-        },
+
+        role: formData.role,
       });
 
       if (error) {

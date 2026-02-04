@@ -29,7 +29,7 @@ const DashboardLayout = async ({
   provider: React.ReactNode;
 }) => {
   const user = ((await currentUser()) as User) || null;
-
+  // console.log(user);
   return (
     <SidebarProvider>
       <AppSidebar user={user} />
@@ -59,7 +59,7 @@ const DashboardLayout = async ({
               <BreadcrumbItem>
                 <Link href={"/"}>
                   <BreadcrumbPage className="font-black text-gray-800 uppercase text-[10px] tracking-widest bg-orange-100 text-orange-700 px-3 py-1 rounded-full shadow-sm">
-                    {user.role} Portal
+                    {user?.role} Portal
                   </BreadcrumbPage>
                 </Link>
               </BreadcrumbItem>

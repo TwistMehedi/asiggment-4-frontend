@@ -1,13 +1,13 @@
+import { headers } from "next/headers";
+
 export const getProviderById = async (id: string) => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/provider/${id}`,
       {
         method: "GET",
+        headers: await headers(),
         cache: "no-store",
-        headers: {
-          "Content-Type": "application/json",
-        },
       },
     );
 
@@ -30,10 +30,8 @@ export const getMealById = async (id: string) => {
       `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/${id}`,
       {
         method: "GET",
+        headers: await headers(),
         cache: "no-store",
-        headers: {
-          "Content-Type": "application/json",
-        },
       },
     );
 
@@ -68,10 +66,8 @@ export const getAllMeals = async (
       `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals?${queryParams.toString()}`,
       {
         method: "GET",
+        headers: await headers(),
         cache: "no-store",
-        headers: {
-          "Content-Type": "application/json",
-        },
       },
     );
 
