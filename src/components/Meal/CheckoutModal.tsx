@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { X, Loader2 } from "lucide-react";
+import { X, Loader2, Star } from "lucide-react";
 import { toast, Toaster } from "sonner";
 import { createOrder } from "@/service/Order/order.service";
+import ShowReviewModal from "../Review/ShowReviewModal";
 
 const CheckoutModal = ({
   isOpen,
@@ -17,6 +18,7 @@ const CheckoutModal = ({
   totalPrice: number;
 }) => {
   const [isPending, setIsPending] = useState(false);
+  const [showReviewModal, setShowReviewModal] = useState(false);
   const [address, setAddress] = useState({
     roadNumber: "",
     postCode: "",
@@ -25,7 +27,7 @@ const CheckoutModal = ({
     areaName: "",
   });
 
-  if (!isOpen) return null;
+  if (!isOpen && !showReviewModal) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,7 +50,6 @@ const CheckoutModal = ({
       };
 
       const result = await createOrder(orderData);
-      console.log(result);
 
       if (result && result.success === true) {
         toast.success(result.message || "Order placed successfully!", {
@@ -59,8 +60,7 @@ const CheckoutModal = ({
         localStorage.removeItem("cart");
 
         setTimeout(() => {
-          onClose();
-          window.location.reload();
+          setShowReviewModal(true);
         }, 1500);
       } else {
         toast.error(result?.message || "Failed to place order", {
@@ -76,6 +76,19 @@ const CheckoutModal = ({
       setIsPending(false);
     }
   };
+
+  if (showReviewModal) {
+    return (
+      <ShowReviewModal
+        mealId={cartItems[0]?.mealId}
+        userId={cartItems[0]?.userId}
+        onClose={() => {
+          setShowReviewModal(false);
+          onClose();
+        }}
+      />
+    );
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -189,7 +202,7 @@ const CheckoutModal = ({
             <button
               type="submit"
               disabled={isPending}
-              className="w-full bg-orange-600 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-orange-700 transition-all disabled:bg-orange-400 disabled:cursor-not-allowed"
+              className="w-full bg-orange-600 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-orange-700 transition-all"
             >
               {isPending ? (
                 <>

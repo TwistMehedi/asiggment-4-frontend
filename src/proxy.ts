@@ -12,6 +12,11 @@ export async function proxy(req: NextRequest) {
     },
   );
 
+  if (!response.ok) {
+    console.log("User session missing");
+    return null;
+  }
+
   const session = await response.json();
 
   const user = session?.user;

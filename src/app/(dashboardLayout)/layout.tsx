@@ -71,11 +71,11 @@ const DashboardLayout = async ({
         <main className="flex flex-1 flex-col gap-4 p-4 md:p-8 lg:p-10 max-w-[1600px] mx-auto w-full transition-all duration-500">
           <div className="relative min-h-[calc(100vh-120px)] w-full rounded-[2rem] md:rounded-[3rem] border border-gray-100 bg-white/50 p-1 md:p-2 shadow-inner">
             <div className="w-full h-full animate-in fade-in slide-in-from-bottom-4 duration-700">
-              {user.role === Roles.provider
+              {user?.role === Roles.provider
                 ? provider
-                : user.role === Roles.customer
+                : user?.role === Roles.customer
                   ? customer
-                  : user.role === Roles.admin
+                  : user?.role === Roles.admin
                     ? admin
                     : "You are not eligible"}
             </div>

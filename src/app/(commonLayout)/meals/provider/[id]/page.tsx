@@ -1,9 +1,11 @@
+import MealCard from "@/components/Meal/MealCard";
 import { getProviderById } from "@/service/meal/meal.service";
 import { MapPin, Phone, Star, ShoppingBag, Clock, Info } from "lucide-react";
 
 const Provider = async ({ params }: { params: { id: string } }) => {
   const { id } = await params;
   const provider = await getProviderById(id);
+  const allMeals = provider?.meals;
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
@@ -93,14 +95,20 @@ const Provider = async ({ params }: { params: { id: string } }) => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="col-span-full p-12 border-2 border-dashed border-gray-200 rounded-3xl text-center flex flex-col items-center gap-3">
-                <div className="bg-gray-100 p-4 rounded-full">
-                  <ShoppingBag className="text-gray-300 h-8 w-8" />
+              {allMeals && allMeals.length > 0 ? (
+                allMeals.map((meal: any) => (
+                  <MealCard key={meal.id} meal={meal} isDemo={false} />
+                ))
+              ) : (
+                <div className="col-span-full p-12 border-2 border-dashed border-gray-200 rounded-3xl text-center flex flex-col items-center gap-3">
+                  <div className="bg-gray-100 p-4 rounded-full">
+                    <ShoppingBag className="text-gray-300 h-8 w-8" />
+                  </div>
+                  <p className="text-gray-400 font-medium">
+                    No meals available at this moment.
+                  </p>
                 </div>
-                <p className="text-gray-400 font-medium">
-                  Add your MealCard map here to show provider's items
-                </p>
-              </div>
+              )}
             </div>
           </div>
         </div>

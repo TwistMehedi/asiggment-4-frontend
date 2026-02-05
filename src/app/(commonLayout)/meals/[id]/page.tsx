@@ -70,35 +70,37 @@ const MealDetailPage = async ({ params }: { params: any }) => {
           </div>
 
           <div className="bg-orange-50 p-5 md:p-6 rounded-3xl border border-orange-100 mb-8">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-3">
-              <div className="flex items-center gap-4">
-                <div className="bg-orange-500 p-2.5 rounded-2xl text-white shrink-0">
-                  <Store size={24} />
-                </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 line-clamp-1">
-                    {meal.provider.shopName}
-                  </h4>
-                  <div className="flex items-center gap-1 text-gray-500 text-xs">
-                    <MapPin size={12} />
-                    <span className="line-clamp-1">
-                      {meal.provider.address}
-                    </span>
+            <Link href={`/meals/provider/${meal?.providerId}`}>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-3">
+                <div className="flex items-center gap-4">
+                  <div className="bg-orange-500 p-2.5 rounded-2xl text-white shrink-0">
+                    <Store size={24} />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900 line-clamp-1">
+                      {meal.provider.shopName}
+                    </h4>
+                    <div className="flex items-center gap-1 text-gray-500 text-xs">
+                      <MapPin size={12} />
+                      <span className="line-clamp-1">
+                        {meal.provider.address}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <span
-                className={`sm:ml-auto self-start text-[10px] font-bold px-3 py-1 rounded-full border uppercase ${meal.provider.isOpen ? "bg-white text-green-600 border-green-200" : "bg-white text-red-600 border-red-200"}`}
-              >
-                Open: {meal.provider.isOpen.toString()}
-              </span>
-            </div>
-            {meal.provider.description && (
-              <p className="text-xs md:text-sm text-gray-600 italic mt-2">
-                "{meal.provider.description}"
-              </p>
-            )}
+                <span
+                  className={`sm:ml-auto self-start text-[10px] font-bold px-3 py-1 rounded-full border uppercase ${meal.provider.isOpen ? "bg-white text-green-600 border-green-200" : "bg-white text-red-600 border-red-200"}`}
+                >
+                  Open: {meal.provider.isOpen.toString()}
+                </span>
+              </div>
+              {meal.provider.description && (
+                <p className="text-xs md:text-sm text-gray-600 italic mt-2">
+                  "{meal.provider.description}"
+                </p>
+              )}
+            </Link>
           </div>
 
           <div className="flex gap-4 mt-auto">

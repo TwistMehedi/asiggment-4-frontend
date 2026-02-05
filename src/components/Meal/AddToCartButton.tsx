@@ -12,13 +12,15 @@ const AddToCartButton = ({ meal }: { meal: IMeal }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const userData = await currentUser();
-      if (userData?.user) {
-        setUser(userData.user);
+      const user = await currentUser();
+      if (user) {
+        setUser(user);
       }
     };
     fetchUser();
   }, []);
+
+  // console.log(user);
 
   const handleAddToCart = () => {
     try {
@@ -62,14 +64,16 @@ const AddToCartButton = ({ meal }: { meal: IMeal }) => {
       <Toaster richColors position="top-center" />
 
       {user ? (
-        <button onClick={handleAddToCart} className="hover:cursor-pointer">
-          {loading ? "Adding to cart" : "Add to Cart"}
+        <button
+          onClick={handleAddToCart}
+          disabled={loading}
+          className="hover:cursor-pointer disabled:bg-gray-400"
+        >
+          {loading ? "Adding to cart..." : "Add to Cart"}
         </button>
       ) : (
-        <Link href={"/login"}>
-          <button onClick={handleAddToCart} className="cursor-pointer">
-            {loading ? "Adding to cart" : "Add to Cart"}
-          </button>
+        <Link href="/login">
+          <button className="cursor-pointer">Add to Cart</button>
         </Link>
       )}
     </div>

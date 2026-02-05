@@ -24,9 +24,9 @@ const CartPage = () => {
     const loadCart = async () => {
       setMounted(true);
 
-      const userData = await currentUser();
-      const userId = userData?.user?.id;
-
+      const user = await currentUser();
+      const userId = user?.id;
+      // console.log("userId cartPage", userId);
       if (userId) {
         const data = localStorage.getItem("cart");
         if (data) {
@@ -43,6 +43,7 @@ const CartPage = () => {
     loadCart();
   }, []);
 
+  // console.log("cartItems", cartItems);
   const removeItem = (id: string) => {
     const updatedStateCart = cartItems.filter((item) => item.mealId !== id);
     setCartItems(updatedStateCart);

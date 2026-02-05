@@ -14,7 +14,7 @@ const MealCard = ({
 }: {
   meal: any;
   isDemo: boolean;
-  onDeleteSuccess: () => void;
+  onDeleteSuccess?: () => void;
 }) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
 
@@ -45,32 +45,34 @@ const MealCard = ({
         </p>
 
         <div className="flex gap-2">
-          {!isDemo && (
-            <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
-              <DialogTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-full hover:bg-orange-50 hover:text-orange-600"
-                >
-                  <Edit3 size={18} />
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="p-0 border-none max-w-md bg-transparent shadow-none">
-                <EditMeal
-                  meal={meal}
-                  onClose={() => setIsEditOpen(false)}
-                  onUpdateSuccess={onDeleteSuccess}
-                />
-              </DialogContent>
-            </Dialog>
-          )}
-          {!isDemo && (
-            <DeleteMeal
-              mealId={meal._id || meal.id}
-              onSuccess={onDeleteSuccess}
-            />
-          )}
+          {!isDemo ||
+            (onDeleteSuccess && (
+              <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+                <DialogTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="rounded-full hover:bg-orange-50 hover:text-orange-600"
+                  >
+                    <Edit3 size={18} />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="p-0 border-none max-w-md bg-transparent shadow-none">
+                  <EditMeal
+                    meal={meal}
+                    onClose={() => setIsEditOpen(false)}
+                    onUpdateSuccess={onDeleteSuccess}
+                  />
+                </DialogContent>
+              </Dialog>
+            ))}
+          {!isDemo ||
+            (onDeleteSuccess && (
+              <DeleteMeal
+                mealId={meal._id || meal.id}
+                onSuccess={onDeleteSuccess}
+              />
+            ))}
         </div>
       </div>
 

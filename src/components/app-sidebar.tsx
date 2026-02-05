@@ -18,7 +18,7 @@ import { UserCircle, UtensilsCrossed, LayoutDashboard } from "lucide-react";
 import LogOut from "./User/LogOut";
 
 export async function AppSidebar({ user, ...props }: { user: any }) {
-  const data = await getNavData(user.role);
+  const data = (await getNavData(user?.role)) || null;
 
   return (
     <Sidebar {...props} className="border-r border-gray-100 shadow-xl bg-white">

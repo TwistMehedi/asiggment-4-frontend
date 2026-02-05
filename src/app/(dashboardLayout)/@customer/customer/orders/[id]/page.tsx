@@ -9,6 +9,7 @@ import {
   ChevronRight,
   Info,
 } from "lucide-react";
+import Link from "next/link";
 
 const OrdersDetails = async ({
   params,
@@ -157,7 +158,10 @@ const OrdersDetails = async ({
               </div>
               <div>
                 <p className="font-black text-gray-800 leading-none">
-                  {order.provider?.shopName}
+                  <Link href={`/meals/provider/${order?.meal?.providerId}`}>
+                    {order.provider?.shopName}
+                  </Link>
+                  {/* {order.provider?.shopName} */}
                 </p>
                 <p className="text-[10px] text-gray-400 font-bold uppercase mt-1 tracking-widest">
                   Verified Seller

@@ -70,7 +70,6 @@ const CreateRestaurant = ({ onClose }: { onClose?: () => void }) => {
   return (
     <div className="relative w-full max-w-2xl mx-auto bg-white sm:rounded-[2.5rem] shadow-2xl flex flex-col max-h-[90vh]">
       <div className="p-6 md:p-8 border-b border-gray-50 flex justify-between items-center bg-white sticky top-0 z-10 sm:rounded-t-[2.5rem]">
-        <Toaster position="top-center" richColors />
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-orange-100 text-orange-600 rounded-xl flex items-center justify-center">
             <Store size={24} />
