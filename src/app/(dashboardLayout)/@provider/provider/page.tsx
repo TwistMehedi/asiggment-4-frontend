@@ -131,19 +131,6 @@ export default function ProviderDashboard() {
             </table>
           </div>
         </div>
-
-        <div className="bg-white rounded-[2.5rem] p-6 shadow-sm border border-gray-100">
-          <h2 className="text-xl font-bold mb-4">Quick Stats</h2>
-          <div className="p-4 bg-orange-50 rounded-2xl">
-            <p className="text-sm text-orange-600 font-bold uppercase mb-1">
-              Conversion Rate
-            </p>
-            <h4 className="text-2xl font-black">78%</h4>
-            <p className="text-xs text-orange-400 mt-2">
-              Based on meal views vs orders
-            </p>
-          </div>
-        </div>
       </div>
     </div>
   );

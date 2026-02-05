@@ -7,33 +7,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  ShoppingBag,
-  Clock,
-  CheckCircle2,
-  Truck,
-  AlertCircle,
-  MoreVertical,
-  Eye,
-} from "lucide-react";
+import { ShoppingBag, AlertCircle, Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { cookies } from "next/headers";
+import { headers } from "next/headers";
+import { UpdateOrderModal } from "@/components/Meal/UpdateOrderModal";
 
 const AllOrders = async () => {
   let orders = [];
 
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("token")?.value;
-
     const baseUrl = process.env.NEXT_PUBLIC_BACKEND_HOST_URL;
 
     const res = await fetch(`${baseUrl}/api/order/admin/orders`, {
       method: "GET",
-      headers: {
-        Authorization: token ? `Bearer ${token}` : "",
-        "Content-Type": "application/json",
-      },
+      headers: await headers(),
       cache: "no-store",
     });
 
@@ -127,13 +114,7 @@ const AllOrders = async () => {
                       </TableCell>
 
                       <TableCell className="text-right pr-8">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-9 w-9 rounded-xl hover:bg-white hover:text-orange-600 shadow-sm border border-transparent hover:border-gray-100"
-                        >
-                          <Eye size={18} />
-                        </Button>
+                        <UpdateOrderModal order={order} />
                       </TableCell>
                     </TableRow>
                   ))

@@ -57,6 +57,9 @@ const MealDetailPage = async ({ params }: { params: any }) => {
                 {meal?.isAvailable ? <CheckCircle size={14} /> : null}
                 Available: {meal?.isAvailable.toString()}
               </span>
+              <span className="font-black text-orange-600">
+                Cash On Delivery
+              </span>
             </div>
           </div>
 

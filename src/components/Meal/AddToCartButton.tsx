@@ -25,8 +25,10 @@ const AddToCartButton = ({ meal }: { meal: IMeal }) => {
   const handleAddToCart = () => {
     try {
       setLoading(true);
+
       if (!user) {
         toast.error("Please login first to add items!");
+        setLoading(false);
         return;
       }
 
@@ -52,9 +54,11 @@ const AddToCartButton = ({ meal }: { meal: IMeal }) => {
 
       localStorage.setItem("cart", JSON.stringify(cart));
       toast.success(`${meal.name} added to cart!`);
+
+      setLoading(false);
     } catch (error) {
       console.log(error);
-      toast.error(`Add to cart problme${error}`);
+      toast.error(`Add to cart problem: ${error}`);
       setLoading(false);
     }
   };

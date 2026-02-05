@@ -41,7 +41,7 @@ const AdminStats = () => {
     fetchAdminStats();
   }, []);
 
-  console.log(stats);
+  // console.log(stats);
 
   if (loading) {
     return (
@@ -71,7 +71,7 @@ const AdminStats = () => {
       value: stats?.totalProviders,
       icon: <Store className="text-purple-600" />,
       bg: "bg-purple-50",
-      detail: "Active kitchens",
+      detail: "Active shope",
     },
     {
       title: "Total Orders",
