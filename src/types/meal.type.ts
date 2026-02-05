@@ -19,6 +19,14 @@ export interface IMeal {
     address: string;
     isOpen: boolean;
   };
+  reviews: {
+    id: string;
+    comment: string;
+    rating: number;
+    mealId: string;
+    userId: string;
+    createdAt?: string;
+  }[];
 }
 
 export interface ICartItem {

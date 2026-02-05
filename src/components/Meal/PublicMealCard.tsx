@@ -3,6 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 
 const PublicMealCard = ({ meal }: { meal: IMeal }) => {
+  const reviews = meal.reviews || [];
+
+  const avgRating =
+    reviews.length > 0
+      ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
+      : 0;
+
+  const avgRatingFormatted = avgRating.toFixed(1);
+
   return (
     <div className="group bg-white rounded-[2rem] overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col">
       <div className="relative h-48 bg-gray-100 overflow-hidden shrink-0">
@@ -24,9 +33,18 @@ const PublicMealCard = ({ meal }: { meal: IMeal }) => {
 
       <div className="p-6 flex flex-col flex-1">
         <div className="flex flex-col gap-1 mb-4">
-          <h4 className="font-bold text-lg md:text-xl text-gray-800 group-hover:text-orange-600 transition-colors truncate">
-            {meal?.name}
-          </h4>
+          <div className="flex items-center justify-between gap-3">
+            <h4 className="font-bold text-lg md:text-xl text-gray-800 group-hover:text-orange-600 transition-colors truncate">
+              {meal?.name}
+            </h4>
+
+            <div className="flex items-center gap-1 shrink-0 text-sm">
+              <span className="text-yellow-500">⭐</span>
+              <span className="font-semibold">{avgRatingFormatted}</span>
+              <span className="text-gray-400">({reviews.length})</span>
+            </div>
+          </div>
+
           <p className="text-xs md:text-sm font-medium text-gray-600">
             <span className="text-gray-400 font-normal">By </span>
             <Link

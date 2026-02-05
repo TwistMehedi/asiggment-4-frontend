@@ -64,7 +64,7 @@ export const LoginForm = ({
     try {
       const { error } = await client.signIn.social({
         provider: "google",
-        callbackURL: "/",
+        callbackURL: process.env.NEXT_PUBLIC_APP_URL,
       });
 
       if (error) {
