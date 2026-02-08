@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import useSWR from "swr";
 import { Plus, Utensils, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,46 +9,44 @@ import {
   DialogContent,
   DialogHeader,
   DialogTrigger,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import MealCard from "@/components/Meal/MealCard";
 import CreateMeal from "@/components/Meal/CreateMeal";
-import { DialogTitle } from "@radix-ui/react-dialog";
+
+const fetcher = async (url: string) => {
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+  const result = await response.json();
+  if (!response.ok) throw new Error(result.message || "Failed to fetch");
+  return result.meals || [];
+};
 
 const Menu = ({ initialData }: { initialData: any }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [meals, setMeals] = useState(initialData?.meals || []);
-  const [loading, setLoading] = useState(false);
 
-  const getMealsByProvider = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/provider/me`,
-        {
-          method: "GET",
-          credentials: "include",
-        },
-      );
-      const result = await response.json();
-      if (response.ok) {
-        setMeals(result.meals || []);
-      }
-    } catch (error) {
-      console.error("Error fetching meals:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (!initialData) {
-      getMealsByProvider();
-    }
-  }, []);
+  const {
+    data: meals,
+    error,
+    isLoading,
+    mutate,
+  } = useSWR(
+    `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/provider/me`,
+    fetcher,
+    {
+      fallbackData: initialData?.meals || [],
+      revalidateOnFocus: false,
+    },
+  );
 
   const handleMealCreated = () => {
     setIsOpen(false);
-    getMealsByProvider();
+    mutate();
   };
 
   return (
@@ -81,55 +80,20 @@ const Menu = ({ initialData }: { initialData: any }) => {
           </Dialog>
         </div>
 
-        {loading ? (
+        {isLoading && meals.length === 0 ? (
           <div className="flex justify-center items-center py-20">
             <Loader2 className="animate-spin text-orange-600" size={40} />
           </div>
-        ) : meals.length > 0 ? (
+        ) : meals && meals.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {meals.map((meal: any) => (
-              <MealCard
-                onDeleteSuccess={getMealsByProvider}
-                key={meal.id}
-                meal={meal}
-                isDemo={false}
-              />
+              <MealCard key={meal.id} meal={meal} mutate={mutate} />
             ))}
           </div>
         ) : (
           <div>
             <div className="bg-orange-50 border border-orange-100 p-4 rounded-2xl mb-8 text-orange-700 text-sm font-medium">
-              ⚠️ No live data found in database. Showing demo styles below:
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-60 grayscale-[0.5]">
-              <MealCard
-                meal={{
-                  name: "Special Mutton Biryani",
-                  price: 450,
-                  category: "Lunch",
-                }}
-                isDemo={true}
-                onDeleteSuccess={() => {}}
-              />
-              <MealCard
-                meal={{
-                  name: "Grilled Chicken Box",
-                  price: 320,
-                  category: "Dinner",
-                }}
-                isDemo={true}
-                onDeleteSuccess={() => {}}
-              />
-              <MealCard
-                meal={{
-                  name: "Healthy Fruit Salad",
-                  price: 150,
-                  category: "Breakfast",
-                }}
-                isDemo={true}
-                onDeleteSuccess={() => {}}
-              />
+              ⚠️ No meals found in your kitchen. Start adding some!
             </div>
           </div>
         )}

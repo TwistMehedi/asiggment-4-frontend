@@ -1,7 +1,11 @@
 import { createAuthClient } from "better-auth/react";
 
 export const authClient = createAuthClient({
-  baseURL: process.env.NEXT_PUBLIC_BACKEND_HOST_URL,
+  baseURL: typeof window !== "undefined" ? window.location.origin : "",
+
+  fetchOptions: {
+    credentials: "include",
+  },
 });
 
 export type CustomAuthClient = typeof authClient & {

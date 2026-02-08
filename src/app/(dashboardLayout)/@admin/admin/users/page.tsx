@@ -28,7 +28,10 @@ const Users = async () => {
       `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/user/admin/users`,
       {
         method: "GET",
-        headers: await headers(),
+        headers: {
+          Cookie: (await cookies()).toString(),
+          "Content-Type": "application/json",
+        },
         cache: "no-store",
       },
     );

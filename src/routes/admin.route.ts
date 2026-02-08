@@ -23,6 +23,10 @@ export const adminRoutes = {
           title: "Users",
           url: "/admin/users",
         },
+        {
+          title: "Resturants",
+          url: "/admin/all-resturants",
+        },
       ],
     },
   ],

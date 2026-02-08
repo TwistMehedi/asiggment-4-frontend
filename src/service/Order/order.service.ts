@@ -1,5 +1,5 @@
 "use server";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 
 export const createOrder = async (orderData: any) => {
   try {
@@ -44,14 +44,19 @@ export const createOrder = async (orderData: any) => {
 };
 
 export const getMyOrders = async () => {
+  const cookieStore = await cookies();
+  const cookieString = cookieStore.toString();
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/order/me`,
       {
         method: "GET",
+        headers: {
+          Cookie: cookieString,
+
+          "Content-Type": "application/json",
+        },
         cache: "no-store",
-        headers: await headers(),
-        next: { revalidate: 0 },
       },
     );
 
@@ -68,12 +73,18 @@ export const getMyOrders = async () => {
 };
 
 export const getSingleOrder = async (id: string) => {
+  const cookieStore = await cookies();
+  const cookieString = cookieStore.toString();
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/order/${id}`,
       {
         method: "GET",
-        headers: await headers(),
+        headers: {
+          Cookie: cookieString,
+
+          "Content-Type": "application/json",
+        },
         cache: "no-store",
       },
     );
@@ -87,15 +98,19 @@ export const getSingleOrder = async (id: string) => {
 };
 
 export const getMyOrdersByProvider = async () => {
+  const cookieStore = await cookies();
+  const cookieString = cookieStore.toString();
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/order/me/provider`,
       {
         method: "GET",
         cache: "no-store",
-        headers: await headers(),
-        next: { revalidate: 0 },
-        credentials: "include",
+        headers: {
+          Cookie: cookieString,
+
+          "Content-Type": "application/json",
+        },
       },
     );
 

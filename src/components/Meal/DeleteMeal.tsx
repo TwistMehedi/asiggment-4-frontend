@@ -5,13 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 
-const DeleteMeal = ({
-  mealId,
-  onSuccess,
-}: {
-  mealId: string;
-  onSuccess: () => void;
-}) => {
+const DeleteMeal = ({ mealId, mutate }: { mealId: string; mutate: any }) => {
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
@@ -27,7 +21,9 @@ const DeleteMeal = ({
       const result = await response.json();
       if (response.ok) {
         toast.success(result.message || "Meal deleted successfully");
-        onSuccess();
+        if (typeof mutate === "function") {
+          mutate();
+        }
       } else {
         toast.error("Failed to delete meal");
       }

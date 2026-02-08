@@ -24,6 +24,7 @@ export const LoginForm = ({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingGoogle, setIsLoadingGoogle] = useState(false);
 
   const router = useRouter();
 
@@ -36,7 +37,6 @@ export const LoginForm = ({
         email: email,
         password: password,
         rememberMe: true,
-        callbackURL: "/",
       });
 
       if (error) {
@@ -60,7 +60,7 @@ export const LoginForm = ({
   };
 
   const handleGoogleSignIn = async () => {
-    setIsLoading(true);
+    setIsLoadingGoogle(true);
     try {
       const { error } = await client.signIn.social({
         provider: "google",
@@ -74,7 +74,7 @@ export const LoginForm = ({
       toast.error("Google sign-in failed");
       console.error(err);
     } finally {
-      setIsLoading(false);
+      setIsLoadingGoogle(false);
     }
   };
 
@@ -164,7 +164,7 @@ export const LoginForm = ({
               type="button"
               className="w-full"
               onClick={handleGoogleSignIn}
-              disabled={isLoading}
+              disabled={isLoadingGoogle}
             >
               <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                 <path

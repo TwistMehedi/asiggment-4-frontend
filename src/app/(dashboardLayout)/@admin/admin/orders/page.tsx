@@ -9,18 +9,22 @@ import {
 } from "@/components/ui/table";
 import { ShoppingBag, AlertCircle, Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { UpdateOrderModal } from "@/components/Meal/UpdateOrderModal";
 
 const AllOrders = async () => {
   let orders = [];
+
+  const cookieStore = cookies();
 
   try {
     const baseUrl = process.env.NEXT_PUBLIC_BACKEND_HOST_URL;
 
     const res = await fetch(`${baseUrl}/api/order/admin/orders`, {
       method: "GET",
-      headers: await headers(),
+      headers: {
+        Cookie: (await cookieStore).toString(),
+      },
       cache: "no-store",
     });
 

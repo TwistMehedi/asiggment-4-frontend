@@ -7,6 +7,7 @@ const HomeMeals = async () => {
   const mealInfo = await getHomeMeals();
   const data = mealInfo?.data;
 
+  // console.log(data);
   return (
     <section className="px-4 sm:px-6 py-12 md:py-20 bg-gray-50">
       <div className="max-w-6xl mx-auto">

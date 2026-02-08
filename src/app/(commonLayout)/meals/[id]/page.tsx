@@ -8,8 +8,11 @@ const MealDetailPage = async ({ params }: { params: any }) => {
   const { id } = await params;
   const { meal } = await getMeal(id);
 
+  // console.log(meal);
+
   return (
     <main className="min-h-screen bg-gray-50 pb-10 md:pb-20">
+      {/* Back Button Container */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 md:py-6">
         <Link
           href="/meals"
@@ -20,7 +23,8 @@ const MealDetailPage = async ({ params }: { params: any }) => {
         </Link>
       </div>
 
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+      {/* Main Content: Image & Info */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-8">
         <div className="relative h-[300px] sm:h-[400px] md:h-[550px] bg-gray-200 rounded-3xl md:rounded-[2.5rem] overflow-hidden shadow-inner flex items-center justify-center">
           {meal.image ? (
             <Image
@@ -52,7 +56,11 @@ const MealDetailPage = async ({ params }: { params: any }) => {
                 ৳{meal.price}
               </span>
               <span
-                className={`px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1 ${meal?.isAvailable ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}
+                className={`px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1 ${
+                  meal?.isAvailable
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-700"
+                }`}
               >
                 {meal?.isAvailable ? <CheckCircle size={14} /> : null}
                 Available: {meal?.isAvailable.toString()}
@@ -61,15 +69,6 @@ const MealDetailPage = async ({ params }: { params: any }) => {
                 Cash On Delivery
               </span>
             </div>
-          </div>
-
-          <div className="bg-white p-5 md:p-6 rounded-3xl border border-gray-100 shadow-sm mb-6">
-            <h3 className="font-bold text-gray-400 mb-2 uppercase text-[10px] tracking-[0.15em]">
-              Description
-            </h3>
-            <p className="text-gray-600 leading-relaxed text-sm md:text-base">
-              {meal.description}
-            </p>
           </div>
 
           <div className="bg-orange-50 p-5 md:p-6 rounded-3xl border border-orange-100 mb-8">
@@ -93,7 +92,11 @@ const MealDetailPage = async ({ params }: { params: any }) => {
                 </div>
 
                 <span
-                  className={`sm:ml-auto self-start text-[10px] font-bold px-3 py-1 rounded-full border uppercase ${meal.provider.isOpen ? "bg-white text-green-600 border-green-200" : "bg-white text-red-600 border-red-200"}`}
+                  className={`sm:ml-auto self-start text-[10px] font-bold px-3 py-1 rounded-full border uppercase ${
+                    meal.provider.isOpen
+                      ? "bg-white text-green-600 border-green-200"
+                      : "bg-white text-red-600 border-red-200"
+                  }`}
                 >
                   Open: {meal.provider.isOpen.toString()}
                 </span>
@@ -114,6 +117,18 @@ const MealDetailPage = async ({ params }: { params: any }) => {
           </div>
         </div>
       </section>
+
+      {/* Description Section - Updated container for proper width */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="bg-white p-6 md:p-8 rounded-3xl border border-gray-100 shadow-sm">
+          <h3 className="font-bold text-gray-400 mb-3 uppercase text-[10px] tracking-[0.15em]">
+            Description
+          </h3>
+          <p className="text-gray-600 leading-relaxed text-sm md:text-base">
+            {meal.description}
+          </p>
+        </div>
+      </div>
     </main>
   );
 };

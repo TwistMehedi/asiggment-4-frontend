@@ -20,7 +20,7 @@ const CreateCategory = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!name.trim()) return toast.error("Category name is required"); // খালি সাবমিট রোধ
+    if (!name.trim()) return toast.error("Category name is required");
 
     setIsLoading(true);
 
@@ -52,8 +52,6 @@ const CreateCategory = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-8 bg-gray-50/50">
-      <Toaster position="top-right" richColors />
-
       <Card className="w-full max-w-md border-none sm:border shadow-sm sm:shadow-xl rounded-[2.5rem] bg-white overflow-hidden">
         <div className="p-6 pb-0">
           <Link

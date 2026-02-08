@@ -12,6 +12,7 @@ import { Edit2, FolderTree, Plus, Inbox } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import categories from "@/actions/categories";
 import { DeleteCategoryBtn } from "@/components/DeleteCategoryBtn";
+import { EditCategoryBtn } from "@/components/Meal/EditeCategoryBtn";
 
 const AdminCategory = async () => {
   const response = await categories();
@@ -32,10 +33,6 @@ const AdminCategory = async () => {
                 : "Organize your meals by adding categories."}
             </p>
           </div>
-
-          <Button className="bg-orange-600 hover:bg-orange-700 rounded-2xl px-6 font-bold shadow-lg shadow-orange-200 transition-all w-full sm:w-auto">
-            <Plus className="mr-2" size={18} /> Add New
-          </Button>
         </div>
 
         <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
@@ -78,13 +75,8 @@ const AdminCategory = async () => {
                       </TableCell>
                       <TableCell className="text-right pr-8">
                         <div className="flex justify-end gap-1">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-9 w-9 rounded-xl hover:text-blue-600 hover:bg-blue-50 transition-all"
-                          >
-                            <Edit2 size={16} />
-                          </Button>
+                          <EditCategoryBtn category={category} />
+
                           <DeleteCategoryBtn id={category.id} />
                         </div>
                       </TableCell>

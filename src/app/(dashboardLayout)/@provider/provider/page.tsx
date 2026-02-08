@@ -20,6 +20,9 @@ export default function ProviderDashboard() {
           {
             method: "GET",
             credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
           },
         );
         const result = await response.json();

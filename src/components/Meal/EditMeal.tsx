@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2, ImagePlus } from "lucide-react";
 
-const EditMeal = ({ meal, onClose, onUpdateSuccess }: any) => {
+const EditMeal = ({ meal, onClose, mutate }: any) => {
   const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(
     meal.image || null,
@@ -40,6 +40,7 @@ const EditMeal = ({ meal, onClose, onUpdateSuccess }: any) => {
         {
           method: "PUT",
           body: formData,
+
           credentials: "include",
         },
       );
@@ -48,7 +49,9 @@ const EditMeal = ({ meal, onClose, onUpdateSuccess }: any) => {
 
       if (response.ok) {
         toast.success(result.message || "Meal updated successfully");
-        onUpdateSuccess();
+        if (typeof mutate === "function") {
+          mutate();
+        }
         onClose();
       } else {
         toast.error(result.message || "Update failed");

@@ -3,25 +3,32 @@ import { NextRequest, NextResponse } from "next/server";
 export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/auth/get-session`,
-    {
-      headers: {
-        cookie: req.headers.get("cookie") || "",
-      },
-    },
-  );
+  const sessionToken =
+    req.cookies.get("better-auth.session_token") ||
+    req.cookies.get("__Secure-better-auth.session_token");
 
-  if (!response.ok) {
-    console.log("User session missing");
-    return null;
+  let userRole = null;
+
+  if (sessionToken) {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/auth/get-session`,
+        {
+          headers: {
+            cookie: req.headers.get("cookie") || "",
+          },
+        },
+      );
+
+      if (response.ok) {
+        const session = await response.json();
+        userRole = session?.user?.role;
+      }
+    } catch (error) {
+      console.error("Session fetch failed", error);
+    }
   }
 
-  const session = await response.json();
-
-  const user = session?.user;
-
-  const userRole = user?.role;
   const isAdmin = userRole === "ADMIN";
   const isCustomer = userRole === "CUSTOMER";
   const isProvider = userRole === "PROVIDER";
@@ -37,6 +44,10 @@ export async function proxy(req: NextRequest) {
   }
 
   if (pathname.startsWith("/provider") && !isProvider) {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+
+  if (!sessionToken && pathname === "/check-inbox") {
     return NextResponse.redirect(new URL("/", req.url));
   }
 

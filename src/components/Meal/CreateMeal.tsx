@@ -68,12 +68,14 @@ const CreateMeal = ({ onClose }: { onClose: () => void }) => {
         `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/create`,
         {
           method: "POST",
+
           body: formData,
           credentials: "include",
         },
       );
-
+      // console.log(response);
       const result = await response.json();
+      // console.log(result);
       if (response.ok) {
         toast.success(result.message || "Meal created successfully!");
         if (onClose) onClose();
@@ -174,6 +176,7 @@ const CreateMeal = ({ onClose }: { onClose: () => void }) => {
                 <select
                   id="categoryName"
                   name="categoryName"
+                  defaultValue=""
                   required
                   className="w-full pl-12 pr-10 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-orange-200 focus:border-orange-600 transition-all bg-white appearance-none text-gray-700"
                 >

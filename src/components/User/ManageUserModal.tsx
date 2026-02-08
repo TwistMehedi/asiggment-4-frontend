@@ -9,7 +9,7 @@ import {
 import { Edit, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner"; // অথবা আপনার পছন্দমতো টোস্ট লাইব্রেরি
+import { toast } from "sonner";
 
 export const UserEditModal = ({ user }: { user: any }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,6 +28,7 @@ export const UserEditModal = ({ user }: { user: any }) => {
         `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/user/profile-update`,
         {
           method: "PUT",
+          credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },

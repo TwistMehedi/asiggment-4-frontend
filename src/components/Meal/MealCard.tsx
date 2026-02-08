@@ -3,19 +3,19 @@
 import { Edit3, Trash2, Utensils } from "lucide-react";
 import { Button } from "../ui/button";
 import DeleteMeal from "./DeleteMeal";
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+// DialogHeader, DialogTitle, DialogDescription ইমপোর্ট করুন
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "../ui/dialog";
 import EditMeal from "./EditMeal";
 import { useState } from "react";
 
-const MealCard = ({
-  meal,
-  isDemo,
-  onDeleteSuccess,
-}: {
-  meal: any;
-  isDemo: boolean;
-  onDeleteSuccess?: () => void;
-}) => {
+const MealCard = ({ meal, mutate }: { meal: any; mutate: any }) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   return (
@@ -45,40 +45,36 @@ const MealCard = ({
         </p>
 
         <div className="flex gap-2">
-          {!isDemo ||
-            (onDeleteSuccess && (
-              <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
-                <DialogTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="rounded-full hover:bg-orange-50 hover:text-orange-600"
-                  >
-                    <Edit3 size={18} />
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="p-0 border-none max-w-md bg-transparent shadow-none">
-                  <EditMeal
-                    meal={meal}
-                    onClose={() => setIsEditOpen(false)}
-                    onUpdateSuccess={onDeleteSuccess}
-                  />
-                </DialogContent>
-              </Dialog>
-            ))}
-          {!isDemo ||
-            (onDeleteSuccess && (
-              <DeleteMeal
-                mealId={meal._id || meal.id}
-                onSuccess={onDeleteSuccess}
+          <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+            <DialogTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full hover:bg-orange-50 hover:text-orange-600"
+              >
+                <Edit3 size={18} />
+              </Button>
+            </DialogTrigger>
+
+            <DialogContent className="p-0 border-none max-w-md bg-transparent shadow-none">
+              <DialogHeader className="sr-only">
+                <DialogTitle>Edit Meal: {meal.name}</DialogTitle>
+                <DialogDescription>
+                  Make changes to your meal details here.
+                </DialogDescription>
+              </DialogHeader>
+
+              <EditMeal
+                meal={meal}
+                onClose={() => setIsEditOpen(false)}
+                mutate={mutate}
               />
-            ))}
+            </DialogContent>
+          </Dialog>
+
+          <DeleteMeal mealId={meal._id || meal.id} mutate={mutate} />
         </div>
       </div>
-
-      {isDemo && (
-        <div className="absolute inset-0 bg-white/10 pointer-events-none" />
-      )}
     </div>
   );
 };

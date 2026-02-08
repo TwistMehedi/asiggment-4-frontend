@@ -6,9 +6,24 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "res.cloudinary.com",
-        pathname: "**",
+        pathname: "/**",
       },
     ],
+  },
+
+  async rewrites() {
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_HOST_URL;
+
+    if (!backendUrl) {
+      return [];
+    }
+
+    return [
+      {
+        source: "/api/:path*",
+        destination: `${backendUrl}/api/:path*`,
+      },
+    ];
   },
 };
 

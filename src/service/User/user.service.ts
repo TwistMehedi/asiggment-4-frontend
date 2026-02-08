@@ -1,12 +1,17 @@
-import { headers } from "next/headers";
+import { cookies } from "next/headers";
 
 export const getUser = async () => {
+  const cookieStore = await cookies();
+  const cookieString = cookieStore.toString();
+
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/auth/get-session`,
       {
         method: "GET",
-        headers: await headers(),
+        headers: {
+          Cookie: cookieString,
+        },
         cache: "no-store",
       },
     );
@@ -15,7 +20,7 @@ export const getUser = async () => {
 
     const session = await response.json();
     return session?.user || null;
-  } catch (error) {
+  } catch (error: any) {
     console.error("getUser Error:", error);
     return null;
   }

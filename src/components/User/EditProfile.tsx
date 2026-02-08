@@ -49,8 +49,6 @@ export const EditProfileModal = ({ user }: EditProfileModalProps) => {
 
       const data = await response.json();
 
-      console.log(data);
-
       if (response.ok && data.success) {
         toast.success(data?.message || "Update successful");
         setOpen(false);

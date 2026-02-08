@@ -26,6 +26,7 @@ const Meals = async ({
 
   const { meals, meta } = data;
 
+  console.log(meals);
   return (
     <section className="px-4 md:px-6 py-12 md:py-20 bg-[#f9fafb]">
       <div className="max-w-6xl mx-auto">

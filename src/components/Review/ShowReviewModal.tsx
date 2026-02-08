@@ -6,11 +6,11 @@ import { toast } from "sonner";
 
 interface ShowReviewModalProps {
   onClose?: () => void;
-  userId: string;
+  // userId: string;
   mealId: string;
 }
 
-const ShowReviewModal = ({ onClose, userId, mealId }: ShowReviewModalProps) => {
+const ShowReviewModal = ({ onClose, mealId }: ShowReviewModalProps) => {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [comment, setComment] = useState("");
@@ -21,7 +21,7 @@ const ShowReviewModal = ({ onClose, userId, mealId }: ShowReviewModalProps) => {
     const reviewData = {
       rating: rating,
       comment: comment,
-      userId: userId,
+      // userId: userId,
       mealId: mealId,
     };
 
@@ -37,6 +37,8 @@ const ShowReviewModal = ({ onClose, userId, mealId }: ShowReviewModalProps) => {
           body: JSON.stringify(reviewData),
         },
       );
+
+      console.log(res);
 
       if (!res.ok) return null;
 
