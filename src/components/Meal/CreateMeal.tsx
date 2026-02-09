@@ -15,23 +15,31 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import { getCategoriesInProvider } from "@/service/Resturant/resturant.service";
+import { MealFormData, mealSchema } from "@/constants/zode/createMeal.schema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const CreateMeal = ({ onClose }: { onClose: () => void }) => {
-  const [loading, setLoading] = useState(false);
   const [isCatLoading, setIsCatLoading] = useState(true);
   const [categories, setCat] = useState<any[]>([]);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<MealFormData>({
+    resolver: zodResolver(mealSchema),
+  });
+
   useEffect(() => {
     getCategoriesInProvider()
-      .then((data) => {
-        setCat(data?.data || data);
-      })
+      .then((data) => setCat(data?.data || data))
       .catch((err) => {
-        console.error("Category load error:", err.message);
+        console.error(err);
         toast.error("Failed to load categories");
       })
       .finally(() => setIsCatLoading(false));
@@ -39,54 +47,47 @@ const CreateMeal = ({ onClose }: { onClose: () => void }) => {
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setImageFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
+    if (!file) return;
+    setImageFile(file);
+    const reader = new FileReader();
+    reader.onloadend = () => setImagePreview(reader.result as string);
+    reader.readAsDataURL(file);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-
-    const formData = new FormData(e.currentTarget);
-
-    if (imageFile) {
-      formData.set("image", imageFile);
-    } else {
+  const onSubmit = async (data: MealFormData) => {
+    if (!imageFile) {
       toast.error("Please select an image");
-      setLoading(false);
       return;
     }
 
+    console.log("Eeeeeee");
+
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) =>
+      formData.append(key, String(value)),
+    );
+    formData.append("image", imageFile);
+
     try {
-      const response = await fetch(
+      const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/create`,
         {
           method: "POST",
-
           body: formData,
           credentials: "include",
         },
       );
-      // console.log(response);
-      const result = await response.json();
-      // console.log(result);
-      if (response.ok) {
+
+      const result = await res.json();
+
+      if (res.ok) {
         toast.success(result.message || "Meal created successfully!");
-        if (onClose) onClose();
+        onClose();
       } else {
-        toast.error(result.message || "Something went wrong!");
+        toast.error(result.message || "Something went wrong");
       }
-    } catch (error: any) {
-      console.error("Error creating meal:", error);
-      toast.error("Network error! Please try again.");
-    } finally {
-      setLoading(false);
+    } catch {
+      toast.error("Network error");
     }
   };
 
@@ -114,8 +115,8 @@ const CreateMeal = ({ onClose }: { onClose: () => void }) => {
         </button>
       </div>
 
-      <div className="p-6 md:p-8 overflow-y-auto custom-scrollbar">
-        <form id="meal-form" onSubmit={handleSubmit} className="space-y-5">
+      <div className="p-6 md:p-8 overflow-y-auto flex-1">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div className="space-y-2">
             <Label
               htmlFor="name"
@@ -130,11 +131,15 @@ const CreateMeal = ({ onClose }: { onClose: () => void }) => {
               />
               <Input
                 id="name"
-                name="name"
-                placeholder="e.g. Special Grilled Chicken"
+                {...register("name")}
+                placeholder="e.g. Special"
                 className="pl-12 rounded-xl py-6 border-gray-200 focus:ring-orange-200"
-                required
               />
+              {errors.name && (
+                <p className="text-xs text-red-500 mt-1 ml-1">
+                  {errors.name.message}
+                </p>
+              )}
             </div>
           </div>
 
@@ -151,13 +156,17 @@ const CreateMeal = ({ onClose }: { onClose: () => void }) => {
                   ৳
                 </span>
                 <Input
+                  {...register("price", { valueAsNumber: true })}
                   id="price"
-                  name="price"
                   type="number"
                   placeholder="0.00"
                   className="pl-10 rounded-xl py-6 border-gray-200 focus:ring-orange-200"
-                  required
                 />
+                {errors.price && (
+                  <p className="text-xs text-red-500 mt-1 ml-1">
+                    {errors.price.message}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -174,26 +183,29 @@ const CreateMeal = ({ onClose }: { onClose: () => void }) => {
                   size={18}
                 />
                 <select
+                  {...register("categoryName")}
                   id="categoryName"
-                  name="categoryName"
                   defaultValue=""
-                  required
                   className="w-full pl-12 pr-10 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-orange-200 focus:border-orange-600 transition-all bg-white appearance-none text-gray-700"
                 >
-                  <option value="" disabled selected>
+                  <option value="" disabled>
                     {isCatLoading ? "Loading..." : "Select Category"}
                   </option>
-                  {categories &&
-                    categories.map((cat: any, index: number) => (
-                      <option key={index} value={cat.name || cat}>
-                        {cat.name || cat}
-                      </option>
-                    ))}
+                  {categories.map((cat, i) => (
+                    <option key={i} value={cat.name || cat}>
+                      {cat.name || cat}
+                    </option>
+                  ))}
                 </select>
                 <ChevronDown
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
                   size={18}
                 />
+                {errors.categoryName && (
+                  <p className="text-xs text-red-500 mt-1 ml-1">
+                    {errors.categoryName.message}
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -211,12 +223,16 @@ const CreateMeal = ({ onClose }: { onClose: () => void }) => {
                 size={18}
               />
               <Textarea
+                {...register("description")}
                 id="description"
-                name="description"
                 placeholder="Describe the taste, ingredients, or serving size..."
                 className="pl-12 rounded-xl min-h-[120px] border-gray-200 pt-3 focus:ring-orange-200"
-                required
               />
+              {errors.description && (
+                <p className="text-xs text-red-500 mt-1 ml-1">
+                  {errors.description.message}
+                </p>
+              )}
             </div>
           </div>
 
@@ -250,7 +266,6 @@ const CreateMeal = ({ onClose }: { onClose: () => void }) => {
                 <input
                   type="file"
                   id="image"
-                  name="image"
                   className="hidden"
                   accept="image/*"
                   onChange={handleImageChange}
@@ -265,24 +280,23 @@ const CreateMeal = ({ onClose }: { onClose: () => void }) => {
               </label>
             )}
           </div>
-        </form>
-      </div>
 
-      <div className="p-6 border-t border-gray-50 bg-gray-50/50 sm:rounded-b-[2.5rem]">
-        <Button
-          form="meal-form"
-          type="submit"
-          disabled={loading}
-          className="w-full cursor-pointer bg-orange-600 hover:bg-orange-700 text-white py-7 rounded-xl font-bold text-lg shadow-lg shadow-orange-100 transition-all"
-        >
-          {loading ? (
-            <>
-              <Loader2 className="animate-spin mr-2" /> Adding to Menu...
-            </>
-          ) : (
-            "Add Menu"
-          )}
-        </Button>
+          <div className="pt-6">
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full cursor-pointer bg-orange-600 hover:bg-orange-700 text-white py-7 rounded-xl font-bold text-lg shadow-lg shadow-orange-100 transition-all"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="animate-spin mr-2" /> Adding to Menu...
+                </>
+              ) : (
+                "Add Menu"
+              )}
+            </Button>
+          </div>
+        </form>
       </div>
     </div>
   );

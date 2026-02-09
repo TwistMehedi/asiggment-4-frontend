@@ -132,7 +132,7 @@ export const LoginForm = ({
                     onChange={(e) => setPassword(e.target.value)}
                     className="w-full"
                     disabled={isLoading}
-                    required
+                    placeholder="Enter your password"
                   />
                 </Field>
 

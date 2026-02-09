@@ -8,6 +8,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
+// import Cookies from "js-cookie";
 
 export default function ProviderDashboard() {
   const [stats, setStats] = useState<any>(null);
@@ -19,10 +20,11 @@ export default function ProviderDashboard() {
           `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/stats/all`,
           {
             method: "GET",
-            credentials: "include",
+            cache: "no-store",
             headers: {
               "Content-Type": "application/json",
             },
+            credentials: "include",
           },
         );
         const result = await response.json();

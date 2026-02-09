@@ -12,7 +12,7 @@ export async function proxy(req: NextRequest) {
   if (sessionToken) {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/auth/get-session`,
+        `${process.env.BACKEND_HOST_URL}/api/auth/get-session`,
         {
           headers: {
             cookie: req.headers.get("cookie") || "",

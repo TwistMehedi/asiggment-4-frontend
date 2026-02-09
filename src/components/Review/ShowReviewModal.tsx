@@ -11,11 +11,13 @@ interface ShowReviewModalProps {
 }
 
 const ShowReviewModal = ({ onClose, mealId }: ShowReviewModalProps) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [comment, setComment] = useState("");
 
   const handleReviewSubmit = async () => {
+    setIsLoading(true);
     if (rating === 0) return;
 
     const reviewData = {
@@ -38,7 +40,7 @@ const ShowReviewModal = ({ onClose, mealId }: ShowReviewModalProps) => {
         },
       );
 
-      console.log(res);
+      // console.log(res);
 
       if (!res.ok) return null;
 
@@ -46,13 +48,16 @@ const ShowReviewModal = ({ onClose, mealId }: ShowReviewModalProps) => {
 
       if (res.ok) {
         toast.success(data.message);
+
         if (onClose) onClose();
       } else {
         toast.error(data.message || "Failed to submit review");
+        setIsLoading(false);
       }
 
-      console.log(data);
+      // console.log(data);
     } catch (error) {
+      setIsLoading(false);
       console.error("Failed to submit review", error);
       toast.error("An unexpected error occurred");
     }
@@ -112,7 +117,7 @@ const ShowReviewModal = ({ onClose, mealId }: ShowReviewModalProps) => {
             disabled={rating === 0}
             className="w-full bg-orange-600 text-white py-4 rounded-2xl font-bold hover:bg-orange-700 transition-all disabled:bg-gray-100 disabled:text-gray-400"
           >
-            Submit Review
+            {isLoading ? "Creating" : "Submit Review"}
           </button>
 
           <button

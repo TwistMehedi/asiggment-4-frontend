@@ -124,6 +124,7 @@ const CheckoutModal = ({
                   disabled={isPending}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none focus:border-orange-500 disabled:bg-gray-50"
                   value={address.areaName}
+                  placeholder="Area Name"
                   onChange={(e) =>
                     setAddress({ ...address, areaName: e.target.value })
                   }
@@ -138,6 +139,7 @@ const CheckoutModal = ({
                   disabled={isPending}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none focus:border-orange-500 disabled:bg-gray-50"
                   value={address.roadNumber}
+                  placeholder="Road Number"
                   onChange={(e) =>
                     setAddress({ ...address, roadNumber: e.target.value })
                   }
@@ -155,6 +157,7 @@ const CheckoutModal = ({
                   disabled={isPending}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none focus:border-orange-500 disabled:bg-gray-50"
                   value={address.house}
+                  placeholder="House Number"
                   onChange={(e) =>
                     setAddress({ ...address, house: e.target.value })
                   }
@@ -169,6 +172,7 @@ const CheckoutModal = ({
                   disabled={isPending}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none focus:border-orange-500 disabled:bg-gray-50"
                   value={address.postCode}
+                  placeholder="Post Code"
                   onChange={(e) =>
                     setAddress({ ...address, postCode: e.target.value })
                   }
@@ -184,12 +188,26 @@ const CheckoutModal = ({
                 required
                 disabled={isPending}
                 type="tel"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none focus:border-orange-500 disabled:bg-gray-50"
+                className={`w-full px-4 py-3 rounded-xl border outline-none transition-all ${
+                  address.phone.length > 0 && address.phone.length < 11
+                    ? "border-red-500 focus:border-red-500"
+                    : "border-gray-200 focus:border-orange-500"
+                } disabled:bg-gray-50`}
                 value={address.phone}
-                onChange={(e) =>
-                  setAddress({ ...address, phone: e.target.value })
-                }
+                placeholder="Phone Number"
+                maxLength={11}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (/^\d*$/.test(val)) {
+                    setAddress({ ...address, phone: val });
+                  }
+                }}
               />
+              {address.phone.length > 0 && address.phone.length < 11 && (
+                <p className="text-[10px] text-red-500 ml-1 font-medium animate-pulse">
+                  Phone number must be exactly 11 digits
+                </p>
+              )}
             </div>
 
             <div className="bg-gray-50 p-4 rounded-2xl flex justify-between items-center mt-6">

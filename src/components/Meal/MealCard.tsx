@@ -15,7 +15,7 @@ import {
 import EditMeal from "./EditMeal";
 import { useState } from "react";
 
-const MealCard = ({ meal, mutate }: { meal: any; mutate: any }) => {
+const MealCard = ({ meal, mutate }: { meal: any; mutate?: any }) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   return (

@@ -1,7 +1,7 @@
 export const getCategories = async () => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/categories`,
+      `${process.env.BACKEND_HOST_URL}/api/meals/categories`,
       {
         method: "GET",
         cache: "no-store",
@@ -25,13 +25,10 @@ export const getCategories = async () => {
 
 export const getHomeMeals = async () => {
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/home`,
-      {
-        method: "GET",
-        cache: "no-store",
-      },
-    );
+    const res = await fetch(`${process.env.BACKEND_HOST_URL}/api/meals/home`, {
+      method: "GET",
+      cache: "no-store",
+    });
 
     if (!res.ok) {
       throw new Error("Meals fetched problem");
