@@ -10,7 +10,7 @@ Parallel Routing & Slots: Optimized layout management using @admin, @customer, a
 
 Responsive Dashboard: Fully responsive sidebar and data tables built with Shadcn/UI.
 
-Secure Authentication: JWT-based persistent login and secure registration flow.
+Secure Authentication: Session-based login and secure registration flow.
 
 Modern UI/UX: Interactive toast notifications with Sonner and beautiful iconography with Lucide React.
 
@@ -30,6 +30,10 @@ Notifications: Sonner
 
 # Installation & Setup
 Clone the repository:git clone: https://github.com/TwistMehedi/asiggment-4-frontend
+
+#Admin;
+email: nakan34127@azeriom.com,
+password: nakan34127@azeriom.com,
 
 Configure Environment Variables: Create a .env file in the root directory and check project .env.local file
 
