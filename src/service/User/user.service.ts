@@ -6,7 +6,7 @@ export const getUser = async () => {
 
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/auth/get-session`,
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/auth/get-session` || `${process.env.INTERNAL_BACKEND_URL}/api/auth/get-session`,
       {
         method: "GET",
         headers: {

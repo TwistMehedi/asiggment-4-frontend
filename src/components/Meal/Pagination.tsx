@@ -3,19 +3,19 @@ import Link from "next/link";
 const Pagination = ({
   totalPages,
   currentPage,
-  searchTerm,
+  query,
   category,
 }: {
   totalPages: number;
   currentPage: number;
-  searchTerm?: string;
+  query?: string;
   category?: string;
 }) => {
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   const getPageLink = (page: number) => {
     const params = new URLSearchParams();
-    if (searchTerm) params.set("searchTerm", searchTerm);
+    if (query) params.set("query", query);
     if (category) params.set("category", category);
     params.set("page", page.toString());
     return `?${params.toString()}`;

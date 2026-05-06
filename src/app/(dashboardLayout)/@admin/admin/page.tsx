@@ -11,6 +11,18 @@ import {
   Loader2,
 } from "lucide-react";
 import Link from "next/link";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
 
 const AdminStats = () => {
   const [stats, setStats] = useState<any>(null);
@@ -115,9 +127,64 @@ const AdminStats = () => {
             </p>
           </div>
         ))}
-      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Revenue Chart */}
+        <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
+          <h3 className="font-black text-gray-800 uppercase tracking-tight mb-6">
+            Monthly Revenue
+          </h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={[
+              { month: "Jan", revenue: 12000 },
+              { month: "Feb", revenue: 15000 },
+              { month: "Mar", revenue: 18000 },
+              { month: "Apr", revenue: 22000 },
+              { month: "May", revenue: 25000 },
+              { month: "Jun", revenue: 28000 },
+            ]}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="revenue" fill="#ea580c" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
 
-      <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden">
+        {/* Order Status Pie Chart */}
+        <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
+          <h3 className="font-black text-gray-800 uppercase tracking-tight mb-6">
+            Order Status Distribution
+          </h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={[
+                  { name: "Delivered", value: 65, color: "#10b981" },
+                  { name: "Pending", value: 20, color: "#f59e0b" },
+                  { name: "Cancelled", value: 15, color: "#ef4444" },
+                ]}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={({ name, percent }) => `${name} ${(percent ? (percent * 100).toFixed(0) : 0)}%`}
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="value"
+              >
+                {[
+                  { name: "Delivered", value: 65, color: "#10b981" },
+                  { name: "Pending", value: 20, color: "#f59e0b" },
+                  { name: "Cancelled", value: 15, color: "#ef4444" },
+                ].map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
         <div className="p-6 border-b border-gray-50 flex justify-between items-center">
           <h3 className="font-black text-gray-800 uppercase tracking-tight flex items-center gap-2">
             <TrendingUp size={20} className="text-orange-600" />

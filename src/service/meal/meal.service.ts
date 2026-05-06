@@ -59,11 +59,13 @@ export const getAllMeals = async (
   category = "",
   page = 1,
   limit = 10,
+  sortBy = "",
 ) => {
   const queryParams = new URLSearchParams();
 
   if (searchTerm) queryParams.append("searchTerm", searchTerm);
   if (category) queryParams.append("category", category);
+  if (sortBy) queryParams.append("sort", sortBy);
 
   queryParams.append("page", page.toString());
   queryParams.append("limit", limit.toString());

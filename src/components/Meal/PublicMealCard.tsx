@@ -13,8 +13,8 @@ const PublicMealCard = ({ meal }: { meal: IMeal }) => {
   const avgRatingFormatted = avgRating.toFixed(1);
 
   return (
-    <div className="group bg-white rounded-[2rem] overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col">
-      <div className="relative h-48 bg-gray-100 overflow-hidden shrink-0">
+    <div className="group bg-white rounded-[2rem] overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col dark:bg-slate-900 dark:border-slate-800">
+      <div className="relative h-48 bg-gray-100 overflow-hidden shrink-0 dark:bg-slate-800">
         {meal?.image ? (
           <Image
             src={meal.image}
@@ -23,7 +23,7 @@ const PublicMealCard = ({ meal }: { meal: IMeal }) => {
             className="object-cover group-hover:scale-110 transition-transform duration-500"
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center text-gray-300">
+          <div className="w-full h-full flex flex-col items-center justify-center text-gray-300 dark:text-slate-400">
             <span className="text-4xl mb-1">🥘</span>
             <p className="text-xs">No Image</p>
           </div>
@@ -34,19 +34,19 @@ const PublicMealCard = ({ meal }: { meal: IMeal }) => {
       <div className="p-6 flex flex-col flex-1">
         <div className="flex flex-col gap-1 mb-4">
           <div className="flex items-center justify-between gap-3">
-            <h4 className="font-bold text-lg md:text-xl text-gray-800 group-hover:text-orange-600 transition-colors truncate">
+            <h4 className="font-bold text-lg md:text-xl text-gray-800 dark:text-white group-hover:text-orange-600 transition-colors truncate">
               {meal?.name}
             </h4>
 
-            <div className="flex items-center gap-1 shrink-0 text-sm">
+            <div className="flex items-center gap-1 shrink-0 text-sm text-slate-500 dark:text-slate-300">
               <span className="text-yellow-500">⭐</span>
               <span className="font-semibold">{avgRatingFormatted}</span>
-              <span className="text-gray-400">({reviews.length})</span>
+              <span className="text-gray-400 dark:text-slate-400">({reviews.length})</span>
             </div>
           </div>
 
-          <p className="text-xs md:text-sm font-medium text-gray-600">
-            <span className="text-gray-400 font-normal">By </span>
+          <p className="text-xs md:text-sm font-medium text-gray-600 dark:text-slate-300">
+            <span className="text-gray-400 font-normal dark:text-slate-400">By </span>
             <Link
               href={`/meals/provider/${meal?.providerId}`}
               className="hover:text-orange-600 hover:underline transition-all"
@@ -56,12 +56,12 @@ const PublicMealCard = ({ meal }: { meal: IMeal }) => {
           </p>
         </div>
 
-        <div className="mt-auto pt-4 border-t border-gray-50 flex justify-between items-center">
-          <span className="text-xl md:text-2xl font-black text-gray-900">
+        <div className="mt-auto pt-4 border-t border-gray-50 dark:border-slate-800 flex justify-between items-center">
+          <span className="text-xl md:text-2xl font-black text-gray-900 dark:text-white">
             ৳{meal?.price}
           </span>
           <Link href={`/meals/${meal.id}`}>
-            <button className="bg-gray-900 cursor-pointer text-white text-[10px] md:text-xs px-4 py-2 rounded-full font-bold group-hover:bg-orange-600 transition-all active:scale-95 shadow-md">
+            <button className="bg-orange-600 text-white text-[10px] md:text-xs px-4 py-2 rounded-full font-bold group-hover:bg-orange-500 transition-all active:scale-95 shadow-md">
               Details
             </button>
           </Link>

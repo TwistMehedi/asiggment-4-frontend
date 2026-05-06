@@ -12,7 +12,7 @@ export async function proxy(req: NextRequest) {
   if (sessionToken) {
     try {
       const response = await fetch(
-        `${process.env.BACKEND_HOST_URL}/api/auth/get-session`,
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/auth/get-session`,
         {
           headers: {
             cookie: req.headers.get("cookie") || "",
@@ -33,8 +33,6 @@ export async function proxy(req: NextRequest) {
   const isCustomer = userRole === "CUSTOMER";
   const isProvider = userRole === "PROVIDER";
 
-  if (isAdmin) return NextResponse.next();
-
   if (pathname.startsWith("/admin") && !isAdmin) {
     return NextResponse.redirect(new URL("/", req.url));
   }
@@ -47,10 +45,6 @@ export async function proxy(req: NextRequest) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
-  if (!sessionToken && pathname === "/check-inbox") {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
-
   return NextResponse.next();
 }
 
@@ -59,6 +53,5 @@ export const config = {
     "/admin/:path*",
     "/customer/:path*",
     "/provider/:path*",
-    "/check-inbox",
   ],
 };

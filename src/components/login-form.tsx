@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Field, FieldLabel } from "@/components/ui/field";
+import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { toast, Toaster } from "sonner";
 import { useRouter } from "next/navigation";
@@ -23,6 +24,7 @@ export const LoginForm = ({
 }: React.ComponentProps<"div">) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingGoogle, setIsLoadingGoogle] = useState(false);
 
@@ -54,6 +56,37 @@ export const LoginForm = ({
     } catch (err: any) {
       toast.error("An unexpected error occurred. Please try again.");
       console.error("Login Error:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDemoLogin = async (email: string, password: string) => {
+    setEmail(email);
+    setPassword(password);
+    setIsLoading(true);
+
+    try {
+      const { data, error } = await client.signIn.email({
+        email,
+        password,
+        rememberMe: true,
+      });
+
+      if (error) {
+        toast.error(error.message || "Demo login failed");
+        return;
+      }
+
+      if (data) {
+        toast.success(`Welcome back, ${data.user.name}!`);
+      }
+
+      router.push("/");
+      router.refresh();
+    } catch (err: any) {
+      toast.error("An unexpected error occurred. Please try again.");
+      console.error("Demo Login Error:", err);
     } finally {
       setIsLoading(false);
     }
@@ -125,15 +158,25 @@ export const LoginForm = ({
                       Forgot your password?
                     </Link>
                   </div>
-                  <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full"
-                    disabled={isLoading}
-                    placeholder="Enter your password"
-                  />
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full pr-12"
+                      disabled={isLoading}
+                      placeholder="Enter your password"
+                    />
+                    <button
+                      type="button"
+                      className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-orange-600"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      tabIndex={-1}
+                    >
+                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    </button>
+                  </div>
                 </Field>
 
                 <div className="flex flex-col gap-3 pt-2">
@@ -144,6 +187,35 @@ export const LoginForm = ({
                   >
                     {isLoading ? "Please wait..." : "Login"}
                   </Button>
+                  <div className="grid gap-2 sm:grid-cols-3">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => handleDemoLogin("customer@foodhub.com", "demo1234")}
+                      disabled={isLoading}
+                    >
+                      Customer
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => handleDemoLogin("admin@foodhub.com", "demo1234")}
+                      disabled={isLoading}
+                    >
+                      Admin
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => handleDemoLogin("provider@foodhub.com", "demo1234")}
+                      disabled={isLoading}
+                    >
+                      Provider
+                    </Button>
+                  </div>
                 </div>
               </div>
             </form>

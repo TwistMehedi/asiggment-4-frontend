@@ -1,13 +1,14 @@
 export const getCategories = async () => {
   try {
     const res = await fetch(
-      `${process.env.BACKEND_HOST_URL}/api/meals/categories`,
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/categories`,
       {
         method: "GET",
         cache: "no-store",
       },
     );
 
+    // console.log("res", res)
     if (!res.ok) {
       const errorData = await res.json();
       console.error("Backend Error:", errorData.message);
@@ -25,7 +26,7 @@ export const getCategories = async () => {
 
 export const getHomeMeals = async () => {
   try {
-    const res = await fetch(`${process.env.BACKEND_HOST_URL}/api/meals/home`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/meals/home`, {
       method: "GET",
       cache: "no-store",
     });

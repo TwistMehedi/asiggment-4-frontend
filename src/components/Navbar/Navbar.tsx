@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/sheet";
 import currentUser from "@/actions/user";
 import { Roles } from "@/constants/role";
+import ThemeToggle from "@/components/ThemeToggle";
 
 import { User } from "@/types/user.types";
 import LogOut from "../User/LogOut";
@@ -25,65 +26,59 @@ const Navbar = async () => {
           <span className="text-orange-600">Food</span>Hub
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6 font-medium">
-          <Link href={"/"} className="hover:text-orange-600 transition-colors">
-            Home
-          </Link>
-          <Link
-            href={"/meals"}
-            className="hover:text-orange-600 transition-colors"
-          >
-            Meals
-          </Link>
+        <nav className="hidden md:flex flex-1 items-center justify-center">
+          <div className="flex items-center gap-8 font-medium text-sm md:text-base">
+            <Link href="/" className="hover:text-orange-600 transition-colors">
+              Home
+            </Link>
+            <Link href="/meals" className="hover:text-orange-600 transition-colors">
+              Meals
+            </Link>
+            <Link href="/about" className="hover:text-orange-600 transition-colors">
+              About
+            </Link>
+            <Link href="/contact" className="hover:text-orange-600 transition-colors">
+              Contact
+            </Link>
+            <Link href="/help" className="hover:text-orange-600 transition-colors">
+              Help
+            </Link>
+          </div>
+        </nav>
 
+        <div className="hidden md:flex items-center gap-6">
           {user?.role === Roles.admin && (
-            <Link
-              href={"/admin"}
-              className="hover:text-orange-600 transition-colors"
-            >
+            <Link href="/admin" className="hover:text-orange-600 transition-colors">
               Dashboard
             </Link>
           )}
 
           {user?.role === Roles.customer && (
-            <Link
-              href={"/customer"}
-              className="hover:text-orange-600 transition-colors"
-            >
+            <Link href="/customer" className="hover:text-orange-600 transition-colors">
               Dashboard
             </Link>
           )}
 
           {user?.role === Roles.provider && (
-            <Link
-              href={"/provider"}
-              className="hover:text-orange-600 transition-colors"
-            >
+            <Link href="/provider" className="hover:text-orange-600 transition-colors">
               Dashboard
             </Link>
           )}
 
-          {user && <LogOut />}
-
           {!user && (
             <>
-              <Link href={"/login"}>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="hover:text-orange-600"
-                >
-                  Login
-                </Button>
+              <Link href="/login" className="text-sm hover:text-orange-600 transition-colors">
+                Login
               </Link>
-              <Link href={"/signup"}>
-                <Button size="sm" className="bg-orange-600 hover:bg-orange-700">
-                  Sign Up
-                </Button>
+              <Link href="/signup" className="text-sm hover:text-orange-600 transition-colors">
+                Sign Up
               </Link>
             </>
           )}
-        </nav>
+
+          {user && <LogOut />}
+          <ThemeToggle />
+        </div>
 
         <div className="md:hidden">
           <Sheet>
@@ -99,71 +94,54 @@ const Navbar = async () => {
                 </SheetTitle>
               </SheetHeader>
 
-              <div className="ml-5 mt-8 flex flex-col gap-6 font-medium">
-                <Link
-                  href={"/"}
-                  className="hover:text-orange-600 transition-colors"
-                >
+              <div className="ml-5 mt-8 flex flex-col gap-5 font-medium">
+                <Link href="/" className="hover:text-orange-600 transition-colors text-sm">
                   Home
                 </Link>
-                <Link
-                  href={"/meals"}
-                  className="hover:text-orange-600 transition-colors"
-                >
+                <Link href="/meals" className="hover:text-orange-600 transition-colors text-sm">
                   Meals
                 </Link>
+                <Link href="/about" className="hover:text-orange-600 transition-colors text-sm">
+                  About
+                </Link>
+                <Link href="/contact" className="hover:text-orange-600 transition-colors text-sm">
+                  Contact
+                </Link>
+                <Link href="/help" className="hover:text-orange-600 transition-colors text-sm">
+                  Help
+                </Link>
+
                 {user?.role === Roles.admin && (
-                  <Link
-                    href={"/admin"}
-                    className="hover:text-orange-600 transition-colors"
-                  >
+                  <Link href="/admin" className="hover:text-orange-600 transition-colors text-sm">
                     Dashboard
                   </Link>
                 )}
-
                 {user?.role === Roles.customer && (
-                  <Link
-                    href={"/customer"}
-                    className="hover:text-orange-600 transition-colors"
-                  >
+                  <Link href="/customer" className="hover:text-orange-600 transition-colors text-sm">
+                    Dashboard
+                  </Link>
+                )}
+                {user?.role === Roles.provider && (
+                  <Link href="/provider" className="hover:text-orange-600 transition-colors text-sm">
                     Dashboard
                   </Link>
                 )}
 
-                {user?.role === Roles.provider && (
-                  <Link
-                    href={"/provider"}
-                    className="hover:text-orange-600 transition-colors"
-                  >
-                    Dashboard
-                  </Link>
+                {!user && (
+                  <>
+                    <Link href="/login" className="text-sm hover:text-orange-600 transition-colors">
+                      Login
+                    </Link>
+                    <Link href="/signup" className="text-sm hover:text-orange-600 transition-colors">
+                      Sign Up
+                    </Link>
+                  </>
                 )}
 
                 {user && <LogOut />}
-                <hr className="my-2 border-orange-50" />
 
-                <div className="flex flex-col gap-3">
-                  {!user && (
-                    <>
-                      <Link href={"/login"}>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="hover:text-orange-600"
-                        >
-                          Login
-                        </Button>
-                      </Link>
-                      <Link href={"/signup"}>
-                        <Button
-                          size="sm"
-                          className="bg-orange-600 hover:bg-orange-700"
-                        >
-                          Sign Up
-                        </Button>
-                      </Link>
-                    </>
-                  )}
+                <div className="flex justify-end pt-2">
+                  <ThemeToggle />
                 </div>
               </div>
             </SheetContent>

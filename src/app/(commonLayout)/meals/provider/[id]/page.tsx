@@ -1,14 +1,12 @@
 import MealCard from "@/components/Meal/MealCard";
 import { getProviderById } from "@/service/meal/meal.service";
+import { IMeal } from "@/types/meal.type";
 import {
   MapPin,
   ShoppingBag,
   Clock,
   Info,
   Star,
-  Search,
-  Filter,
-  ArrowRight,
 } from "lucide-react";
 
 const Provider = async ({ params }: { params: { id: string } }) => {
@@ -84,7 +82,7 @@ const Provider = async ({ params }: { params: { id: string } }) => {
                 </h2>
               </div>
               <p className="text-gray-500 text-lg leading-relaxed italic">
-                "{provider.description}"
+                &ldquo;{provider.description}&rdquo;
               </p>
             </div>
             <div className="bg-gray-50 rounded-3xl p-6 space-y-4">
@@ -118,14 +116,14 @@ const Provider = async ({ params }: { params: { id: string } }) => {
               Freshly Prepared
             </div>
             <h2 className="text-4xl md:text-5xl font-black text-gray-900">
-              Today's Menu
+              Today&apos;s Menu
             </h2>
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {allMeals && allMeals.length > 0 ? (
-            allMeals.map((meal: any) => (
+            allMeals.map((meal: IMeal) => (
               <div key={meal.id} className="h-full">
                 <MealCard meal={meal} />
               </div>

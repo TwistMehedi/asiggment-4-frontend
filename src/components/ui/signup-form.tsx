@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Field, FieldLabel } from "@/components/ui/field";
 import React, { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { toast, Toaster } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -38,6 +39,7 @@ type SignupValues = z.infer<typeof signupSchema>;
 export const SignupForm = ({ ...props }: React.ComponentProps<typeof Card>) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const {
@@ -58,7 +60,7 @@ export const SignupForm = ({ ...props }: React.ComponentProps<typeof Card>) => {
   const onSubmit = async (values: SignupValues) => {
     setIsLoading(true);
 
-    try {
+     try {
       const { data, error } = await client.signUp.email({
         name: values.name,
         email: values.email,
@@ -66,17 +68,15 @@ export const SignupForm = ({ ...props }: React.ComponentProps<typeof Card>) => {
         role: values.role,
       });
 
-      if (error) {
+       if (error) {
         toast.error(error.message || "Registration failed");
         return;
       }
 
       if (data) {
         toast.success("Check your mail and verify your account");
-        reset();
-        router.push("/check-inbox");
-        router.refresh();
       }
+      router.push("/check-inbox")
     } catch (error: any) {
       toast.error("Network error, unable to register");
       console.error(error);
@@ -159,14 +159,24 @@ export const SignupForm = ({ ...props }: React.ComponentProps<typeof Card>) => {
 
             <Field>
               <FieldLabel htmlFor="password">Password</FieldLabel>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                disabled={isLoading}
-                {...register("password")}
-                className={`mt-1 ${errors.password ? "border-red-500 focus-visible:ring-red-500" : ""}`}
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  disabled={isLoading}
+                  {...register("password")}
+                  className={`mt-1 pr-12 ${errors.password ? "border-red-500 focus-visible:ring-red-500" : ""}`}
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-orange-600"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </button>
+              </div>
               {errors.password ? (
                 <p className="text-red-500 text-[12px] mt-1">
                   {errors.password.message}
@@ -205,7 +215,7 @@ export const SignupForm = ({ ...props }: React.ComponentProps<typeof Card>) => {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-orange-600 hover:bg-orange-700 text-white"
+                className="w-full cursor-pointer bg-orange-600 hover:bg-orange-700 text-white"
               >
                 {isLoading ? "Creating account..." : "Create Account"}
               </Button>
@@ -225,7 +235,7 @@ export const SignupForm = ({ ...props }: React.ComponentProps<typeof Card>) => {
             <Button
               variant="outline"
               type="button"
-              className="w-full"
+              className="w-full cursor-pointer"
               onClick={handleGoogleSignup}
               disabled={isGoogleLoading}
             >
@@ -254,7 +264,7 @@ export const SignupForm = ({ ...props }: React.ComponentProps<typeof Card>) => {
               Already have an account?{" "}
               <Link
                 href="/login"
-                className="text-orange-600 font-medium hover:underline"
+                className="text-orange-600 cursor-pointer font-medium hover:underline"
               >
                 Sign in
               </Link>

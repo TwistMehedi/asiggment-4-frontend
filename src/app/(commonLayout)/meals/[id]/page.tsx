@@ -1,10 +1,10 @@
 import Image from "next/image";
-import { Clock, MapPin, Store, CheckCircle, ArrowLeft } from "lucide-react";
+import { MapPin, Store, CheckCircle, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import getMeal from "@/actions/meal";
 import AddToCartButton from "@/components/Meal/AddToCartButton";
 
-const MealDetailPage = async ({ params }: { params: any }) => {
+const MealDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
   const { meal } = await getMeal(id);
 
@@ -25,24 +25,49 @@ const MealDetailPage = async ({ params }: { params: any }) => {
 
       {/* Main Content: Image & Info */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-8">
-        <div className="relative h-[300px] sm:h-[400px] md:h-[550px] bg-gray-200 rounded-3xl md:rounded-[2.5rem] overflow-hidden shadow-inner flex items-center justify-center">
-          {meal.image ? (
-            <Image
-              src={meal.image}
-              alt={meal.name}
-              fill
-              className="object-cover"
-              priority
-            />
-          ) : (
-            <div className="text-gray-400 flex flex-col items-center">
-              <span className="text-6xl mb-2">🍱</span>
-              <p>No Image Available</p>
-            </div>
-          )}
+        <div className="space-y-4">
+          <div className="relative h-[300px] sm:h-[400px] md:h-[550px] bg-gray-200 rounded-3xl md:rounded-[2.5rem] overflow-hidden shadow-inner flex items-center justify-center">
+            {meal.image ? (
+              <Image
+                src={meal.image}
+                alt={meal.name}
+                fill
+                className="object-cover"
+                priority
+              />
+            ) : (
+              <div className="text-gray-400 flex flex-col items-center">
+                <span className="text-6xl mb-2">🍱</span>
+                <p>No Image Available</p>
+              </div>
+            )}
 
-          <div className="absolute top-4 left-4 md:top-6 md:left-6 bg-white/90 backdrop-blur px-4 py-1.5 rounded-full text-xs md:text-sm font-bold text-orange-600 shadow-sm uppercase">
-            {meal.categoryName}
+            <div className="absolute top-4 left-4 md:top-6 md:left-6 bg-white/90 backdrop-blur px-4 py-1.5 rounded-full text-xs md:text-sm font-bold text-orange-600 shadow-sm uppercase">
+              {meal.categoryName}
+            </div>
+          </div>
+
+          {/* Image Gallery */}
+          <div className="grid grid-cols-4 gap-4">
+            {[meal.image, meal.image, meal.image, meal.image].map((img, index) => (
+              <div
+                key={index}
+                className="relative h-20 bg-gray-200 rounded-xl overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
+              >
+                {img ? (
+                  <Image
+                    src={img}
+                    alt={`${meal.name} ${index + 1}`}
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-gray-400">
+                    <span className="text-2xl">🍽️</span>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
 
@@ -103,7 +128,7 @@ const MealDetailPage = async ({ params }: { params: any }) => {
               </div>
               {meal.provider.description && (
                 <p className="text-xs md:text-sm text-gray-600 italic mt-2">
-                  "{meal.provider.description}"
+                  &ldquo;{meal.provider.description}&rdquo;
                 </p>
               )}
             </Link>
