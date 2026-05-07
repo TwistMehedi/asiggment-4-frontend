@@ -23,7 +23,7 @@ const Hero = () => {
             <Link href={"/meals"}>
               <Button
                 size="lg"
-                className="px-8 py-6 text-lg rounded-full shadow-lg hover:shadow-orange-200 transition-all"
+                className="px-8 cursor-pointer py-6 text-lg rounded-full shadow-lg hover:shadow-orange-200 transition-all"
               >
                 Order Now
               </Button>
@@ -32,7 +32,7 @@ const Hero = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="px-8 py-6 text-lg rounded-full"
+                className="px-8 cursor-pointer py-6 text-lg rounded-full"
               >
                 View Menu
               </Button>

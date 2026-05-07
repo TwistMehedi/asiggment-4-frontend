@@ -31,7 +31,7 @@ const Provider = async ({ params }: { params: { id: string } }) => {
                     : "bg-red-500 text-white"
                 }`}
               >
-                {provider?.isOpen ? "● Open Now" : "○ Closed"}
+                {provider?.isOpen ? "Open Now" : "Closed"}
               </span>
               <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10">
                 <Star

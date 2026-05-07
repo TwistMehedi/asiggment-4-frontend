@@ -14,19 +14,23 @@ import {
 } from "../ui/dialog";
 import EditMeal from "./EditMeal";
 import { useState } from "react";
+import Image from "next/image";
 
 const MealCard = ({ meal, mutate }: { meal: any; mutate?: any }) => {
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   return (
     <div className="bg-white group rounded-[2.5rem] p-5 border border-gray-100 shadow-sm hover:shadow-xl hover:border-orange-200 transition-all duration-300 relative overflow-hidden">
       <div className="h-48 bg-gray-100 rounded-[2rem] mb-4 overflow-hidden relative">
         <div className="absolute inset-0 flex items-center justify-center text-gray-300">
-          {meal.image ? (
-            <img
+          {meal.image && !imageError ? (
+            <Image
               src={meal.image}
               alt={meal.name}
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
+              onError={() => setImageError(true)}
             />
           ) : (
             <Utensils size={48} />

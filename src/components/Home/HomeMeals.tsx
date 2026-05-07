@@ -2,13 +2,13 @@ import { getHomeMeals } from "@/service/Home/home.service";
 import { Utensils } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { HomeMealImage } from "./HomeMealImage";
 
 const HomeMeals = async () => {
   const mealInfo = await getHomeMeals();
   const data = mealInfo?.data;
 
-  // console.log(data);
-  return (
+   return (
     <section className="px-4 sm:px-6 py-12 md:py-20 bg-gray-50">
       <div className="max-w-6xl mx-auto">
         <h3 className="text-2xl md:text-4xl font-bold text-center mb-8 md:mb-12 text-gray-800">
@@ -30,18 +30,7 @@ const HomeMeals = async () => {
                   className="group border border-gray-100 rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-all duration-300"
                 >
                   <div className="relative h-48 w-full bg-gray-200 overflow-hidden">
-                    {meal?.image ? (
-                      <Image
-                        src={meal.image}
-                        alt={meal.name}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    ) : (
-                      <div className="flex items-center justify-center h-full text-gray-400">
-                        No Image
-                      </div>
-                    )}
+                    <HomeMealImage src={meal?.image} alt={meal.name} />
                     <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-orange-600">
                       {meal?.categoryName}
                     </div>
@@ -56,7 +45,7 @@ const HomeMeals = async () => {
                         ৳{meal?.price}
                       </p>
                       <Link href={`/meals/${meal.id}`}>
-                        <button className="text-xs font-semibold bg-gray-100 px-3 py-2 rounded-lg hover:bg-orange-600 hover:text-white transition-colors">
+                        <button className="text-xs cursor-pointer font-semibold bg-gray-100 px-3 py-2 rounded-lg hover:bg-orange-600 hover:text-white transition-colors">
                           Read More
                         </button>
                       </Link>

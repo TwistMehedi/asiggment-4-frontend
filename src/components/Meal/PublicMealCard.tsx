@@ -1,8 +1,12 @@
+"use client";
+
 import { IMeal } from "@/types/meal.type";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 const PublicMealCard = ({ meal }: { meal: IMeal }) => {
+  const [imageError, setImageError] = useState(false);
   const reviews = meal.reviews || [];
 
   const avgRating =
@@ -13,14 +17,15 @@ const PublicMealCard = ({ meal }: { meal: IMeal }) => {
   const avgRatingFormatted = avgRating.toFixed(1);
 
   return (
-    <div className="group bg-white rounded-[2rem] overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col dark:bg-slate-900 dark:border-slate-800">
+    <div className="group bg-white rounded-[2rem] mt-17 overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col dark:bg-slate-900 dark:border-slate-800">
       <div className="relative h-48 bg-gray-100 overflow-hidden shrink-0 dark:bg-slate-800">
-        {meal?.image ? (
+        {meal?.image && !imageError ? (
           <Image
             src={meal.image}
             alt={meal.name}
             fill
             className="object-cover group-hover:scale-110 transition-transform duration-500"
+            onError={() => setImageError(true)}
           />
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center text-gray-300 dark:text-slate-400">
@@ -61,7 +66,7 @@ const PublicMealCard = ({ meal }: { meal: IMeal }) => {
             ৳{meal?.price}
           </span>
           <Link href={`/meals/${meal.id}`}>
-            <button className="bg-orange-600 text-white text-[10px] md:text-xs px-4 py-2 rounded-full font-bold group-hover:bg-orange-500 transition-all active:scale-95 shadow-md">
+            <button className="bg-orange-600 cursor-pointer text-white text-[10px] md:text-xs px-4 py-2 rounded-full font-bold group-hover:bg-orange-500 transition-all active:scale-95 shadow-md">
               Details
             </button>
           </Link>

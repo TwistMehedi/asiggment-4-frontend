@@ -182,7 +182,7 @@ export const LoginForm = ({
                 <div className="flex flex-col gap-3 pt-2">
                   <Button
                     type="submit"
-                    className="w-full bg-orange-600 hover:bg-orange-700"
+                    className="w-full cursor-pointer bg-orange-600 hover:bg-orange-700"
                     disabled={isLoading}
                   >
                     {isLoading ? "Please wait..." : "Login"}

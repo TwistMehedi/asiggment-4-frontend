@@ -3,12 +3,11 @@ import { MapPin, Store, CheckCircle, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import getMeal from "@/actions/meal";
 import AddToCartButton from "@/components/Meal/AddToCartButton";
+import { MealImage, GalleryImage } from "@/components/Meal/MealImages";
 
 const MealDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
   const { meal } = await getMeal(id);
-
-  // console.log(meal);
 
   return (
     <main className="min-h-screen bg-gray-50 pb-10 md:pb-20">
@@ -23,49 +22,23 @@ const MealDetailPage = async ({ params }: { params: Promise<{ id: string }> }) =
         </Link>
       </div>
 
-      {/* Main Content: Image & Info */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-8">
+       <section className="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-8">
         <div className="space-y-4">
           <div className="relative h-[300px] sm:h-[400px] md:h-[550px] bg-gray-200 rounded-3xl md:rounded-[2.5rem] overflow-hidden shadow-inner flex items-center justify-center">
-            {meal.image ? (
-              <Image
-                src={meal.image}
-                alt={meal.name}
-                fill
-                className="object-cover"
-                priority
-              />
-            ) : (
-              <div className="text-gray-400 flex flex-col items-center">
-                <span className="text-6xl mb-2">🍱</span>
-                <p>No Image Available</p>
-              </div>
-            )}
+            <MealImage src={meal.image} alt={meal.name} priority />
 
             <div className="absolute top-4 left-4 md:top-6 md:left-6 bg-white/90 backdrop-blur px-4 py-1.5 rounded-full text-xs md:text-sm font-bold text-orange-600 shadow-sm uppercase">
               {meal.categoryName}
             </div>
           </div>
 
-          {/* Image Gallery */}
-          <div className="grid grid-cols-4 gap-4">
+           <div className="grid grid-cols-4 gap-4">
             {[meal.image, meal.image, meal.image, meal.image].map((img, index) => (
               <div
                 key={index}
                 className="relative h-20 bg-gray-200 rounded-xl overflow-hidden cursor-pointer hover:opacity-80 transition-opacity"
               >
-                {img ? (
-                  <Image
-                    src={img}
-                    alt={`${meal.name} ${index + 1}`}
-                    fill
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-gray-400">
-                    <span className="text-2xl">🍽️</span>
-                  </div>
-                )}
+                <GalleryImage src={img} alt={`${meal.name} ${index + 1}`} index={index} />
               </div>
             ))}
           </div>
@@ -123,7 +96,7 @@ const MealDetailPage = async ({ params }: { params: Promise<{ id: string }> }) =
                       : "bg-white text-red-600 border-red-200"
                   }`}
                 >
-                  Open: {meal.provider.isOpen.toString()}
+                  Open: {meal?.provider?.isOpen ? "Yes" : "No"}
                 </span>
               </div>
               {meal.provider.description && (

@@ -27,7 +27,8 @@ export async function AppSidebar({ user, ...props }: { user: any }) {
           <div className="h-9 w-9 bg-orange-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-orange-200">
             <UtensilsCrossed size={20} />
           </div>
-          <div className="flex flex-col">
+           <Link href={"/"} className="text-lg font-bold tracking-tight text-gray-800">
+            <div className="flex flex-col">
             <span className="font-black text-gray-900 tracking-tighter leading-none uppercase text-lg">
               Meal<span className="text-orange-600">Forge</span>
             </span>
@@ -35,6 +36,7 @@ export async function AppSidebar({ user, ...props }: { user: any }) {
               Management
             </span>
           </div>
+          </Link>
         </div>
       </SidebarHeader>
 

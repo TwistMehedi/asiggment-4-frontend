@@ -19,6 +19,7 @@ import { User } from "@/types/user.types";
 import { Home } from "lucide-react";
 import Link from "next/link";
 import ProfileDropdown from "@/components/User/ProfileDropdown";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const DashboardLayout = async ({
   admin,
@@ -67,6 +68,7 @@ const DashboardLayout = async ({
             </BreadcrumbList>
           </Breadcrumb>
           <ProfileDropdown user={user} />
+          <ThemeToggle />
         </header>
 
         <main className="flex flex-1 flex-col gap-4 p-4 md:p-8 lg:p-10 max-w-[1600px] mx-auto w-full transition-all duration-500">

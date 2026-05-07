@@ -22,7 +22,7 @@ export default function ProfileDropdown({ user }: ProfileDropdownProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+        <Button variant="ghost" className="relative cursor-pointer h-8 w-8 rounded-full">
           <UserCircle className="h-8 w-8 text-gray-600 hover:text-orange-600 transition-colors" />
         </Button>
       </DropdownMenuTrigger>
@@ -37,7 +37,7 @@ export default function ProfileDropdown({ user }: ProfileDropdownProps) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href={`/${user.role.toLowerCase()}/profile`} className="flex items-center">
+          <Link href={`/${user.role.toLowerCase()}/profile`} className="flex cursor-pointer items-center">
             <Settings className="mr-2 h-4 w-4" />
             <span>Profile</span>
           </Link>

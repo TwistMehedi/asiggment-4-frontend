@@ -19,6 +19,7 @@ const Resturant = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [restaurant, setRestaurant] = useState<any>(null);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     getRestaurant()
@@ -77,12 +78,19 @@ const Resturant = () => {
             {/* Image Section */}
             <div className="w-full md:w-64 h-64 md:h-auto relative overflow-hidden p-4">
               <div className="relative w-full h-full rounded-[2rem] overflow-hidden border-4 border-gray-50">
-                <Image
-                  src={restaurant?.image}
-                  alt="shop"
-                  fill
-                  className="object-cover hover:scale-105 transition-transform duration-500"
-                />
+                {restaurant?.image && !imageError ? (
+                  <Image
+                    src={restaurant?.image}
+                    alt="shop"
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-500"
+                    onError={() => setImageError(true)}
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-gray-400 bg-gray-100">
+                    <Store size={48} />
+                  </div>
+                )}
               </div>
             </div>
 
