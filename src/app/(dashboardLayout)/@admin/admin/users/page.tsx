@@ -20,12 +20,22 @@ import {
 } from "lucide-react";
 import { UserEditModal } from "@/components/User/ManageUserModal";
 
-const Users = async () => {
+const Users = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ query?: string; page?: string }>;
+}) => {
+  const { query = "", page = "1" } = await searchParams;
+  const currentPage = parseInt(page) || 1;
+  const limit = 10;
+  const offset = (currentPage - 1) * limit;
+
   let users = [];
+  let totalUsers = 0;
 
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/user/admin/users`,
+      `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/user/admin/users?query=${encodeURIComponent(query)}&limit=${limit}&offset=${offset}`,
       {
         method: "GET",
         headers: {
@@ -39,10 +49,13 @@ const Users = async () => {
     if (res.ok) {
       const result = await res.json();
       users = result?.users || [];
+      totalUsers = result?.total || 0;
     }
   } catch (error) {
     console.error("User fetch error:", error);
   }
+
+  const totalPages = Math.ceil(totalUsers / limit);
 
   return (
     <div className="w-full bg-gray-50/50 p-4 md:p-8 lg:p-10 min-h-screen">
@@ -61,11 +74,16 @@ const Users = async () => {
           </div>
 
           <div className="w-full sm:w-auto bg-white p-2 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-2 px-4">
-            <Search size={18} className="text-gray-400" />
-            <input
-              placeholder="Search users..."
-              className="bg-transparent border-none focus:outline-none text-sm font-medium w-full"
-            />
+            <form method="GET" className="flex items-center gap-2 w-full">
+              <Search size={18} className="text-gray-400" />
+              <input
+                name="query"
+                defaultValue={query}
+                placeholder="Search users..."
+                className="bg-transparent border-none focus:outline-none text-sm font-medium w-full"
+              />
+              <button type="submit" className="hidden">Search</button>
+            </form>
           </div>
         </div>
 
@@ -167,6 +185,45 @@ const Users = async () => {
               </TableBody>
             </Table>
           </div>
+
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between mt-8">
+              <p className="text-sm text-gray-500">
+                Showing {offset + 1} to {Math.min(offset + limit, totalUsers)} of {totalUsers} users
+              </p>
+              <div className="flex items-center gap-2">
+                {currentPage > 1 && (
+                  <a
+                    href={`?query=${encodeURIComponent(query)}&page=${currentPage - 1}`}
+                    className="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+                  >
+                    Previous
+                  </a>
+                )}
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                  <a
+                    key={pageNum}
+                    href={`?query=${encodeURIComponent(query)}&page=${pageNum}`}
+                    className={`px-4 py-2 text-sm font-medium rounded-lg ${
+                      pageNum === currentPage
+                        ? "text-white bg-orange-600"
+                        : "text-gray-500 bg-white border border-gray-300 hover:bg-gray-50"
+                    }`}
+                  >
+                    {pageNum}
+                  </a>
+                ))}
+                {currentPage < totalPages && (
+                  <a
+                    href={`?query=${encodeURIComponent(query)}&page=${currentPage + 1}`}
+                    className="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+                  >
+                    Next
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

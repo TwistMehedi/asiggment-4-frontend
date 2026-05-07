@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+"use client";
 
 import {
   Table,
@@ -8,15 +8,43 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Edit2, FolderTree, Plus, Inbox } from "lucide-react";
+import { Edit2, FolderTree, Plus, Inbox, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import categories from "@/actions/categories";
 import { DeleteCategoryBtn } from "@/components/DeleteCategoryBtn";
 import { EditCategoryBtn } from "@/components/Meal/EditeCategoryBtn";
+import { useEffect, useState } from "react";
 
-const AdminCategory = async () => {
-  const response = await categories();
-  const data = response?.data || [];
+const AdminCategory = () => {
+  const [data, setData] = useState<any[]>([]);
+  const [filteredData, setFilteredData] = useState<any[]>([]);
+  const [query, setQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const response = await categories();
+      const cats = response?.data || [];
+      setData(cats);
+      setFilteredData(cats);
+    };
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    const filtered = data.filter((cat) =>
+      cat.name.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredData(filtered);
+    setCurrentPage(1);
+  }, [query, data]);
+
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const paginatedData = filteredData.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <div className="min-h-screen bg-gray-50/50 p-4 md:p-10">
@@ -32,6 +60,16 @@ const AdminCategory = async () => {
                 ? `Total ${data.length} categories active in your platform.`
                 : "Organize your meals by adding categories."}
             </p>
+          </div>
+
+          <div className="w-full sm:w-auto bg-white p-2 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-2 px-4">
+            <Search size={18} className="text-gray-400" />
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search categories..."
+              className="bg-transparent border-none focus:outline-none text-sm font-medium w-full"
+            />
           </div>
         </div>
 
@@ -56,14 +94,14 @@ const AdminCategory = async () => {
               </TableHeader>
 
               <TableBody>
-                {data.length > 0 ? (
-                  data.map((category: any, index: number) => (
+                {paginatedData.length > 0 ? (
+                  paginatedData.map((category: any, index: number) => (
                     <TableRow
                       key={category.id}
                       className="hover:bg-orange-50/30 transition-colors border-gray-50"
                     >
                       <TableCell className="font-bold text-gray-400 pl-8">
-                        {String(index + 1).padStart(2, "0")}
+                        {String((currentPage - 1) * itemsPerPage + index + 1).padStart(2, "0")}
                       </TableCell>
                       <TableCell className="font-black text-gray-800 text-base">
                         {category.name}
@@ -94,8 +132,7 @@ const AdminCategory = async () => {
                             No Categories Found
                           </p>
                           <p className="text-sm text-gray-400 font-medium">
-                            Start by creating a new category to organize your
-                            menu.
+                            {query ? "Try adjusting your search." : "Start by creating a new category to organize your menu."}
                           </p>
                         </div>
                       </div>
@@ -105,6 +142,45 @@ const AdminCategory = async () => {
               </TableBody>
             </Table>
           </div>
+
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between mt-8 px-6 pb-6">
+              <p className="text-sm text-gray-500">
+                Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, filteredData.length)} of {filteredData.length} categories
+              </p>
+              <div className="flex items-center gap-2">
+                {currentPage > 1 && (
+                  <button
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                    className="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+                  >
+                    Previous
+                  </button>
+                )}
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                  <button
+                    key={pageNum}
+                    onClick={() => setCurrentPage(pageNum)}
+                    className={`px-4 py-2 text-sm font-medium rounded-lg ${
+                      pageNum === currentPage
+                        ? "text-white bg-orange-600"
+                        : "text-gray-500 bg-white border border-gray-300 hover:bg-gray-50"
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                ))}
+                {currentPage < totalPages && (
+                  <button
+                    onClick={() => setCurrentPage(currentPage + 1)}
+                    className="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+                  >
+                    Next
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

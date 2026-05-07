@@ -148,6 +148,48 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="px-6 py-20 bg-slate-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-14">
+            <p className="text-sm uppercase tracking-[0.3em] text-orange-600 font-bold">
+              Frequently Asked Questions
+            </p>
+            <h2 className="mt-4 text-4xl font-black text-gray-900">
+              Got Questions? We Have Answers
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {[
+              {
+                question: "How do I place an order?",
+                answer: "Browse meals, add to cart, and checkout with your delivery address.",
+              },
+              {
+                question: "Is cash on delivery available?",
+                answer: "Yes, we offer cash on delivery for most orders.",
+              },
+              {
+                question: "How do I become a provider?",
+                answer: "Register as a provider and contact support for onboarding.",
+              },
+              {
+                question: "What areas do you deliver to?",
+                answer: "We deliver across major cities. Check availability during checkout.",
+              },
+            ].map((faq) => (
+              <div
+                key={faq.question}
+                className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm"
+              >
+                <h3 className="text-xl font-bold text-gray-900 mb-3">{faq.question}</h3>
+                <p className="text-gray-600 leading-7">{faq.answer}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="bg-gradient-to-r from-orange-500 via-orange-400 to-yellow-300 px-6 py-20 text-white">
         <div className="max-w-6xl mx-auto grid gap-10 lg:grid-cols-2 items-center">
           <div>

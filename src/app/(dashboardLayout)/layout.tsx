@@ -18,6 +18,7 @@ import { Roles } from "@/constants/role";
 import { User } from "@/types/user.types";
 import { Home } from "lucide-react";
 import Link from "next/link";
+import ProfileDropdown from "@/components/User/ProfileDropdown";
 
 const DashboardLayout = async ({
   admin,
@@ -65,7 +66,7 @@ const DashboardLayout = async ({
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          <Link href={"/"}>Home</Link>
+          <ProfileDropdown user={user} />
         </header>
 
         <main className="flex flex-1 flex-col gap-4 p-4 md:p-8 lg:p-10 max-w-[1600px] mx-auto w-full transition-all duration-500">

@@ -37,11 +37,11 @@ const Meals = async ({
   } else if (sort === "rating_desc") {
     meals = [...meals].sort((a, b) => {
       const aRate = a.reviews?.length
-        ? a.reviews.reduce((sum: number, item) => sum + item.rating, 0) /
+        ? a.reviews.reduce((sum: number, item: any) => sum + item.rating, 0) /
           a.reviews.length
         : 0;
       const bRate = b.reviews?.length
-        ? b.reviews.reduce((sum: number, item) => sum + item.rating, 0) /
+        ? b.reviews.reduce((sum: number, item: any) => sum + item.rating, 0) /
           b.reviews.length
         : 0;
       return bRate - aRate;
