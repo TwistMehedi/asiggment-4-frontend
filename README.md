@@ -15,6 +15,28 @@ Secure Authentication: Session-based login and secure registration flow.
 Modern UI/UX: Interactive toast notifications with Sonner and beautiful iconography with Lucide React.
 
 
+### Role-Based System
+- Separate dashboards for **Admin, Provider, and Customer**
+- Secure session-based authentication
+- Protected routes for all user roles
+
+### Dashboard System
+- Responsive admin/provider/customer dashboards
+- Data tables built with Shadcn/UI
+- Real-time UI updates from backend API
+
+###  Authentication System
+- Secure login & registration flow
+- Session-based authentication (backend integrated)
+- Protected API access with middleware support
+
+###  Modern UI/UX
+- Clean and modern interface
+- Toast notifications using Sonner
+- Icon system powered by Lucide React
+- Fully responsive design (mobile + desktop)
+
+
 # Tech Stack
 Framework: Next.js (App Router)
 
@@ -28,12 +50,22 @@ Data Fetching: Fetch API
 
 Notifications: Sonner
 
+Live Website URL Frontend: https://client-sandy-kappa.vercel.app
+
+Live Website URL Backend: https://backend-theta-peach-32.vercel.app
+
+GitHub Repository Link Frontend: https://github.com/TwistMehedi/asiggment-4-frontend
+
+GitHub Repository Link Backend: https://github.com/TwistMehedi/foodHub-backend
+
 # Installation & Setup
 Clone the repository:git clone: https://github.com/TwistMehedi/asiggment-4-frontend
 
-#Admin;
-email: nakan34127@azeriom.com,
-password: nakan34127@azeriom.com,
-
+### 1️⃣ Clone Repository
+```bash
+git clone https://github.com/TwistMehedi/asiggment-4-frontend
+cd asiggment-4-frontend
+npm i
+npm run dev
 Configure Environment Variables: Create a .env file in the root directory and check project .env.local file
 
