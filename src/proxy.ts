@@ -29,19 +29,25 @@ export async function proxy(req: NextRequest) {
     }
   }
 
+  // console.log("userRole:", userRole);
   const isAdmin = userRole === "ADMIN";
   const isCustomer = userRole === "CUSTOMER";
   const isProvider = userRole === "PROVIDER";
 
-  if (pathname.startsWith("/admin") && !isAdmin) {
+  const hasAccess = isAdmin || isCustomer || isProvider;
+  if (pathname.startsWith("/dashboard") && !hasAccess) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
-  if (pathname.startsWith("/customer") && !isCustomer) {
+  if (pathname.startsWith("/dashboard/admin") && !isAdmin) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
-  if (pathname.startsWith("/provider") && !isProvider) {
+  if (pathname.startsWith("/dashboard/customer") && !isCustomer) {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+
+  if (pathname.startsWith("/dashboard/provider") && !isProvider) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
@@ -49,9 +55,5 @@ export async function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/admin/:path*",
-    "/customer/:path*",
-    "/provider/:path*",
-  ],
+  matcher: ["/dashboard/:path*"],
 };

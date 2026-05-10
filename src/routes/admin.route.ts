@@ -5,27 +5,31 @@ export const adminRoutes = {
       items: [
         {
           title: "Dashboard",
-          url: "/admin",
+          url: "/dashboard/admin",
         },
         {
           title: "Create Category",
-          url: "/admin/create-category",
+          url: "/dashboard/admin/create-category",
         },
         {
           title: "All Categories",
-          url: "/admin/categories",
+          url: "/dashboard/admin/categories",
         },
         {
           title: "Orders",
-          url: "/admin/orders",
+          url: "/dashboard/admin/orders",
         },
         {
           title: "Users",
-          url: "/admin/users",
+          url: "/dashboard/admin/users",
         },
         {
           title: "Resturants",
-          url: "/admin/all-resturants",
+          url: "/dashboard/admin/all-resturants",
+        },
+        {
+          title: "Profile",
+          url: "/dashboard/admin/profile",
         },
       ],
     },

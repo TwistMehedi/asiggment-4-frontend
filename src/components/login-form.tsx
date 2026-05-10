@@ -16,7 +16,7 @@ import { toast, Toaster } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Input } from "./ui/input";
-import { client } from "@/lib/auth-client";
+import { authClient, client } from "@/lib/auth-client";
 
 export const LoginForm = ({
   className,
@@ -33,30 +33,47 @@ export const LoginForm = ({
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-
     try {
-      const { data, error } = await client.signIn.email({
-        email: email,
-        password: password,
-        rememberMe: true,
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_HOST_URL}/api/user/login`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        },
+      );
 
-      if (error) {
-        toast.error(error.message || "Invalid credentials");
-        setIsLoading(false);
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.message || "Login failed");
         return;
       }
 
-      if (data) {
-        toast.success(`Welcome back, ${data.user.name}!`);
+      await authClient.signIn.email({
+        email,
+        password,
+        rememberMe: true,
+      });
+
+      if (data?.data?.user) {
+        toast.success(`Welcome back, ${data.data.user.name}!`);
+
+        router.refresh();
+
+        setTimeout(() => {
+          router.push("/");
+        }, 500);
       }
 
-      router.push("/");
-      router.refresh();
+      setIsLoading(false);
     } catch (err: any) {
       toast.error("An unexpected error occurred. Please try again.");
+      console.log(err);
       console.error("Login Error:", err);
-    } finally {
       setIsLoading(false);
     }
   };
@@ -64,40 +81,14 @@ export const LoginForm = ({
   const handleDemoLogin = async (email: string, password: string) => {
     setEmail(email);
     setPassword(password);
-    setIsLoading(true);
-
-    try {
-      const { data, error } = await client.signIn.email({
-        email,
-        password,
-        rememberMe: true,
-      });
-
-      if (error) {
-        toast.error(error.message || "Demo login failed");
-        return;
-      }
-
-      if (data) {
-        toast.success(`Welcome back, ${data.user.name}!`);
-      }
-
-      router.push("/");
-      router.refresh();
-    } catch (err: any) {
-      toast.error("An unexpected error occurred. Please try again.");
-      console.error("Demo Login Error:", err);
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   const handleGoogleSignIn = async () => {
     setIsLoadingGoogle(true);
     try {
-      const { error } = await client.signIn.social({
+      const { error } = await authClient.signIn.social({
         provider: "google",
-        callbackURL: process.env.NEXT_PUBLIC_APP_URL,
+        callbackURL: process.env.NEXT_PUBLIC_API_URL,
       });
 
       if (error) {
@@ -141,7 +132,7 @@ export const LoginForm = ({
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="m@example.com"
+                    placeholder="email@example.com"
                     className="w-full"
                     disabled={isLoading}
                     required
@@ -174,7 +165,11 @@ export const LoginForm = ({
                       onClick={() => setShowPassword((prev) => !prev)}
                       tabIndex={-1}
                     >
-                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                      {showPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
                     </button>
                   </div>
                 </Field>
@@ -192,7 +187,12 @@ export const LoginForm = ({
                       type="button"
                       variant="outline"
                       className="w-full"
-                      onClick={() => handleDemoLogin("customer@foodhub.com", "demo1234")}
+                      onClick={() =>
+                        handleDemoLogin(
+                          "visahi9610@ellbit.com",
+                          "visahi9610@ellbit.com",
+                        )
+                      }
                       disabled={isLoading}
                     >
                       Customer
@@ -201,7 +201,12 @@ export const LoginForm = ({
                       type="button"
                       variant="outline"
                       className="w-full"
-                      onClick={() => handleDemoLogin("admin@foodhub.com", "demo1234")}
+                      onClick={() =>
+                        handleDemoLogin(
+                          "ataul1708@gmail.com",
+                          "ataul1708@gmail.com",
+                        )
+                      }
                       disabled={isLoading}
                     >
                       Admin
@@ -210,7 +215,12 @@ export const LoginForm = ({
                       type="button"
                       variant="outline"
                       className="w-full"
-                      onClick={() => handleDemoLogin("provider@foodhub.com", "demo1234")}
+                      onClick={() =>
+                        handleDemoLogin(
+                          "bitobew696@ellbit.com",
+                          "bitobew696@ellbit.com",
+                        )
+                      }
                       disabled={isLoading}
                     >
                       Provider
@@ -234,7 +244,7 @@ export const LoginForm = ({
             <Button
               variant="outline"
               type="button"
-              className="w-full"
+              className="w-full cursor-pointer"
               onClick={handleGoogleSignIn}
               disabled={isLoadingGoogle}
             >

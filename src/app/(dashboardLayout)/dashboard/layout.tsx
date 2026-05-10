@@ -14,29 +14,19 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Roles } from "@/constants/role";
 import { User } from "@/types/user.types";
 import { Home } from "lucide-react";
 import Link from "next/link";
 import ProfileDropdown from "@/components/User/ProfileDropdown";
 import ThemeToggle from "@/components/ThemeToggle";
 
-const DashboardLayout = async ({
-  admin,
-  customer,
-  provider,
-}: {
-  admin: React.ReactNode;
-  customer: React.ReactNode;
-  provider: React.ReactNode;
-}) => {
+const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
   const user = ((await currentUser()) as User) || null;
-  // console.log(user);
-  return (
+   return (
     <SidebarProvider>
       <AppSidebar user={user} />
       <SidebarInset className="bg-gray-50/50">
-        <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center gap-2 border-b bg-white/80 backdrop-blur-md px-6 shadow-sm transition-all">
+        <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center gap-2 border-b border-gray-200 bg-white px-6 shadow-md">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1 hover:bg-orange-50 hover:text-orange-600 transition-colors rounded-lg" />
             <Separator
@@ -71,17 +61,9 @@ const DashboardLayout = async ({
           <ThemeToggle />
         </header>
 
-        <main className="flex flex-1 flex-col gap-4 p-4 md:p-8 lg:p-10 max-w-[1600px] mx-auto w-full transition-all duration-500">
-          <div className="relative min-h-[calc(100vh-120px)] w-full rounded-[2rem] md:rounded-[3rem] border border-gray-100 bg-white/50 p-1 md:p-2 shadow-inner">
-            <div className="w-full h-full animate-in fade-in slide-in-from-bottom-4 duration-700">
-              {user?.role === Roles.provider
-                ? provider
-                : user?.role === Roles.customer
-                  ? customer
-                  : user?.role === Roles.admin
-                    ? admin
-                    : "You are not eligible"}
-            </div>
+        <main className="flex-1 overflow-y-auto">
+          <div className="max-w-7xl mx-auto p-4 pt-24 md:p-8 md:pt-24">
+            {children}
           </div>
         </main>
       </SidebarInset>

@@ -13,6 +13,7 @@ import { toast } from "sonner";
 export default function ProviderDashboard() {
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  console.log(stats);
   useEffect(() => {
     const fetchStats = async () => {
       try {
@@ -64,8 +65,8 @@ export default function ProviderDashboard() {
         <StatCard
           title="Total Meals"
           value={stats?.totalMeals || 0}
-          icon={<Utensils className="text-blue-600" />}
-          color="bg-blue-50"
+          icon={<Utensils className="text-orange-600" />}
+          color="bg-orange-50"
         />
         <StatCard
           title="Total Orders"
@@ -76,14 +77,14 @@ export default function ProviderDashboard() {
         <StatCard
           title="Pending"
           value={stats?.pendingOrders || 0}
-          icon={<Clock className="text-purple-600" />}
-          color="bg-purple-50"
+          icon={<Clock className="text-orange-600" />}
+          color="bg-orange-50"
         />
         <StatCard
           title="Earnings"
           value={`৳ ${stats?.totalEarnings || 0}`}
-          icon={<TrendingUp className="text-green-600" />}
-          color="bg-green-50"
+          icon={<TrendingUp className="text-orange-600" />}
+          color="bg-orange-50"
         />
       </div>
 

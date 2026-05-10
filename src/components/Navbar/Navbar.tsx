@@ -31,46 +31,55 @@ const Navbar = async () => {
             <Link href="/" className="hover:text-orange-600 transition-colors">
               Home
             </Link>
-            <Link href="/meals" className="hover:text-orange-600 transition-colors">
+            <Link
+              href="/meals"
+              className="hover:text-orange-600 transition-colors"
+            >
               Meals
             </Link>
-            <Link href="/about" className="hover:text-orange-600 transition-colors">
+            <Link
+              href="/about"
+              className="hover:text-orange-600 transition-colors"
+            >
               About
             </Link>
-            <Link href="/contact" className="hover:text-orange-600 transition-colors">
+            <Link
+              href="/contact"
+              className="hover:text-orange-600 transition-colors"
+            >
               Contact
             </Link>
-            <Link href="/help" className="hover:text-orange-600 transition-colors">
+            <Link
+              href="/help"
+              className="hover:text-orange-600 transition-colors"
+            >
               Help
             </Link>
           </div>
         </nav>
 
         <div className="hidden md:flex items-center gap-6">
-          {user?.role === Roles.admin && (
-            <Link href="/admin" className="hover:text-orange-600 transition-colors">
-              Dashboard
-            </Link>
-          )}
-
-          {user?.role === Roles.customer && (
-            <Link href="/customer" className="hover:text-orange-600 transition-colors">
-              Dashboard
-            </Link>
-          )}
-
-          {user?.role === Roles.provider && (
-            <Link href="/provider" className="hover:text-orange-600 transition-colors">
+          {user && (
+            <Link
+              href="/dashboard"
+              className="hover:text-orange-600 transition-colors"
+            >
               Dashboard
             </Link>
           )}
 
           {!user && (
             <>
-              <Link href="/login" className="text-sm hover:text-orange-600 transition-colors">
+              <Link
+                href="/login"
+                className="text-sm hover:text-orange-600 transition-colors"
+              >
                 Login
               </Link>
-              <Link href="/signup" className="text-sm hover:text-orange-600 transition-colors">
+              <Link
+                href="/signup"
+                className="text-sm hover:text-orange-600 transition-colors"
+              >
                 Sign Up
               </Link>
             </>
@@ -95,44 +104,58 @@ const Navbar = async () => {
               </SheetHeader>
 
               <div className="ml-5 mt-8 flex flex-col gap-5 font-medium">
-                <Link href="/" className="hover:text-orange-600 transition-colors text-sm">
+                <Link
+                  href="/"
+                  className="hover:text-orange-600 transition-colors text-sm"
+                >
                   Home
                 </Link>
-                <Link href="/meals" className="hover:text-orange-600 transition-colors text-sm">
+                <Link
+                  href="/meals"
+                  className="hover:text-orange-600 transition-colors text-sm"
+                >
                   Meals
                 </Link>
-                <Link href="/about" className="hover:text-orange-600 transition-colors text-sm">
+                <Link
+                  href="/about"
+                  className="hover:text-orange-600 transition-colors text-sm"
+                >
                   About
                 </Link>
-                <Link href="/contact" className="hover:text-orange-600 transition-colors text-sm">
+                <Link
+                  href="/contact"
+                  className="hover:text-orange-600 transition-colors text-sm"
+                >
                   Contact
                 </Link>
-                <Link href="/help" className="hover:text-orange-600 transition-colors text-sm">
+                <Link
+                  href="/help"
+                  className="hover:text-orange-600 transition-colors text-sm"
+                >
                   Help
                 </Link>
 
-                {user?.role === Roles.admin && (
-                  <Link href="/admin" className="hover:text-orange-600 transition-colors text-sm">
-                    Dashboard
-                  </Link>
-                )}
-                {user?.role === Roles.customer && (
-                  <Link href="/customer" className="hover:text-orange-600 transition-colors text-sm">
-                    Dashboard
-                  </Link>
-                )}
-                {user?.role === Roles.provider && (
-                  <Link href="/provider" className="hover:text-orange-600 transition-colors text-sm">
+                {user && (
+                  <Link
+                    href="/dashboard"
+                    className="hover:text-orange-600 transition-colors text-sm"
+                  >
                     Dashboard
                   </Link>
                 )}
 
                 {!user && (
                   <>
-                    <Link href="/login" className="text-sm hover:text-orange-600 transition-colors">
+                    <Link
+                      href="/login"
+                      className="text-sm hover:text-orange-600 transition-colors"
+                    >
                       Login
                     </Link>
-                    <Link href="/signup" className="text-sm hover:text-orange-600 transition-colors">
+                    <Link
+                      href="/signup"
+                      className="text-sm hover:text-orange-600 transition-colors"
+                    >
                       Sign Up
                     </Link>
                   </>

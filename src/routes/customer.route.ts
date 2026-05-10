@@ -4,17 +4,21 @@ export const customerRoutes = {
     {
       items: [
         {
+          title: "Dashboard",
+          url: "/dashboard/customer",
+        },
+        {
           title: "Cart",
-          url: "/customer/cart",
+          url: "/dashboard/customer/cart",
         },
 
         {
           title: "Orders",
-          url: "/customer/orders",
+          url: "/dashboard/customer/orders",
         },
         {
           title: "Profile",
-          url: "/customer/profile",
+          url: "/dashboard/customer/profile",
         },
       ],
     },

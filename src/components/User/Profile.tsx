@@ -1,5 +1,4 @@
 import currentUser from "@/actions/user";
-import { EditProfileModal } from "@/components/User/EditProfile";
 import { User } from "@/types/user.types";
 import {
   User as UserIcon,
@@ -10,6 +9,7 @@ import {
   Settings,
   LogOut,
 } from "lucide-react";
+import { EditProfileModal } from "./EditProfile";
 
 const Profile = async () => {
   const user = ((await currentUser()) as User) || null;

@@ -22,22 +22,28 @@ export default function ProfileDropdown({ user }: ProfileDropdownProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative cursor-pointer h-8 w-8 rounded-full">
+        <Button
+          variant="ghost"
+          className="relative cursor-pointer h-8 w-8 rounded-full"
+        >
           <UserCircle className="h-8 w-8 text-gray-600 hover:text-orange-600 transition-colors" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{user.name}</p>
+            <p className="text-sm font-medium leading-none">{user?.name}</p>
             <p className="text-xs leading-none text-muted-foreground">
-              {user.email}
+              {user?.email}
             </p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href={`/${user.role.toLowerCase()}/profile`} className="flex cursor-pointer items-center">
+          <Link
+            href={`/dashboard/${user?.role.toLowerCase()}/profile`}
+            className="flex cursor-pointer items-center"
+          >
             <Settings className="mr-2 h-4 w-4" />
             <span>Profile</span>
           </Link>
